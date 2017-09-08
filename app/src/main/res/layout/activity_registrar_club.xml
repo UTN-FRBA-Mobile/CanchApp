@@ -1,18 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBlanco"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     tools:context="com.santiago.canchaapp.RegistrarClub">
+    <ImageView
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/icono"
+        android:src="@mipmap/ic_launcher"
+        tools:ignore="ContentDescription" />
+    <EditText
+        android:id="@+id/txtNombre"
+        style="@style/editText"
+        android:hint="@string/txtNombre" />
+
+    <EditText
+        android:id="@+id/txtTelefono"
+        style="@style/editText"
+        android:hint="@string/txtTelefono"
+        android:inputType="phone" />
+
+    <EditText
+        android:id="@+id/txtEmail"
+        style="@style/editText"
+        android:hint="@string/txtEmail"
+        android:inputType="textEmailAddress" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/txtHorario"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="match_parent"
+        android:layout_marginBottom="20dp"
+        android:textSize="18sp"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/colorText"
+        android:text="@string/txtHorario"/>
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false">
+        <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+            android:id="@+id/rangoHorario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:corner_radius="100"
+            app:gap="1"
+            app:min_value="9"
+            app:max_value="23"
+            app:bar_color="@color/colorBar"
+            app:bar_highlight_color="@color/colorPrimary"
+            app:left_thumb_color="@color/colorPrimary"
+            app:right_thumb_color="@color/colorPrimary"
+            app:left_thumb_color_pressed="@color/colorThumbPressed"
+            app:right_thumb_color_pressed="@color/colorThumbPressed"
+            app:data_type="_integer"/>
+        <TextView
+            android:id="@+id/txtValorMinimo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rangoHorario"
+            android:layout_marginTop="5dp"
+            android:textSize="16sp"
+            android:textColor="@color/colorText"/>
+        <TextView
+            android:id="@+id/txtValorMaximo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rangoHorario"
+            android:layout_marginTop="5dp"
+            android:textSize="16sp"
+            android:textColor="@color/colorText"
+            android:textAlignment="textStart"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/btnContinuar"
+            style="@style/btnContinuar"
+            android:text="@string/btnContinuar" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="editText">
+        <item name="android:textColor">@color/colorNegro</item>
+        <item name="android:textColorHint">@color/colorHint</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:textCursorDrawable">@color/colorPrimary</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+</resources>
