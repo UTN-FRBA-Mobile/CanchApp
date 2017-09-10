@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBlanco">
+
+    <EditText
+        android:id="@+id/NombreCancha"
+        style="@style/editText"
+        android:hint="@string/txtNombreCancha"/>
+
+    <EditText
+        android:id="@+id/txtDeporte"
+        style="@style/editText"
+        android:hint="@string/txtDeporte"/>
+
+    <EditText
+        android:id="@+id/txtPrecio"
+        style="@style/editText"
+        android:hint="@string/txtPrecio"
+        android:inputType="numberDecimal"/>
+
+    <EditText
+        android:id="@+id/Superficie"
+        style="@style/editText"
+        android:hint="@string/txtSuperficie"
+        android:inputType="number"/>
+
+    <TextView
+        android:id="@+id/txtTechada"
+        style=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:textSize="18sp"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/colorText"
+        android:text="Techada"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:textAlignment="center">
+        <Button
+            android:id="@+id/btnContinuar"
+            style="@style/btnContinuar"
+            android:text="@string/btnContinuar"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="200dp"/>
+    </LinearLayout>
+
+</LinearLayout>

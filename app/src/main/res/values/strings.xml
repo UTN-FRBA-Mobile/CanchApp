@@ -5,4 +5,8 @@
     <string name="txtEmail">Correo electrónico</string>
     <string name="txtHorario">Horario</string>
     <string name="btnContinuar">CONTINUAR</string>
+    <string name="txtNombreCancha">Nombre_de_Cancha</string>
+    <string name="txtDeporte">Deporte</string>
+    <string name="txtPrecio">Precio</string>
+    <string name="txtSuperficie">Superficie</string>
 </resources>
