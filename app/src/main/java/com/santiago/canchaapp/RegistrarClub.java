@@ -32,5 +32,5 @@ public class RegistrarClub extends AppCompatActivity {
                 valorMaximo.setText(String.valueOf(maxValue));
             }
         });
-    }
+        }
 }
