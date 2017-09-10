@@ -27,15 +27,40 @@
         android:hint="@string/txtSuperficie"
         android:inputType="number"/>
 
-    <TextView
-        android:id="@+id/txtTechada"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:textSize="18sp"
-        android:layout_marginStart="5dp"
-        android:textColor="@color/colorText"
-        android:text="Techada"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="3">
+            <TextView
+                android:id="@+id/txtTechada"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/colorText"
+                android:textAlignment="center"
+                android:text="Techada"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/colorAclaracion"
+                android:text="Confirmar que la cancha tiene techo."/>
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/switchTechada"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
