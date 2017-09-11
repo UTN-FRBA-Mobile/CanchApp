@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navBuscarCanchas"
+            android:icon="@drawable/ic_menu_send"
+            android:title="@string/txtBuscarCanchas" />
+        <item
+            android:id="@+id/navMisReservas"
+            android:icon="@drawable/ic_menu_send"
+            android:title="@string/txtMisReservas" />
+        <item
+            android:id="@+id/navMiPerfil"
+            android:icon="@drawable/ic_menu_send"
+            android:title="@string/txtMiPerfil" />
+    </group>
+
+    <item android:title="Complejo">
+        <menu>
+            <item
+                android:id="@+id/navMisAlquileres"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/txtMisAlquileres" />
+            <item
+                android:id="@+id/navMisCanchas"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/txtMisCanchas" />
+            <item
+                android:id="@+id/navMiClub"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/txtMiClub" />
+        </menu>
+    </item>
+
+</menu>

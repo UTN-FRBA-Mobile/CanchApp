@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/app_bar_menu_navegacion"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBlanco"
@@ -9,6 +10,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     tools:context="com.santiago.canchaapp.RegistrarClub">
+
     <ImageView
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
@@ -92,5 +94,4 @@
             style="@style/btnContinuar"
             android:text="@string/btnContinuar" />
     </LinearLayout>
-
 </LinearLayout>

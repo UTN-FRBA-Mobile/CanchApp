@@ -1,9 +1,12 @@
 package com.santiago.canchaapp;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.widget.TextView;
 
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 
@@ -11,7 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class RegistrarClub extends AppCompatActivity {
+public class RegistrarClub extends Fragment{
 
     @BindView(R.id.rangoHorario)
     public CrystalRangeSeekbar rangoHorario;
@@ -21,10 +24,10 @@ public class RegistrarClub extends AppCompatActivity {
     public TextView valorMaximo;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registrar_club);
-        ButterKnife.bind(this);
+        View view = inflater.inflate(R.layout.activity_registrar_club, container, false);
+        ButterKnife.bind(this, view);
         rangoHorario.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
             @Override
             public void valueChanged(Number minValue, Number maxValue) {
@@ -32,5 +35,6 @@ public class RegistrarClub extends AppCompatActivity {
                 valorMaximo.setText(String.valueOf(maxValue));
             }
         });
-        }
+        return view;
+    }
 }
