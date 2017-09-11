@@ -7,7 +7,7 @@
     <string name="btnContinuar">CONTINUAR</string>
     <string name="btnAtras">ATRAS</string>
     <string name="btnListo">LISTO!</string>
-    <string name="txtNombreCancha">Nombre Cancha</string>
+    <string name="txtNombreCancha">Nombre De Cancha</string>
     <string name="txtDeporte">Deporte</string>
     <string name="txtPrecio">Precio</string>
     <string name="txtBuscarCanchas">Buscar Canchas</string>
