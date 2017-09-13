@@ -52,7 +52,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         btnGoogleLogin.setColorScheme(SignInButton.COLOR_DARK);
         btnGoogleLogin.setOnClickListener(LoginActivity.this);
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuth.signOut();
         firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {

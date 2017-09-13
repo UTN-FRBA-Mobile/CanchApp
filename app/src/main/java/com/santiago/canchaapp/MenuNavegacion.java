@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -49,10 +50,14 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
         firebaseAuth = FirebaseAuth.getInstance();
-        //setUserData(user);
-
     }
 
     @Override
@@ -86,16 +91,20 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
 
     private void signOut() {
         firebaseAuth.signOut();
-        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
-            @Override
-            public void onResult(@NonNull Status status) {
-                if (status.isSuccess()) {
-                    goLogInScreen();
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.notLogOut, Toast.LENGTH_SHORT).show();
+        try {
+            Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+                @Override
+                public void onResult(@NonNull Status status) {
+                    if (status.isSuccess())
+                        goLogInScreen();
+                    else
+                        Toast.makeText(getApplicationContext(), R.string.notLogOut, Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
+            });
+        }
+        catch(Exception e) {
+            Toast.makeText(getApplicationContext(), R.string.notLogOut, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void goLogInScreen() {
