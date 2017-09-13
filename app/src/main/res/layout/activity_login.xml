@@ -10,8 +10,7 @@
     android:paddingRight="16dp"
     tools:context="com.santiago.canchaapp.LoginActivity">
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/login_with_google"
-        android:text="@string/txtLoginGoogle"
+        android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
