@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 
@@ -26,7 +27,7 @@ public class RegistrarClub extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.activity_registrar_club, container, false);
+        View view = inflater.inflate(R.layout.fragment_registrar_club, container, false);
         ButterKnife.bind(this, view);
         rangoHorario.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
             @Override

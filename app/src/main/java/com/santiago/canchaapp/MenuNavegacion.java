@@ -1,32 +1,44 @@
 package com.santiago.canchaapp;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.view.View;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.R.id.toggle;
-import static com.santiago.canchaapp.R.id.toolbar;
 
-public class MenuNavegacion extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MenuNavegacion extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
+    @BindView(R.id.nav_view)
+    public NavigationView navigationView;
     @BindView(R.id.drawer_layout)
     public DrawerLayout drawer;
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
+    private FirebaseAuth firebaseAuth;
+    private GoogleApiClient googleApiClient;
     public ActionBarDrawerToggle toggle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +46,12 @@ public class MenuNavegacion extends AppCompatActivity
         setContentView(R.layout.activity_menu_navegacion);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-
-        toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, 0, 0);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
         toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        //setUserData(user);
 
     }
 
@@ -57,16 +67,57 @@ public class MenuNavegacion extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        Fragment fragment = new RegistrarClub();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
-        drawer.closeDrawer(GravityCompat.START);
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.navCerrarSesion:
+                signOut(); break;
+            default: Fragment fragment = new RegistrarClub();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
+                drawer.closeDrawer(GravityCompat.START); break;
+        }
+
         return true;
+    }
+
+    private void signOut() {
+        firebaseAuth.signOut();
+        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+                if (status.isSuccess()) {
+                    goLogInScreen();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.notLogOut, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void goLogInScreen() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        View headerLayout = navigationView.getHeaderView(0);
+        ImageView imgPerfil = headerLayout.findViewById(R.id.imgPerfilGmail);
+        TextView txtNombre = headerLayout.findViewById(R.id.txtNombreGmail);
+        TextView txtEmail = headerLayout.findViewById(R.id.txtEmailGmail);
+        txtNombre.setText(user.getDisplayName());
+        txtEmail.setText(user.getEmail());
+        Picasso.with(getApplicationContext()).load(user.getPhotoUrl()).into(imgPerfil);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

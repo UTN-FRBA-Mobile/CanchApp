@@ -33,4 +33,9 @@
         </menu>
     </item>
 
+    <item
+        android:id="@+id/navCerrarSesion"
+        android:icon="@drawable/ic_menu_send"
+        android:title="@string/txtCerrarSesion" />
+
 </menu>
