@@ -37,7 +37,7 @@
             </menu>
         </item>
         <item
-            android:title="Configuracion"
+            android:title="Configuración"
             android:id="@+id/menuConfiguracion">
             <menu>
                 <item

@@ -69,6 +69,8 @@ public class LoginActivity extends AppCompatActivity
 
     @Override
     public void onDialogPositiveClick(Boolean mostrarSeccionClub) {
+        progressBar.setVisibility(View.VISIBLE);
+        btnGoogleLogin.setVisibility(View.GONE);
         goMainScreen(mostrarSeccionClub);
     }
 
