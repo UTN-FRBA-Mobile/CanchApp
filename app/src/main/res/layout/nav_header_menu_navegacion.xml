@@ -2,35 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/nav_header_height"
+    android:layout_height="@dimen/header_height"
     android:background="@drawable/side_nav_bar"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:padding="@dimen/header_left_padding"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgPerfilGmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
+        android:layout_width="@dimen/perfil_image_size"
+        android:layout_height="@dimen/perfil_image_size"
+        android:layout_marginBottom="16dp"
+        android:scaleType="centerCrop"
+        app:border_color="@color/colorPrimary"
+        app:border_width="1dp" />
 
     <TextView
         android:id="@+id/txtNombreGmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Nombre y apellido gmail"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/txtEmailGmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="...@gmail.com" />
+        android:text="...@gmail.com"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
 </LinearLayout>

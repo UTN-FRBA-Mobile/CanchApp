@@ -18,6 +18,7 @@
     <string name="txtMisCanchas">Mis Canchas</string>
     <string name="txtMisAlquileres">Mis Alquileres</string>
     <string name="txtCerrarSesion">Cerrar Sesion</string>
+    <string name="txtRegistrarClub">Registrar Club</string>
 
     <string name="notFirebaseAuth">No se pudo autenticar con Firebase</string>
     <string name="notLogIn">No se pudo iniciar sesión</string>

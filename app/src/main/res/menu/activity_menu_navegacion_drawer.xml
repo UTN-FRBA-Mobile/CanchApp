@@ -14,31 +14,37 @@
             android:id="@+id/navMiPerfil"
             android:icon="@drawable/ic_menu_send"
             android:title="@string/txtMiPerfil" />
-
-
-    <item
-        android:title="Complejo"
-        android:id="@+id/menuComplejo">
-        <menu>
-            <item
-                android:id="@+id/navMisAlquileres"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/txtMisAlquileres" />
-            <item
-                android:id="@+id/navMisCanchas"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/txtMisCanchas" />
-            <item
-                android:id="@+id/navMiClub"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/txtMiClub" />
-        </menu>
-    </item>
-
-    <item
-        android:id="@+id/navCerrarSesion"
-        android:icon="@drawable/ic_menu_send"
-        android:title="@string/txtCerrarSesion" />
+        <item
+            android:title="Complejo"
+            android:id="@+id/menuComplejo">
+            <menu>
+                <item
+                    android:id="@+id/navMisAlquileres"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="@string/txtMisAlquileres" />
+                <item
+                    android:id="@+id/navMisCanchas"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="@string/txtMisCanchas" />
+                <item
+                    android:id="@+id/navMiClub"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="@string/txtMiClub" />
+                <item
+                    android:id="@+id/navRegistrarClub"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="@string/txtRegistrarClub" />
+            </menu>
+        </item>
+        <item
+            android:title="Configuracion"
+            android:id="@+id/menuConfiguracion">
+            <menu>
+                <item
+                    android:id="@+id/navCerrarSesion"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="@string/txtCerrarSesion" />
+            </menu>
+        </item>
     </group>
-
 </menu>

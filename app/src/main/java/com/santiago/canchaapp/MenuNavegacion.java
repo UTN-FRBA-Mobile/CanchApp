@@ -81,12 +81,16 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
         switch (id) {
             case R.id.navCerrarSesion:
                 signOut(); break;
-            default: Fragment fragment = new RegistrarClub();
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
-                drawer.closeDrawer(GravityCompat.START); break;
+            case R.id.navRegistrarClub:
+                abrirFragmentRegistrarClub(); break;
         }
-
         return true;
+    }
+
+    private void abrirFragmentRegistrarClub() {
+        Fragment fragment = new RegistrarClub();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
+        drawer.closeDrawer(GravityCompat.START);
     }
 
     private void signOut() {
@@ -124,6 +128,8 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
         Bundle parametros = this.getIntent().getExtras();
         Boolean mostrarSeccionClub = parametros.getBoolean("mostrarSeccionClub");
         navigationView.getMenu().findItem(R.id.menuComplejo).setVisible(mostrarSeccionClub);
+        if(mostrarSeccionClub)
+            abrirFragmentRegistrarClub();
     }
 
     private void setUserData(FirebaseUser user) {
