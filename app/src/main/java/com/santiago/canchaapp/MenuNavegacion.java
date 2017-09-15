@@ -116,6 +116,17 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
     protected void onStart() {
         super.onStart();
         FirebaseUser user = firebaseAuth.getCurrentUser();
+        setUserData(user);
+        changeVisibleMenu();
+    }
+
+    private void changeVisibleMenu() {
+        Bundle parametros = this.getIntent().getExtras();
+        Boolean mostrarSeccionClub = parametros.getBoolean("mostrarSeccionClub");
+        navigationView.getMenu().findItem(R.id.menuComplejo).setVisible(mostrarSeccionClub);
+    }
+
+    private void setUserData(FirebaseUser user) {
         View headerLayout = navigationView.getHeaderView(0);
         ImageView imgPerfil = headerLayout.findViewById(R.id.imgPerfilGmail);
         TextView txtNombre = headerLayout.findViewById(R.id.txtNombreGmail);
@@ -126,7 +137,5 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
     }
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
 }

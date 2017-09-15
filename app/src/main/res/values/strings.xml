@@ -22,4 +22,5 @@
     <string name="notFirebaseAuth">No se pudo autenticar con Firebase</string>
     <string name="notLogIn">No se pudo iniciar sesión</string>
     <string name="notLogOut">No se pudo cerrar sesión</string>
+    <string name="txtDialogoTengoClub">Tenés cancha? Agregala</string>
 </resources>

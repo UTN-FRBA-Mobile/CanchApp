@@ -14,9 +14,11 @@
             android:id="@+id/navMiPerfil"
             android:icon="@drawable/ic_menu_send"
             android:title="@string/txtMiPerfil" />
-    </group>
 
-    <item android:title="Complejo">
+
+    <item
+        android:title="Complejo"
+        android:id="@+id/menuComplejo">
         <menu>
             <item
                 android:id="@+id/navMisAlquileres"
@@ -37,5 +39,6 @@
         android:id="@+id/navCerrarSesion"
         android:icon="@drawable/ic_menu_send"
         android:title="@string/txtCerrarSesion" />
+    </group>
 
 </menu>

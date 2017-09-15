@@ -1,4 +1,6 @@
 package com.santiago.canchaapp;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +16,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -25,7 +29,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
+public class LoginActivity extends AppCompatActivity
+        implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, DialogoTengoClub.DialogoTengoClubListener{
     private static final int RC_SIGN_IN = 9001;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
@@ -56,16 +61,49 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    goMainScreen();
-                }
+                if(user != null)
+                    showDialog();
             }
         };
+
+    }
+
+    @Override
+    public void onDialogPositiveClick(Boolean mostrarSeccionClub) {
+        goMainScreen(mostrarSeccionClub);
+    }
+
+    @Override
+    public void onDialogNegativeClick() {
+        firebaseAuth.signOut();
+        try {
+            Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+                @Override
+                public void onResult(@NonNull Status status) {
+                    if (status.isSuccess()){
+                        progressBar.setVisibility(View.GONE);
+                        btnGoogleLogin.setVisibility(View.VISIBLE);
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(), R.string.notLogOut, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        catch(Exception e) {
+            Toast.makeText(getApplicationContext(), R.string.notLogOut, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showDialog(){
+        DialogFragment dialogoTengoClub = new DialogoTengoClub();
+        dialogoTengoClub.show(this.getFragmentManager(), "dialogoTengoClub");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        progressBar.setVisibility(View.GONE);
+        btnGoogleLogin.setVisibility(View.VISIBLE);
         firebaseAuth.addAuthStateListener(firebaseAuthListener);
     }
 
@@ -118,8 +156,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                progressBar.setVisibility(View.GONE);
-                btnGoogleLogin.setVisibility(View.VISIBLE);
                 if (!task.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), R.string.notFirebaseAuth, Toast.LENGTH_SHORT).show();
                 }
@@ -127,8 +163,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
     }
 
-    private void goMainScreen() {
+    private void goMainScreen(boolean mostrarSeccionClub) {
         final Intent intent = new Intent(this, MenuNavegacion.class);
+        intent.putExtra("mostrarSeccionClub", mostrarSeccionClub);
         startActivity(intent);
     }
 
