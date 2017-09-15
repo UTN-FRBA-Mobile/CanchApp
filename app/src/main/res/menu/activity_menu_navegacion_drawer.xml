@@ -4,46 +4,50 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/navBuscarCanchas"
-            android:icon="@drawable/ic_menu_send"
+            android:icon="@drawable/ic_buscar_canchas"
             android:title="@string/txtBuscarCanchas" />
         <item
             android:id="@+id/navMisReservas"
-            android:icon="@drawable/ic_menu_send"
+            android:icon="@drawable/ic_compras"
             android:title="@string/txtMisReservas" />
         <item
             android:id="@+id/navMiPerfil"
-            android:icon="@drawable/ic_menu_send"
+            android:icon="@drawable/ic_mi_perfil"
             android:title="@string/txtMiPerfil" />
         <item
             android:title="Complejo"
             android:id="@+id/menuComplejo">
             <menu>
-                <item
-                    android:id="@+id/navMisAlquileres"
-                    android:icon="@drawable/ic_menu_send"
-                    android:title="@string/txtMisAlquileres" />
-                <item
-                    android:id="@+id/navMisCanchas"
-                    android:icon="@drawable/ic_menu_send"
-                    android:title="@string/txtMisCanchas" />
-                <item
-                    android:id="@+id/navMiClub"
-                    android:icon="@drawable/ic_menu_send"
-                    android:title="@string/txtMiClub" />
-                <item
-                    android:id="@+id/navRegistrarClub"
-                    android:icon="@drawable/ic_menu_send"
-                    android:title="@string/txtRegistrarClub" />
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/navMisAlquileres"
+                        android:icon="@drawable/ic_mis_alquileres"
+                        android:title="@string/txtMisAlquileres" />
+                    <item
+                        android:id="@+id/navMisCanchas"
+                        android:icon="@drawable/ic_mis_canchas"
+                        android:title="@string/txtMisCanchas" />
+                    <item
+                        android:id="@+id/navMiClub"
+                        android:icon="@drawable/ic_mi_club"
+                        android:title="@string/txtMiClub" />
+                    <item
+                        android:id="@+id/navRegistrarClub"
+                        android:icon="@drawable/ic_registrar_club"
+                        android:title="@string/txtRegistrarClub" />
+                </group>
             </menu>
         </item>
         <item
             android:title="Configuración"
             android:id="@+id/menuConfiguracion">
             <menu>
-                <item
-                    android:id="@+id/navCerrarSesion"
-                    android:icon="@drawable/ic_menu_send"
-                    android:title="@string/txtCerrarSesion" />
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/navCerrarSesion"
+                        android:icon="@drawable/ic_cerrar_sesion"
+                        android:title="@string/txtCerrarSesion" />
+                </group>
             </menu>
         </item>
     </group>
