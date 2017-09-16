@@ -24,6 +24,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.santiago.canchaapp.app.fragment.MisReservasFragment;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -83,14 +84,19 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
                 signOut(); break;
             case R.id.navRegistrarClub:
                 abrirFragmentRegistrarClub(); break;
+            case R.id.navMisReservas:
+                abrirFragment(new MisReservasFragment());
         }
         return true;
     }
 
-    private void abrirFragmentRegistrarClub() {
-        Fragment fragment = new RegistrarClub();
+    private void abrirFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
         drawer.closeDrawer(GravityCompat.START);
+    }
+
+    private void abrirFragmentRegistrarClub() {
+        abrirFragment(new RegistrarClub());
     }
 
     private void signOut() {
