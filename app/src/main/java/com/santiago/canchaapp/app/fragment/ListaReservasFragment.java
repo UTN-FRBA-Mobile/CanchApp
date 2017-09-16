@@ -2,33 +2,43 @@ package com.santiago.canchaapp.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
+import com.santiago.canchaapp.app.adapter.ReservasAdapter;
 import com.santiago.canchaapp.app.otros.TipoReservas;
+import com.santiago.canchaapp.dominio.Reserva;
+import com.santiago.canchaapp.servicios.Servidor;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class ListaReservasFragment extends Fragment {
 
-    private static String ARG_RESERVES_TYPE = "reserves_type";
-/*
-    private RecyclerView reservesRecyclerView;
+    private static String ARG_TIPO_RESERVAS = "tipo_reservas";
+
+    @BindView(R.id.recycler_view_reservas)
+    public RecyclerView reservasRecyclerView;
 
     private RecyclerView.LayoutManager layoutManager;
 
-    private ReserveAdapter adapter;
+    private ReservasAdapter adapter;
 
-    private List<Reserve> reserves;
-*/
+    private List<Reserva> reservas;
+
     public ListaReservasFragment() {
     }
 
     public static ListaReservasFragment newInstance(TipoReservas type) {
         ListaReservasFragment fragment = new ListaReservasFragment();
         Bundle args = new Bundle();
-        args.putCharSequence(ARG_RESERVES_TYPE, type.toString());
+        args.putString(ARG_TIPO_RESERVAS, type.toString());
         fragment.setArguments(args);
         return fragment;
     }
@@ -36,59 +46,42 @@ public class ListaReservasFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //loadReservesData();
+        cargarDatosDeReservas();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_lista_reservas, container, false);
-        ((TextView)rootView.findViewById(R.id.tab_label)).setText(getArguments().getCharSequence(ARG_RESERVES_TYPE));
-        //loadReservesView(rootView);
-
+        cargarVista(rootView);
         return rootView;
     }
-/*
-    private void loadReservesView(View rootView) {
-        // General
-        reservesRecyclerView = rootView.findViewById(R.id.reserves_recycler_view);
+
+    private void cargarVista(View rootView) {
+        ButterKnife.bind(this, rootView);
+
+        // Recycler view
         layoutManager = new LinearLayoutManager(getActivity());
-        reservesRecyclerView.setLayoutManager(layoutManager);
+        reservasRecyclerView.setLayoutManager(layoutManager);
 
         // Adapter
-        adapter = new ReserveAdapter(reserves);
-        reservesRecyclerView.setAdapter(adapter);
+        adapter = new ReservasAdapter(reservas);
+        reservasRecyclerView.setAdapter(adapter);
     }
 
-    private void loadReservesData() {
-        ReservePageType type = ReservePageType.valueOf(getArguments().getString(ARG_RESERVES_TYPE));
-        switch(type) {
-            case APPROVED:
-                reserves = Arrays.asList(
-                        new Reserve("Da Vinci", FUTBOL5, "Buenos Aires 2358", "27/09/17", 16),
-                        new Reserve("Da Vinci", FUTBOL5, "Buenos Aires 2358", "01/10/17", 16),
-                        new Reserve("Da Vinci", FUTBOL5, "Buenos Aires 2358", "02/10/17", 19),
-                        new Reserve("Los Troncos", TENNIS, "Italia 2580", "03/10/17", 15),
-                        new Reserve("Da Vinci", FUTBOL5, "Buenos Aires 2358", "03/10/17", 21),
-                        new Reserve("Club Mitre", FUTBOL7, "Avellaneda 4433", "04/10/17", 11),
-                        new Reserve("Los Troncos", TENNIS, "Italia 2580", "04/10/17", 16),
-                        new Reserve("Da Vinci", FUTBOL5, "Buenos Aires 2358", "04/10/17", 22),
-                        new Reserve("Club Mitre", FUTBOL7, "Avellaneda 4433", "30/10/17", 14),
-                        new Reserve("Da Vinci", FUTBOL5, "Buenos Aires 2358", "1/11/17", 22)
-                );
+    private void cargarDatosDeReservas() {
+        TipoReservas tipo = TipoReservas.valueOf(getArguments().getString(ARG_TIPO_RESERVAS));
+        Servidor servidor = Servidor.instancia();
+        switch(tipo) {
+            case APROBADAS:
+                reservas = servidor.reservasAprobadas();
                 break;
-            case CANCELLED:
-                reserves = Arrays.asList(
-                        new Reserve("Da Vinci", FUTBOL5, "Buenos Aires 2358", "29/09/17", 20)
-                );
+            case CANCELADAS:
+                reservas = servidor.reservasCanceladas();
                 break;
-            case PENDING:
-                reserves = Arrays.asList(
-                        new Reserve("Da Vinci", FUTBOL5, "Buenos Aires 2358", "29/09/17", 21),
-                        new Reserve("Los Troncos", TENNIS, "Italia 2580", "06/10/17", 17),
-                        new Reserve("Los Troncos", TENNIS, "Italia 2580", "06/10/17", 18)
-                );
+            case PENDIENTES:
+                reservas = servidor.reservasPendientes();
                 break;
         }
-    }*/
+    }
 }

@@ -1,12 +1,12 @@
 package com.santiago.canchaapp.app.otros;
 
 public enum TipoReservas {
-    APPROVED("Aprobadas"), CANCELLED("Canceladas"), PENDING("Pendientes");
+    APROBADAS("Aprobadas"), CANCELADAS("Canceladas"), PENDIENTES("Pendientes");
 
     public String titulo;
 
-    TipoReservas(String title) {
-        this.titulo = title;
+    TipoReservas(String titulo) {
+        this.titulo = titulo;
     }
 
     public static TipoReservas enPosicion(int pos) {
