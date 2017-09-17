@@ -24,6 +24,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.santiago.canchaapp.app.fragment.RegistrarClubFragment;
 import com.santiago.canchaapp.app.fragment.ReservasFragment;
 import com.santiago.canchaapp.app.otros.FragmentTags;
 import com.squareup.picasso.Picasso;
@@ -88,7 +89,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
             case R.id.navCerrarSesion:
                 signOut(); break;
             case R.id.navRegistrarClub:
-                abrirFragmentRegistrarClub(); break;
+                abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB); break;
             case R.id.navMisReservas:
                 abrirFragment(ReservasFragment.nuevaInstanciaParaReservas(), MIS_RESERVAS); break;
             case R.id.navMisAlquileres:
@@ -104,10 +105,6 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
                 .addToBackStack(null)
                 .commit();
         drawer.closeDrawer(GravityCompat.START);
-    }
-
-    private void abrirFragmentRegistrarClub() {
-        abrirFragment(new RegistrarClub(), REGISTRAR_CLUB);
     }
 
     private void signOut() {
@@ -146,7 +143,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
         Boolean mostrarSeccionClub = parametros.getBoolean("mostrarSeccionClub");
         navigationView.getMenu().findItem(R.id.menuComplejo).setVisible(mostrarSeccionClub);
         if(mostrarSeccionClub)
-            abrirFragmentRegistrarClub();
+            abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB);
     }
 
     private void setUserData(FirebaseUser user) {

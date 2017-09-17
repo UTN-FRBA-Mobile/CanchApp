@@ -12,7 +12,7 @@ import butterknife.ButterKnife;
 public class CargarFotosCancha extends AppCompatActivity {
     private ImageButton btn_cargarFotosCancha;
 
-    @BindView(R.id.btnImagen01)
+   // @BindView(R.id.btnImagen01)
     public ImageButton btnCargarFotosCancha;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

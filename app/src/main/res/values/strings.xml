@@ -27,4 +27,5 @@
 
     <string name="btnAprobarReserva">Aprobar</string>
     <string name="btnCancelarReserva">Cancelar</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
