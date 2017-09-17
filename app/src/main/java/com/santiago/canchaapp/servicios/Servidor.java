@@ -37,7 +37,8 @@ public class Servidor {
                     new Reserva(new Club("Los Troncos", "Italia 2580"), TENIS, "04/10/17", 16),
                     new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "04/10/17", 22),
                     new Reserva(new Club("Club Mitre", "Avellaneda 4433"), FUTBOL7, "30/10/17", 14),
-                    new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "1/11/17", 22)
+                    new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "1/11/17", 22),
+                    new Reserva(new Club("Club Atlético Independiente", "Bochini 853"), FUTBOL5, "1/11/17", 22)
             );
 
     private List<Reserva> reservasCanceladas = asList(
@@ -47,7 +48,8 @@ public class Servidor {
     private List<Reserva> alquileresAprobados = asList(
                 new Reserva(new Club("Da Vinci", "Buenos Aires 1234"), FUTBOL5, "16/09/17", 21),
                 new Reserva(new Club("Los Troncos", "Italia 2580"), TENIS, "06/10/17", 17),
-                new Reserva(new Club("Los Troncos", "Italia 2580"), TENIS, "06/10/17", 18)
+                new Reserva(new Club("Los Troncos", "Italia 2580"), TENIS, "06/10/17", 18),
+                new Reserva(new Club("Mitre", "Una calle con nombre ultra largo"), TENIS, "06/10/17", 19)
         );
 
     private List<Reserva> alquileresPendientes  = asList(
@@ -60,7 +62,9 @@ public class Servidor {
                 new Reserva(new Club("Los Troncos", "Italia 2580"), TENIS, "04/10/17", 16),
                 new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "04/10/17", 22),
                 new Reserva(new Club("Club Mitre", "Avellaneda 4433"), FUTBOL7, "30/10/17", 14),
-                new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "1/11/17", 22)
+                new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "1/11/17", 22),
+                new Reserva(new Club("Club Atlético Independiente", "Bochini 853"), FUTBOL5, "1/11/17", 22),
+                new Reserva(new Club("Mitre", "Una calle con nombre ultra largo"), TENIS, "06/10/17", 19)
         );
 
     private List<Reserva> alquileresCancelados = asList(
