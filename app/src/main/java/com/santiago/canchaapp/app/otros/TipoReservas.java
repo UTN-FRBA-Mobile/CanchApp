@@ -1,7 +1,7 @@
 package com.santiago.canchaapp.app.otros;
 
 public enum TipoReservas {
-    APROBADAS("Aprobadas"), CANCELADAS("Canceladas"), PENDIENTES("Pendientes");
+    PENDIENTES("Pendientes"), APROBADAS("Aprobadas"), CANCELADAS("Canceladas");
 
     public String titulo;
 

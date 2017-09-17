@@ -9,13 +9,16 @@ import com.santiago.canchaapp.app.otros.TipoReservas;
 
 public class ReservasPageAdapter extends FragmentPagerAdapter {
 
-    public ReservasPageAdapter(FragmentManager fm) {
+    private Boolean sonAlquileres;
+
+    public ReservasPageAdapter(FragmentManager fm, Boolean sonAlquileres) {
         super(fm);
+        this.sonAlquileres = sonAlquileres;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return ListaReservasFragment.newInstance(TipoReservas.enPosicion(position));
+        return ListaReservasFragment.nuevaInstancia(TipoReservas.enPosicion(position), sonAlquileres);
     }
 
     @Override

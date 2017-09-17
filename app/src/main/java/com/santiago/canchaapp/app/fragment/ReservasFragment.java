@@ -14,7 +14,9 @@ import com.santiago.canchaapp.app.adapter.ReservasPageAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MisReservasFragment extends Fragment {
+public class ReservasFragment extends Fragment {
+
+    private static String ARG_ALQUILERES = "alquileres";
 
     @BindView(R.id.container_reservas)
     public ViewPager viewPager;
@@ -23,6 +25,24 @@ public class MisReservasFragment extends Fragment {
     public TabLayout tabs;
 
     private ReservasPageAdapter adapter;
+
+    public static ReservasFragment nuevaInstanciaParaReservas() {
+        return nuevaInstancia(false);
+    }
+
+    public static ReservasFragment nuevaInstanciaParaAlquileres() {
+        return nuevaInstancia(true);
+    }
+
+    private static ReservasFragment nuevaInstancia(Boolean paraAlquileres) {
+        ReservasFragment fragment = new ReservasFragment();
+
+        Bundle args = new Bundle();
+        args.putBoolean(ARG_ALQUILERES, paraAlquileres);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,7 +54,7 @@ public class MisReservasFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         // Tabs reservas
-        adapter = new ReservasPageAdapter(getActivity().getSupportFragmentManager());
+        adapter = new ReservasPageAdapter(getActivity().getSupportFragmentManager(), getArguments().getBoolean(ARG_ALQUILERES));
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
 

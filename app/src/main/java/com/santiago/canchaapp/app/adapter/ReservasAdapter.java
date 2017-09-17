@@ -15,8 +15,11 @@ public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
 
     private List<Reserva> reservas;
 
-    public ReservasAdapter(List<Reserva> reservas) {
+    private Boolean sonAlquileresPendientes;
+
+    public ReservasAdapter(List<Reserva> reservas, Boolean sonAlquileresPendientes) {
         this.reservas = reservas;
+        this.sonAlquileresPendientes = sonAlquileresPendientes;
     }
 
     @Override
@@ -27,7 +30,7 @@ public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
 
     @Override
     public void onBindViewHolder(ReservaViewHolder viewHolder, final int position) {
-        viewHolder.cargarDatosEnVista(reservas.get(position));
+        viewHolder.cargarDatosEnVista(reservas.get(position), sonAlquileresPendientes);
     }
 
     @Override

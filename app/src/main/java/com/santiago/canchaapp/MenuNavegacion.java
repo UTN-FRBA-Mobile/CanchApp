@@ -24,7 +24,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.santiago.canchaapp.app.fragment.MisReservasFragment;
+import com.santiago.canchaapp.app.fragment.ReservasFragment;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -85,7 +85,9 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
             case R.id.navRegistrarClub:
                 abrirFragmentRegistrarClub(); break;
             case R.id.navMisReservas:
-                abrirFragment(new MisReservasFragment());
+                abrirFragment(ReservasFragment.nuevaInstanciaParaReservas()); break;
+            case R.id.navMisAlquileres:
+                abrirFragment(ReservasFragment.nuevaInstanciaParaAlquileres()); break;
         }
         return true;
     }

@@ -19,9 +19,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.santiago.canchaapp.app.otros.TipoReservas.PENDIENTES;
+import static com.santiago.canchaapp.app.otros.TipoReservas.valueOf;
+
 public class ListaReservasFragment extends Fragment {
 
     private static String ARG_TIPO_RESERVAS = "tipo_reservas";
+
+    private static String ARG_ALQUILERES = "alquileres";
 
     @BindView(R.id.recycler_view_reservas)
     public RecyclerView reservasRecyclerView;
@@ -35,10 +40,13 @@ public class ListaReservasFragment extends Fragment {
     public ListaReservasFragment() {
     }
 
-    public static ListaReservasFragment newInstance(TipoReservas type) {
+    public static ListaReservasFragment nuevaInstancia(TipoReservas type, Boolean paraAlquileres) {
         ListaReservasFragment fragment = new ListaReservasFragment();
+
         Bundle args = new Bundle();
         args.putString(ARG_TIPO_RESERVAS, type.toString());
+        args.putBoolean(ARG_ALQUILERES, paraAlquileres);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,23 +73,31 @@ public class ListaReservasFragment extends Fragment {
         reservasRecyclerView.setLayoutManager(layoutManager);
 
         // Adapter
-        adapter = new ReservasAdapter(reservas);
+        adapter = new ReservasAdapter(reservas, sonAlquileres() && tipoReservas() == PENDIENTES);
         reservasRecyclerView.setAdapter(adapter);
     }
 
     private void cargarDatosDeReservas() {
-        TipoReservas tipo = TipoReservas.valueOf(getArguments().getString(ARG_TIPO_RESERVAS));
         Servidor servidor = Servidor.instancia();
-        switch(tipo) {
+        switch(tipoReservas()) {
             case APROBADAS:
-                reservas = servidor.reservasAprobadas();
+                reservas = sonAlquileres() ? servidor.getAlquileresAprobados() : servidor.getReservasAprobadas();
                 break;
             case CANCELADAS:
-                reservas = servidor.reservasCanceladas();
+                reservas = sonAlquileres() ? servidor.getAlquileresCancelados() : servidor.getReservasCanceladas();
                 break;
             case PENDIENTES:
-                reservas = servidor.reservasPendientes();
+                reservas = sonAlquileres() ? servidor.getAlquileresPendientes() : servidor.getReservasPendientes();
                 break;
         }
     }
+
+    private Boolean sonAlquileres() {
+        return getArguments().getBoolean(ARG_ALQUILERES);
+    }
+
+    private TipoReservas tipoReservas() {
+        return valueOf(getArguments().getString(ARG_TIPO_RESERVAS));
+    }
+
 }
