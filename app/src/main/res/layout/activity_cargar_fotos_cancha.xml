@@ -3,8 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
 
     <TextView
         android:id="@+id/txtCargarFotosCancha"
@@ -13,9 +13,9 @@
         android:textAlignment="center"
         android:textSize="18sp"
         android:layout_marginTop="15dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginBottom="15dp"
         android:textColor="@color/colorText"
-        android:text="Ingresa fotos de tu cancha:"/>
+        android:text="Subi fotos de tu cancha:"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -25,59 +25,25 @@
         android:layout_weight="2">
 
         <ImageButton
-            android:id="@+id/btnImagen01"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
+            android:id="@+id/btnTomarFoto"
+            android:layout_width="105dp"
+            android:layout_height="105dp"
             android:background="@mipmap/ic_add"
-            android:contentDescription="Para Cargar imagen."/>
+            android:contentDescription="Para mostrar opciones."/>
 
-        <ImageButton
-            android:id="@+id/btnImagen02"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:background="@mipmap/ic_add"
-            android:contentDescription="Para Cargar imagen."/>
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="105dp"
+            android:layout_height="105dp"
+            android:background="@mipmap/ic_empty"
+            android:contentDescription="Para mostrar opciones."/>
 
-        <ImageButton
-            android:id="@+id/btnImagen03"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:background="@mipmap/ic_add"
-            android:contentDescription="Para Cargar imagen."/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dip"
-        android:orientation="horizontal"
-        android:textAlignment="center"
-        android:layout_weight="2">
-        <ImageButton
-            android:id="@+id/btnImagen04"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:background="@mipmap/ic_add"
-            android:contentDescription="Para Cargar imagen."/>
-
-        <ImageButton
-            android:id="@+id/btnImagen05"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:background="@mipmap/ic_add"
-            android:contentDescription="Para Cargar imagen."/>
-
-        <ImageButton
-            android:id="@+id/btnImagen06"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:background="@mipmap/ic_add"
-            android:contentDescription="Para Cargar imagen."/>
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="105dp"
+            android:layout_height="105dp"
+            android:background="@mipmap/ic_empty"
+            android:contentDescription="Para mostrar opciones."/>
     </LinearLayout>
 
     <Button
