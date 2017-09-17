@@ -25,10 +25,15 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.santiago.canchaapp.app.fragment.ReservasFragment;
+import com.santiago.canchaapp.app.otros.FragmentTags;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_ALQUILERES;
+import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_RESERVAS;
+import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CLUB;
 
 
 public class MenuNavegacion extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
@@ -85,20 +90,24 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
             case R.id.navRegistrarClub:
                 abrirFragmentRegistrarClub(); break;
             case R.id.navMisReservas:
-                abrirFragment(ReservasFragment.nuevaInstanciaParaReservas()); break;
+                abrirFragment(ReservasFragment.nuevaInstanciaParaReservas(), MIS_RESERVAS); break;
             case R.id.navMisAlquileres:
-                abrirFragment(ReservasFragment.nuevaInstanciaParaAlquileres()); break;
+                abrirFragment(ReservasFragment.nuevaInstanciaParaAlquileres(), MIS_ALQUILERES); break;
         }
         return true;
     }
 
-    private void abrirFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
+    private void abrirFragment(Fragment fragment, FragmentTags tag) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_frame, fragment, tag.toString())
+                .addToBackStack(null)
+                .commit();
         drawer.closeDrawer(GravityCompat.START);
     }
 
     private void abrirFragmentRegistrarClub() {
-        abrirFragment(new RegistrarClub());
+        abrirFragment(new RegistrarClub(), REGISTRAR_CLUB);
     }
 
     private void signOut() {

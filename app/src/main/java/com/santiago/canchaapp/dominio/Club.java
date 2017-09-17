@@ -1,6 +1,8 @@
 package com.santiago.canchaapp.dominio;
 
-public class Club {
+import java.io.Serializable;
+
+public class Club implements Serializable {
 
     private String nombre;
 

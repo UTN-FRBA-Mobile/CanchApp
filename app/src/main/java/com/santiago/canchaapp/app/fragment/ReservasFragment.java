@@ -54,7 +54,8 @@ public class ReservasFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         // Tabs reservas
-        adapter = new ReservasPageAdapter(getActivity().getSupportFragmentManager(), getArguments().getBoolean(ARG_ALQUILERES));
+        // IMPORTANTE: usar getChildFragmentManager()
+        adapter = new ReservasPageAdapter(getChildFragmentManager(), getArguments().getBoolean(ARG_ALQUILERES));
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
 

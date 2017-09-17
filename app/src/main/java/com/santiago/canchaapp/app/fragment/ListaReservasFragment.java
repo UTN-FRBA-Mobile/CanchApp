@@ -14,6 +14,8 @@ import com.santiago.canchaapp.app.otros.TipoReservas;
 import com.santiago.canchaapp.dominio.Reserva;
 import com.santiago.canchaapp.servicios.Servidor;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,6 +30,8 @@ public class ListaReservasFragment extends Fragment {
 
     private static String ARG_ALQUILERES = "alquileres";
 
+    private static String ARG_RESERVAS = "reservas";
+
     @BindView(R.id.recycler_view_reservas)
     public RecyclerView reservasRecyclerView;
 
@@ -35,26 +39,19 @@ public class ListaReservasFragment extends Fragment {
 
     private ReservasAdapter adapter;
 
-    private List<Reserva> reservas;
-
     public ListaReservasFragment() {
     }
 
-    public static ListaReservasFragment nuevaInstancia(TipoReservas type, Boolean paraAlquileres) {
+    public static ListaReservasFragment nuevaInstancia(TipoReservas tipo, Boolean paraAlquileres) {
         ListaReservasFragment fragment = new ListaReservasFragment();
 
         Bundle args = new Bundle();
-        args.putString(ARG_TIPO_RESERVAS, type.toString());
+        args.putString(ARG_TIPO_RESERVAS, tipo.toString());
         args.putBoolean(ARG_ALQUILERES, paraAlquileres);
+        args.putSerializable(ARG_RESERVAS, (Serializable) datosDeReservas(tipo, paraAlquileres));
 
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        cargarDatosDeReservas();
     }
 
     @Override
@@ -73,23 +70,21 @@ public class ListaReservasFragment extends Fragment {
         reservasRecyclerView.setLayoutManager(layoutManager);
 
         // Adapter
-        adapter = new ReservasAdapter(reservas, sonAlquileres() && tipoReservas() == PENDIENTES);
+        adapter = new ReservasAdapter(reservas(), sonAlquileres() && tipoReservas() == PENDIENTES);
         reservasRecyclerView.setAdapter(adapter);
     }
 
-    private void cargarDatosDeReservas() {
+    private static List<Reserva> datosDeReservas(TipoReservas tipo, Boolean sonAlquileres) {
         Servidor servidor = Servidor.instancia();
-        switch(tipoReservas()) {
+        switch(tipo) {
             case APROBADAS:
-                reservas = sonAlquileres() ? servidor.getAlquileresAprobados() : servidor.getReservasAprobadas();
-                break;
+                return sonAlquileres ? servidor.getAlquileresAprobados() : servidor.getReservasAprobadas();
             case CANCELADAS:
-                reservas = sonAlquileres() ? servidor.getAlquileresCancelados() : servidor.getReservasCanceladas();
-                break;
+                return sonAlquileres ? servidor.getAlquileresCancelados() : servidor.getReservasCanceladas();
             case PENDIENTES:
-                reservas = sonAlquileres() ? servidor.getAlquileresPendientes() : servidor.getReservasPendientes();
-                break;
+                return sonAlquileres ? servidor.getAlquileresPendientes() : servidor.getReservasPendientes();
         }
+        return new ArrayList<Reserva>();
     }
 
     private Boolean sonAlquileres() {
@@ -98,6 +93,10 @@ public class ListaReservasFragment extends Fragment {
 
     private TipoReservas tipoReservas() {
         return valueOf(getArguments().getString(ARG_TIPO_RESERVAS));
+    }
+
+    private List<Reserva> reservas() {
+        return (List<Reserva>) getArguments().getSerializable(ARG_RESERVAS);
     }
 
 }

@@ -1,6 +1,8 @@
 package com.santiago.canchaapp.dominio;
 
-public class Reserva {
+import java.io.Serializable;
+
+public class Reserva implements Serializable {
 
     private Club club;
 
