@@ -29,7 +29,7 @@
             android:layout_width="105dp"
             android:layout_height="105dp"
             android:background="@mipmap/ic_add"
-            android:contentDescription="Para mostrar opciones."/>
+            android:contentDescription="Sacar foto."/>
 
         <ImageView
             android:id="@+id/imageView1"
