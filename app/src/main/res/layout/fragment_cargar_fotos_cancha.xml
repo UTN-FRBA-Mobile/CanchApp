@@ -27,21 +27,18 @@
             android:id="@+id/btnTomarFoto"
             android:layout_width="105dp"
             android:layout_height="105dp"
-            android:background="@mipmap/ic_add"
             android:contentDescription="Sacar foto."/>
 
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="105dp"
             android:layout_height="105dp"
-            android:background="@mipmap/ic_empty"
             android:contentDescription="Para mostrar opciones."/>
 
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="105dp"
             android:layout_height="105dp"
-            android:background="@mipmap/ic_empty"
             android:contentDescription="Para mostrar opciones."/>
     </LinearLayout>
 
