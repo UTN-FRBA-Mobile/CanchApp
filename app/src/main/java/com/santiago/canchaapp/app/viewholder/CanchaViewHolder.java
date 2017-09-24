@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.dominio.Cancha;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -14,6 +15,9 @@ import butterknife.ButterKnife;
 import static android.view.View.GONE;
 
 public class CanchaViewHolder extends RecyclerView.ViewHolder {
+
+    @BindView(R.id.cancha_foto)
+    public ImageView imagenCancha;
 
     @BindView(R.id.cancha_nombre)
     public TextView textoNombre;
@@ -34,12 +38,13 @@ public class CanchaViewHolder extends RecyclerView.ViewHolder {
 
     public void cargarDatosEnVista(Cancha cancha) {
         textoNombre.setText(cancha.getNombre() + " - " + cancha.getTipoCancha().nombre);
-        textoSuperficie.setText(view.getResources().getString(R.string.txtCanchaSuperficie, cancha.getSuperficie()));
+        textoSuperficie.setText(view.getResources().getString(R.string.txtCanchaSuperficie, cancha.getSuperficie().nombre));
         if (cancha.esTechada()) {
             textoExtra.setText(view.getResources().getString(R.string.txtCanchaTechada));
         } else {
             textoExtra.setVisibility(GONE);
         }
+        Picasso.with(view.getContext()).load(cancha.getFotoUrl()).fit().centerCrop().into(imagenCancha);
     }
 
 }

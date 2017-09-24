@@ -12,11 +12,14 @@ public class Cancha implements Serializable {
 
     private Boolean techada;
 
-    public Cancha(String nombre, TipoCancha tipoCancha, TipoSuperficie superficie, Boolean techada) {
+    private String fotoUrl;
+
+    public Cancha(String nombre, TipoCancha tipoCancha, TipoSuperficie superficie, Boolean techada, String fotoUrl) {
         this.nombre = nombre;
         this.tipoCancha = tipoCancha;
         this.superficie = superficie;
         this.techada = techada;
+        this.fotoUrl = fotoUrl;
     }
 
     public String getNombre() {
@@ -34,4 +37,9 @@ public class Cancha implements Serializable {
     public Boolean esTechada() {
         return techada;
     }
+
+    public String getFotoUrl() {
+        return this.fotoUrl;
+    }
+
 }
