@@ -20,10 +20,11 @@
     <string name="txtCerrarSesion">Cerrar Sesión</string>
     <string name="txtRegistrarClub">Registrar Club</string>
 
-    <string name="notFirebaseAuth">No se pudo autenticar con Firebase</string>
-    <string name="notLogIn">No se pudo iniciar sesión</string>
-    <string name="notLogOut">No se pudo cerrar sesión</string>
-    <string name="txtDialogoTengoClub">Tenés cancha? Agregala</string>
+    <string name="notFirebaseAuth">No se pudo autenticar con Firebase.</string>
+    <string name="notLogIn">No se pudo iniciar sesión.</string>
+    <string name="notLogOut">No se pudo cerrar sesión.</string>
+    <string name="txtDialogoTengoClub">Tenés cancha? Agregala!</string>
+    <string name="txtDialogoAgregarImagen">Elegir imagen de galeria.</string>
 
     <string name="btnAprobarReserva">Aprobar</string>
     <string name="btnCancelarReserva">Cancelar</string>

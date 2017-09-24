@@ -13,6 +13,8 @@ import butterknife.ButterKnife;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class ReservaViewHolder extends RecyclerView.ViewHolder {
 
@@ -28,16 +30,26 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.botones_reserva)
     public LinearLayout botonesAprobacion;
 
+    @BindView(R.id.texto_reserva)
+    public LinearLayout textoReserva;
+
     public ReservaViewHolder(View v) {
         super(v);
         ButterKnife.bind(this, v);
     }
 
     public void cargarDatosEnVista(Reserva reserva, Boolean mostrarBotonesDeAprobacion) {
-        textoClub.setText((reserva.getNombreClub() + " - " + reserva.getTipoPartido().nombre));
+        textoClub.setText(reserva.getTipoPartido().nombre + " - " + reserva.getNombreClub());
         textoDireccion.setText(reserva.getDireccion());
         textoHora.setText(reserva.getFecha() + " - " + reserva.getHora() + "hs");
-        botonesAprobacion.setVisibility(mostrarBotonesDeAprobacion ? VISIBLE : INVISIBLE);
+        if (mostrarBotonesDeAprobacion) {
+            botonesAprobacion.setVisibility(VISIBLE);
+            textoReserva.setLayoutParams(textLayoutReservasPendientes());
+        }
+    }
+
+    private LinearLayout.LayoutParams textLayoutReservasPendientes() {
+        return new LinearLayout.LayoutParams(0, WRAP_CONTENT, 0.5f);
     }
 
 }
