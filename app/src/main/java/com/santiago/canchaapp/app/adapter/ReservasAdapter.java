@@ -24,8 +24,9 @@ public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
 
     @Override
     public ReservaViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_reserva, viewGroup, false);
-        return new ReservaViewHolder(v);
+        return new ReservaViewHolder(
+                LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_reserva, viewGroup, false)
+        );
     }
 
     @Override

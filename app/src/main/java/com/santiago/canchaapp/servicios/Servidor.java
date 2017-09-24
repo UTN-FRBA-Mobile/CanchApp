@@ -1,13 +1,18 @@
 package com.santiago.canchaapp.servicios;
 
+import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.Reserva;
+import com.santiago.canchaapp.dominio.TipoCancha;
+import com.santiago.canchaapp.dominio.TipoSuperficie;
 
 import java.util.List;
 
-import static com.santiago.canchaapp.dominio.TipoPartido.FUTBOL5;
-import static com.santiago.canchaapp.dominio.TipoPartido.FUTBOL7;
-import static com.santiago.canchaapp.dominio.TipoPartido.TENIS;
+import static com.santiago.canchaapp.dominio.TipoCancha.*;
+import static com.santiago.canchaapp.dominio.TipoCancha.FUTBOL5;
+import static com.santiago.canchaapp.dominio.TipoCancha.FUTBOL7;
+import static com.santiago.canchaapp.dominio.TipoCancha.TENIS;
+import static com.santiago.canchaapp.dominio.TipoSuperficie.*;
 import static java.util.Arrays.asList;
 
 public class Servidor {
@@ -72,6 +77,19 @@ public class Servidor {
                 new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL7, "29/09/19", 22)
         );
 
+    private List<Cancha> canchas = asList(
+                new Cancha("Cancha Central", FUTBOL7, PASTO, false),
+                new Cancha("Cancha 1", FUTBOL7, PASTO, false),
+                new Cancha("Cancha 2", FUTBOL7, PASTO, false),
+                new Cancha("Cancha chica central", FUTBOL5, BALDOSA, true),
+                new Cancha("Cancha chica 1", FUTBOL5, BALDOSA, true),
+                new Cancha("Cancha chica 2", FUTBOL5, BALDOSA, true),
+                new Cancha("Cancha chica 3", FUTBOL5, BALDOSA, true),
+                new Cancha("Cancha chica 4", FUTBOL5, BALDOSA, true),
+                new Cancha("Cancha tenis 1", TENIS, POLVO_LADRILLO, false),
+                new Cancha("Cancha tenis 2", TENIS, POLVO_LADRILLO, false)
+        );
+
     public List<Reserva> getReservasPendientes() {
         return reservasPendientes;
     }
@@ -95,4 +113,9 @@ public class Servidor {
     public List<Reserva> getAlquileresCancelados() {
         return alquileresCancelados;
     }
+
+    public List<Cancha> getCanchas() {
+        return canchas;
+    }
+
 }

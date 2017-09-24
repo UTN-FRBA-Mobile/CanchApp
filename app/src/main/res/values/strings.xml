@@ -29,4 +29,7 @@
     <string name="btnAprobarReserva">Aprobar</string>
     <string name="btnCancelarReserva">Cancelar</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="txtCanchaSuperficie">Superficie: %1$s</string>
+    <string name="txtCanchaTechada">Techada</string>
 </resources>
