@@ -14,7 +14,6 @@ import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 import com.santiago.canchaapp.R;
 
 import static com.santiago.canchaapp.app.otros.FragmentTags.MAP_CLUB;
-import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHAS;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

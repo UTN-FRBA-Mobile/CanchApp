@@ -1,6 +1,7 @@
 package com.santiago.canchaapp.app.fragment;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +26,9 @@ public class CanchasFragment extends Fragment {
 
     @BindView(R.id.recycler_view_canchas)
     public RecyclerView canchasRecyclerView;
+
+    @BindView(R.id.fab)
+    public FloatingActionButton fab;
 
     private RecyclerView.LayoutManager layoutManager;
 
