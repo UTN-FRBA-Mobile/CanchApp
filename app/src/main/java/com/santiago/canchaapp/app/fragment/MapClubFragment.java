@@ -1,5 +1,6 @@
 package com.santiago.canchaapp.app.fragment;
 
+
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -14,19 +15,26 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import android.widget.Button;
+
 import com.santiago.canchaapp.R;
 import android.Manifest;
 
-public class MapClubFragment extends Fragment
-        implements OnMapReadyCallback,
-        ActivityCompat.OnRequestPermissionsResultCallback{
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHAS;
+
+public class MapClubFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Activity activity;
     private Location location;
     private Boolean mLocationPermissionGranted;
+
+    @BindView(R.id.btnContinuar)
+    public Button continuar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,6 +43,15 @@ public class MapClubFragment extends Fragment
         activity = getActivity();
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_club);
         mapFragment.getMapAsync(this);
+
+        ButterKnife.bind(this, view);
+
+        continuar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                abrirFragment();
+            }
+        });
         return view;
     }
 
@@ -67,4 +84,13 @@ public class MapClubFragment extends Fragment
             return;
         }
     }
+    private void abrirFragment() {
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_frame, new RegistrarCanchasFragment(), REGISTRAR_CANCHAS.toString())
+                .addToBackStack(null)
+                .commit();
+    }
+
+
 }

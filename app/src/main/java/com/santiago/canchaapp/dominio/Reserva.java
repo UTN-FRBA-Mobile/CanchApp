@@ -6,21 +6,21 @@ public class Reserva implements Serializable {
 
     private Club club;
 
-    private TipoPartido tipoPartido;
+    private TipoCancha tipoCancha;
 
     private String fecha;
 
     private int hora;
 
-    public Reserva(Club club, TipoPartido tipoPartido, String fecha, int hora) {
+    public Reserva(Club club, TipoCancha tipoCancha, String fecha, int hora) {
         this.club = club;
-        this.tipoPartido = tipoPartido;
+        this.tipoCancha = tipoCancha;
         this.fecha = fecha;
         this.hora = hora;
     }
 
-    public TipoPartido getTipoPartido() {
-        return tipoPartido;
+    public TipoCancha getTipoCancha() {
+        return tipoCancha;
     }
 
     public String getFecha() {

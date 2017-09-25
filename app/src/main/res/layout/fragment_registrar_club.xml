@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    tools:context="com.santiago.canchaapp.RegistrarClub">
+    tools:context="com.santiago.canchaapp.app.fragment.RegistrarClubFragment">
 
     <ImageView
         android:layout_marginTop="15dp"

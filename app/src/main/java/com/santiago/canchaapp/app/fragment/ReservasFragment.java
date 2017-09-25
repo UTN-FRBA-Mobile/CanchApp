@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.santiago.canchaapp.R;
-import com.santiago.canchaapp.app.adapter.ReservasPageAdapter;
+import com.santiago.canchaapp.app.adapter.page.ReservasPageAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

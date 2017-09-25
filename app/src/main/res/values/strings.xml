@@ -7,6 +7,7 @@
     <string name="btnContinuar">CONTINUAR</string>
     <string name="btnAtras">ATRAS</string>
     <string name="btnListo">LISTO!</string>
+    <string name="btnComenzar">COMENZAR</string>
     <string name="txtNombreCancha">Nombre De Cancha</string>
     <string name="txtDeporte">Deporte</string>
     <string name="txtPrecio">Precio</string>
@@ -25,8 +26,15 @@
     <string name="notLogOut">No se pudo cerrar sesión.</string>
     <string name="txtDialogoTengoClub">Tenés cancha? Agregala!</string>
     <string name="txtDialogoAgregarImagen">Elegir imagen de galeria.</string>
+    <string name="txtConfirmacionGuardarClub">Tu Club ha sido guardado correctamente.</string>
+    <string name="txtAclaracionTecho">Confirmar que la cancha tiene techo.</string>
+    <string name="txtSubirFotosCancha">Subi fotos de tu cancha:</string>
 
     <string name="btnAprobarReserva">Aprobar</string>
     <string name="btnCancelarReserva">Cancelar</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="txtCanchaSuperficie">Superficie: %1$s</string>
+    <string name="txtCanchaTechada">Techada</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

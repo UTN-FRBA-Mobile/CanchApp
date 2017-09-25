@@ -24,6 +24,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.santiago.canchaapp.app.fragment.CanchasFragment;
 import com.santiago.canchaapp.app.fragment.RegistrarClubFragment;
 import com.santiago.canchaapp.app.fragment.ReservasFragment;
 import com.santiago.canchaapp.app.otros.FragmentTags;
@@ -33,6 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_ALQUILERES;
+import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_CANCHAS;
 import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_RESERVAS;
 import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CLUB;
 
@@ -94,6 +96,8 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
                 abrirFragment(ReservasFragment.nuevaInstanciaParaReservas(), MIS_RESERVAS); break;
             case R.id.navMisAlquileres:
                 abrirFragment(ReservasFragment.nuevaInstanciaParaAlquileres(), MIS_ALQUILERES); break;
+            case R.id.navMisCanchas:
+                abrirFragment(CanchasFragment.nuevaInstancia(), MIS_CANCHAS); break;
         }
         return true;
     }

@@ -11,9 +11,7 @@ import com.santiago.canchaapp.dominio.Reserva;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class ReservaViewHolder extends RecyclerView.ViewHolder {
@@ -39,7 +37,7 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void cargarDatosEnVista(Reserva reserva, Boolean mostrarBotonesDeAprobacion) {
-        textoClub.setText(reserva.getTipoPartido().nombre + " - " + reserva.getNombreClub());
+        textoClub.setText(reserva.getTipoCancha().nombre + " - " + reserva.getNombreClub());
         textoDireccion.setText(reserva.getDireccion());
         textoHora.setText(reserva.getFecha() + " - " + reserva.getHora() + "hs");
         if (mostrarBotonesDeAprobacion) {
