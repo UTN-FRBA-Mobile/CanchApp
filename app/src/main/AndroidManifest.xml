@@ -10,11 +10,11 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <protected-broadcast android:name="android.intent.action.MEDIA_MOUNTED"/>
-
 
     <application
         android:allowBackup="true"
@@ -45,10 +45,5 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <activity android:name=".MapsActivity"
-            android:label="@string/title_activity_maps">
-
-        </activity>
     </application>
-
 </manifest>
