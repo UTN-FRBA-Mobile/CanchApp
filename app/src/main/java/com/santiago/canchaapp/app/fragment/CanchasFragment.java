@@ -30,9 +30,6 @@ public class CanchasFragment extends Fragment {
 
     private CanchasAdapter adapter;
 
-    public CanchasFragment() {
-    }
-
     public static CanchasFragment nuevaInstancia() {
         CanchasFragment fragment = new CanchasFragment();
 

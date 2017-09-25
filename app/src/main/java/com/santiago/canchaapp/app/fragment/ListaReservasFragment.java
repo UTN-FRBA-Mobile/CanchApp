@@ -39,9 +39,6 @@ public class ListaReservasFragment extends Fragment {
 
     private ReservasAdapter adapter;
 
-    public ListaReservasFragment() {
-    }
-
     public static ListaReservasFragment nuevaInstancia(TipoReservas tipo, Boolean paraAlquileres) {
         ListaReservasFragment fragment = new ListaReservasFragment();
 

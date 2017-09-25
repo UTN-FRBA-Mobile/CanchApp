@@ -1,4 +1,4 @@
-package com.santiago.canchaapp.app.adapter;
+package com.santiago.canchaapp.app.adapter.page;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
