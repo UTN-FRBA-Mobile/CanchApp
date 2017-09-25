@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="100dp">
+
+    <ImageView
+        android:id="@+id/imageViewTildeClub"
+        android:layout_width="120dp"
+        android:layout_height="105dp"
+        android:background="@drawable/ic_registrar_club"
+        android:contentDescription="Para mostrar opciones." />
+
+    <TextView
+        android:id="@+id/txtConfirmarClub"
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/colorText"
+        android:text="@string/txtConfirmacionGuardarClub"/>
+
+    <Button
+        android:id="@+id/btnComenzar"
+        style="@style/btnListo"
+        android:text="@string/btnComenzar"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
+</LinearLayout>

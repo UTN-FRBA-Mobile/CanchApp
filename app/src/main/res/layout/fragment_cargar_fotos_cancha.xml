@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/MyLinearLayout"
     android:paddingLeft="15dp"
@@ -16,7 +17,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:textColor="@color/colorText"
-        android:text="Subi fotos de tu cancha:"/>
+        android:text="@string/txtSubirFotosCancha"/>
 
     <LinearLayout
         android:layout_width="match_parent"
