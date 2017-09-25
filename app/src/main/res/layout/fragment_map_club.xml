@@ -1,11 +1,19 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     
-    android:id="@+id/fragment_map"
+    android:id="@+id/fragment_map_club"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btnContinuar"
+        style="@style/btnContinuar"
+        android:text="CONTINUAR" />
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/map_club"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        />
+
 </FrameLayout>
