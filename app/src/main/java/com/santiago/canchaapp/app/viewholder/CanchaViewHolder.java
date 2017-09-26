@@ -3,10 +3,12 @@ package com.santiago.canchaapp.app.viewholder;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
-import com.santiago.canchaapp.dominio.Cancha;
+import com.santiago.canchaapp.app.adapter.CanchasAdapter;
+import com.santiago.canchaapp.dominio.CanchaHeader;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -14,7 +16,7 @@ import butterknife.ButterKnife;
 
 import static android.view.View.GONE;
 
-public class CanchaViewHolder extends RecyclerView.ViewHolder {
+public class CanchaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     @BindView(R.id.cancha_foto)
     public ImageView imagenCancha;
@@ -28,15 +30,22 @@ public class CanchaViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.cancha_extra)
     public TextView textoExtra;
 
+    @BindView(R.id.item_contenido_cancha)
+    public LinearLayout contenido;
+
     private View view;
 
-    public CanchaViewHolder(View v) {
+    private CanchasAdapter adapter;
+
+    public CanchaViewHolder(View v, CanchasAdapter adapter) {
         super(v);
         ButterKnife.bind(this, v);
-        view = v;
+        this.view = v;
+        this.adapter = adapter;
     }
 
-    public void cargarDatosEnVista(Cancha cancha) {
+    public void cargarDatosEnVista(CanchaHeader cancha) {
+        // Setea textos
         textoNombre.setText(cancha.getNombre() + " - " + cancha.getTipoCancha().nombre);
         textoSuperficie.setText(view.getResources().getString(R.string.txtCanchaSuperficie, cancha.getSuperficie().nombre));
         if (cancha.esTechada()) {
@@ -44,7 +53,17 @@ public class CanchaViewHolder extends RecyclerView.ViewHolder {
         } else {
             textoExtra.setVisibility(GONE);
         }
+
+        // Setea imagen
         Picasso.with(view.getContext()).load(cancha.getFotoUrl()).fit().centerCrop().into(imagenCancha);
+
+        // Setea boton
+        contenido.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        adapter.onClick(v, getAdapterPosition());
     }
 
 }

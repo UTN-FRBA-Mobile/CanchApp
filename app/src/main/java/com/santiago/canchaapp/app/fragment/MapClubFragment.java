@@ -40,8 +40,8 @@ import java.util.concurrent.Executor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.content.Context.LOCATION_SERVICE;
-import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHAS;
+
+import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_CANCHAS;
 
 public class MapClubFragment extends Fragment implements OnMapReadyCallback {
 
@@ -173,7 +173,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     private void abrirFragment() {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_frame, new RegistrarCanchasFragment(), REGISTRAR_CANCHAS.toString())
+                .replace(R.id.content_frame, CanchasFragment.nuevaInstancia(), MIS_CANCHAS.toString())
                 .addToBackStack(null)
                 .commit();
     }

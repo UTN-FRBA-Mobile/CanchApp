@@ -25,7 +25,7 @@ public class CanchaFragment extends Fragment {
 
     private CanchaPageAdapter adapter;
 
-    private static CanchaFragment nuevaInstancia() {
+    public static CanchaFragment nuevaInstancia() {
         return new CanchaFragment();
     }
 
