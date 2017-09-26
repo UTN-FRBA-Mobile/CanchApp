@@ -148,6 +148,8 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
         navigationView.getMenu().findItem(R.id.menuComplejo).setVisible(mostrarSeccionClub);
         if(mostrarSeccionClub)
             abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB);
+        else
+            abrirFragment(ReservasFragment.nuevaInstanciaParaReservas(), MIS_RESERVAS);
     }
 
     private void setUserData(FirebaseUser user) {
