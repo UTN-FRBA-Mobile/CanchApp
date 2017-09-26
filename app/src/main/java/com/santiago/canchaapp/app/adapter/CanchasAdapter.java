@@ -1,6 +1,7 @@
 package com.santiago.canchaapp.app.adapter;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -52,9 +53,14 @@ public class CanchasAdapter extends RecyclerView.Adapter<CanchaViewHolder> imple
     // Podría existir una clase que se encargue de esto específicamente
     @Override
     public void onClick(View v, int posicion) {
-        ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_frame, CanchaFragment.nuevaInstancia(), CANCHA.toString())
-                .addToBackStack(null)
-                .commit();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, CanchaFragment.nuevaInstancia(), CANCHA.toString())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        }, 250);
     }
 }

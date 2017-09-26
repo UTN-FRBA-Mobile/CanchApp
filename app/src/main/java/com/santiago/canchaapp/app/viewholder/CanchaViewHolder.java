@@ -3,6 +3,7 @@ package com.santiago.canchaapp.app.viewholder;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
@@ -29,6 +30,9 @@ public class CanchaViewHolder extends RecyclerView.ViewHolder implements View.On
     @BindView(R.id.cancha_extra)
     public TextView textoExtra;
 
+    @BindView(R.id.item_contenido_cancha)
+    public LinearLayout contenido;
+
     private View view;
 
     private CanchasAdapter adapter;
@@ -54,7 +58,7 @@ public class CanchaViewHolder extends RecyclerView.ViewHolder implements View.On
         Picasso.with(view.getContext()).load(cancha.getFotoUrl()).fit().centerCrop().into(imagenCancha);
 
         // Setea boton
-        view.setOnClickListener(this);
+        contenido.setOnClickListener(this);
     }
 
     @Override
