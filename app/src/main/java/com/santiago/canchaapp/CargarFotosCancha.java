@@ -1,6 +1,7 @@
 package com.santiago.canchaapp;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -33,7 +34,7 @@ import java.io.File;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-public class CargarFotosCancha extends AppCompatActivity implements View.OnClickListener{
+public class CargarFotosCancha extends Activity implements View.OnClickListener{
     //private ImageButton btn_cargarFotosCancha;
 
    // @BindView(R.id.btnImagen01)
@@ -53,7 +54,7 @@ public class CargarFotosCancha extends AppCompatActivity implements View.OnClick
 
     ImageView visualizador, imageView1, imageView2, imageView3, imageView4, imageView5, imageView6, imageView7;
 
-    @Override
+    //@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_cargar_fotos_cancha);

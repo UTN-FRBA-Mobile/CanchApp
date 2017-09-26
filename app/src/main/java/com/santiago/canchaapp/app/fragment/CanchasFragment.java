@@ -1,5 +1,6 @@
 package com.santiago.canchaapp.app.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.santiago.canchaapp.CargarFotosCancha;
+import com.santiago.canchaapp.DialogoTengoClub;
+import com.santiago.canchaapp.LoginActivity;
+import com.santiago.canchaapp.MenuNavegacion;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.CanchasAdapter;
 import com.santiago.canchaapp.dominio.CanchaHeader;
@@ -57,6 +62,13 @@ public class CanchasFragment extends Fragment {
         // Adapter
         adapter = new CanchasAdapter(getContext(), canchas());
         canchasRecyclerView.setAdapter(adapter);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), CargarFotosCancha.class));
+            }
+        });
 
         return rootView;
     }
