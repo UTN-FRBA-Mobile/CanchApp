@@ -7,7 +7,7 @@
     <Button
         android:id="@+id/btnContinuar"
         style="@style/btnContinuar"
-        android:text="CONTINUAR" />
+        android:text="@string/btnContinuar" />
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/map_club"

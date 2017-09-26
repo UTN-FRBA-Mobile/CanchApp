@@ -1,45 +1,25 @@
 package com.santiago.canchaapp.dominio;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Cancha implements Serializable {
 
-    private String nombre;
+    private CanchaHeader datos;
 
-    private TipoCancha tipoCancha;
+    private List<String> fotos;
 
-    private TipoSuperficie superficie;
-
-    private Boolean techada;
-
-    private String fotoUrl;
-
-    public Cancha(String nombre, TipoCancha tipoCancha, TipoSuperficie superficie, Boolean techada, String fotoUrl) {
-        this.nombre = nombre;
-        this.tipoCancha = tipoCancha;
-        this.superficie = superficie;
-        this.techada = techada;
-        this.fotoUrl = fotoUrl;
+    public Cancha(CanchaHeader datos, List<String> fotos) {
+        this.datos = datos;
+        this.fotos = fotos;
     }
 
-    public String getNombre() {
-        return nombre;
+    public CanchaHeader getDatos() {
+        return datos;
     }
 
-    public TipoCancha getTipoCancha() {
-        return tipoCancha;
-    }
-
-    public TipoSuperficie getSuperficie() {
-        return superficie;
-    }
-
-    public Boolean esTechada() {
-        return techada;
-    }
-
-    public String getFotoUrl() {
-        return this.fotoUrl;
+    public List<String> getFotos() {
+        return fotos;
     }
 
 }
