@@ -51,7 +51,7 @@ public class CanchasFragment extends Fragment {
         canchasRecyclerView.setLayoutManager(layoutManager);
 
         // Adapter
-        adapter = new CanchasAdapter(canchas());
+        adapter = new CanchasAdapter(getContext(), canchas());
         canchasRecyclerView.setAdapter(adapter);
 
         return rootView;
