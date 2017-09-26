@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.CanchasAdapter;
-import com.santiago.canchaapp.dominio.Cancha;
+import com.santiago.canchaapp.dominio.CanchaHeader;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -44,7 +44,7 @@ public class CanchaViewHolder extends RecyclerView.ViewHolder implements View.On
         this.adapter = adapter;
     }
 
-    public void cargarDatosEnVista(Cancha cancha) {
+    public void cargarDatosEnVista(CanchaHeader cancha) {
         // Setea textos
         textoNombre.setText(cancha.getNombre() + " - " + cancha.getTipoCancha().nombre);
         textoSuperficie.setText(view.getResources().getString(R.string.txtCanchaSuperficie, cancha.getSuperficie().nombre));

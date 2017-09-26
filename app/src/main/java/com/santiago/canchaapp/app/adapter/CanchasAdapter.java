@@ -2,7 +2,6 @@ package com.santiago.canchaapp.app.adapter;
 
 import android.content.Context;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,11 +10,9 @@ import android.view.ViewGroup;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.fragment.CanchaFragment;
-import com.santiago.canchaapp.app.fragment.CanchasFragment;
-import com.santiago.canchaapp.app.otros.FragmentTags;
 import com.santiago.canchaapp.app.otros.RecyclerViewOnItemClickListener;
 import com.santiago.canchaapp.app.viewholder.CanchaViewHolder;
-import com.santiago.canchaapp.dominio.Cancha;
+import com.santiago.canchaapp.dominio.CanchaHeader;
 
 import java.util.List;
 
@@ -23,11 +20,11 @@ import static com.santiago.canchaapp.app.otros.FragmentTags.CANCHA;
 
 public class CanchasAdapter extends RecyclerView.Adapter<CanchaViewHolder> implements RecyclerViewOnItemClickListener {
 
-    private List<Cancha> canchas;
+    private List<CanchaHeader> canchas;
 
     private Context context;
 
-    public CanchasAdapter(Context context, List<Cancha> canchas) {
+    public CanchasAdapter(Context context, List<CanchaHeader> canchas) {
         this.canchas = canchas;
         this.context = context;
     }

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.CanchasAdapter;
-import com.santiago.canchaapp.dominio.Cancha;
+import com.santiago.canchaapp.dominio.CanchaHeader;
 import com.santiago.canchaapp.servicios.Servidor;
 
 import java.io.Serializable;
@@ -57,12 +57,12 @@ public class CanchasFragment extends Fragment {
         return rootView;
     }
 
-    private static List<Cancha> datosDeCanchas() {
+    private static List<CanchaHeader> datosDeCanchas() {
         return Servidor.instancia().getCanchas();
     }
 
-    private List<Cancha> canchas() {
-        return (List<Cancha>) getArguments().getSerializable(ARG_CANCHAS);
+    private List<CanchaHeader> canchas() {
+        return (List<CanchaHeader>) getArguments().getSerializable(ARG_CANCHAS);
     }
 
 }

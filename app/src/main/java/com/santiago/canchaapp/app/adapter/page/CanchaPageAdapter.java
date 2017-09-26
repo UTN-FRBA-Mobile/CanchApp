@@ -20,7 +20,7 @@ public class CanchaPageAdapter extends FragmentPagerAdapter {
             case 0: return DatosCanchaFragment.nuevaInstancia();
             case 1: return ReservasCanchaFragment.nuevaInstancia();
         }
-        throw new RuntimeException("Tab de Cancha inesperado");
+        throw new RuntimeException("Tab de CanchaHeader inesperado");
     }
 
     @Override
@@ -34,7 +34,7 @@ public class CanchaPageAdapter extends FragmentPagerAdapter {
             case 0: return "Datos";
             case 1: return "Reservas";
         }
-        throw new RuntimeException("Tab de Cancha inesperado");
+        throw new RuntimeException("Tab de CanchaHeader inesperado");
     }
 
 }
