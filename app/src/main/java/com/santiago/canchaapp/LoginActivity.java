@@ -127,6 +127,8 @@ public class LoginActivity extends AppCompatActivity
     }
 
     private void signIn() {
+        progressBar.setVisibility(View.VISIBLE);
+        btnGoogleLogin.setVisibility(View.GONE);
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
