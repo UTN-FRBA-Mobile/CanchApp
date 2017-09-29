@@ -29,6 +29,8 @@
     <string name="txtConfirmacionGuardarClub">Tu Club ha sido guardado correctamente.</string>
     <string name="txtAclaracionTecho">Confirmar que la cancha tiene techo.</string>
     <string name="txtSubirFotosCancha">Subi fotos de tu cancha:</string>
+    <string name="txtDescripcionBtnCargaFotos">Para mostrar opciones y luego imagen.</string>
+    <string name="txtDescripcionScrollCargaFotos">Para visualizar en el Scroll.</string>
 
     <string name="btnAprobarReserva">Aprobar</string>
     <string name="btnCancelarReserva">Cancelar</string>

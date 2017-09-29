@@ -27,25 +27,25 @@
         android:layout_weight="2">
 
         <ImageButton
-            android:id="@+id/btnTomarFoto"
+            android:id="@+id/btnOpciones01"
             android:layout_width="115dp"
             android:layout_height="105dp"
-            android:src="@drawable/ic_sacar_foto"
-            android:contentDescription="Sacar foto desde la cámara."/>
+            android:src="@drawable/ic_add"
+            android:contentDescription="@string/txtDescripcionBtnCargaFotos"/>
 
-        <ImageView
-            android:id="@+id/imageView1"
+        <ImageButton
+            android:id="@+id/btnOpciones02"
             android:layout_width="@dimen/width_imageview_add"
             android:layout_height="@dimen/height_imageview_add"
             android:src="@drawable/ic_add"
-            android:contentDescription="Para mostrar opciones."/>
+            android:contentDescription="@string/txtDescripcionBtnCargaFotos"/>
 
-        <ImageView
-            android:id="@+id/imageView2"
+        <ImageButton
+            android:id="@+id/btnOpciones03"
             android:layout_width="@dimen/width_imageview_add"
             android:layout_height="@dimen/height_imageview_add"
             android:src="@drawable/ic_add"
-            android:contentDescription="Para mostrar opciones."/>
+            android:contentDescription="@string/txtDescripcionBtnCargaFotos"/>
     </LinearLayout>
 
     <LinearLayout
@@ -55,27 +55,28 @@
         android:textAlignment="center"
         android:layout_weight="2">
 
-        <ImageView
-            android:id="@+id/imageView3"
+        <ImageButton
+            android:id="@+id/btnOpciones04"
             android:layout_width="115dp"
             android:layout_height="@dimen/height_imageview_add"
             android:src="@drawable/ic_add"
-            android:contentDescription="Para mostrar opciones."/>
+            android:contentDescription="@string/txtDescripcionBtnCargaFotos"/>
 
-        <ImageView
-            android:id="@+id/imageView4"
+        <ImageButton
+            android:id="@+id/btnOpciones05"
             android:layout_width="@dimen/width_imageview_add"
             android:layout_height="@dimen/height_imageview_add"
             android:src="@drawable/ic_add"
-            android:contentDescription="Para mostrar opciones."/>
+            android:contentDescription="@string/txtDescripcionBtnCargaFotos"/>
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/imageView6"
             android:layout_width="@dimen/width_imageview_add"
             android:layout_height="@dimen/height_imageview_add"
             android:src="@drawable/ic_add"
-            android:contentDescription="Para mostrar opciones."/>
+            android:contentDescription="@string/txtDescripcionBtnCargaFotos"/>
     </LinearLayout>
+
 
     <HorizontalScrollView
         android:id="@+id/Scroller"
@@ -97,49 +98,49 @@
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/imagen01"
-                android:contentDescription="Para visualizar en el Scroll."/>
+                android:contentDescription="@string/txtDescripcionScrollCargaFotos"/>
             <ImageView
                 android:id="@+id/ImageView02"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/imagen02"
-                android:contentDescription="Para visualizar en el Scroll."/>
+                android:contentDescription="@string/txtDescripcionScrollCargaFotos"/>
             <ImageView
                 android:id="@+id/ImageView03"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/imagen03"
-                android:contentDescription="Para visualizar en el Scroll."/>
+                android:contentDescription="@string/txtDescripcionScrollCargaFotos"/>
             <ImageView
                 android:id="@+id/ImageView04"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/imagen04"
-                android:contentDescription="Para visualizar en el Scroll."/>
+                android:contentDescription="@string/txtDescripcionScrollCargaFotos"/>
             <ImageView
                 android:id="@+id/ImageView05"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/imagen05"
-                android:contentDescription="Para visualizar en el Scroll."/>
+                android:contentDescription="@string/txtDescripcionScrollCargaFotos"/>
             <ImageView
                 android:id="@+id/ImageView06"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/imagen06"
-                android:contentDescription="Para visualizar en el Scroll."/>
+                android:contentDescription="@string/txtDescripcionScrollCargaFotos"/>
             <ImageView
                 android:id="@+id/ImageView07"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/imagen07"
-                android:contentDescription="Para visualizar en el Scroll."/>
+                android:contentDescription="@string/txtDescripcionScrollCargaFotos"/>
         </LinearLayout>
 
     </HorizontalScrollView>

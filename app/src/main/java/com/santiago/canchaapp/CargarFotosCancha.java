@@ -59,8 +59,8 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_cargar_fotos_cancha);
 
-        mSetImage = (ImageView) findViewById(R.id.imageView1);
-        mOptionButton = (ImageButton) findViewById(R.id.btnTomarFoto);
+        mSetImage = (ImageView) findViewById(R.id.btnOpciones02);
+        mOptionButton = (ImageButton) findViewById(R.id.btnOpciones01);
         mRlView = (LinearLayout) findViewById(R.id.MyLinearLayout);
 
         if(mayRequestStoragePermission())
@@ -72,11 +72,11 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
         mOptionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOptions();
+                showOptions(SELECT_PICTURE);
             }
         });
 
-        visualizador= (ImageView) findViewById(R.id.imageView2);
+        visualizador= (ImageView) findViewById(R.id.btnOpciones03);
         imageView1= (ImageView) findViewById(R.id.ImageView01);
         imageView2= (ImageView) findViewById(R.id.ImageView02);
         imageView3= (ImageView) findViewById(R.id.ImageView03);
@@ -147,7 +147,7 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
         return false;
     }
 
-    private void showOptions() {
+    private void showOptions(final int optionSelect) {
         final CharSequence[] option = {"Tomar foto", "Elegir de galeria", "Cancelar"};
         final AlertDialog.Builder builder = new AlertDialog.Builder(CargarFotosCancha.this);
         builder.setTitle("Eleige una opción");
@@ -159,7 +159,7 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
                 }else if(option[which] == "Elegir de galeria"){
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
-                    startActivityForResult(intent.createChooser(intent, "Selecciona app de imagen"), SELECT_PICTURE);
+                    startActivityForResult(intent.createChooser(intent, "Por favor, selecciona app de imagen"), optionSelect);
                 }else {
                     dialog.dismiss();
                 }
@@ -274,5 +274,3 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
     }
 
 }
-
-
