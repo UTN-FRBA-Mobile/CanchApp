@@ -102,13 +102,10 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
                 locationLatLng = new LatLng(latitude, longitude);
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(locationLatLng));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(locationLatLng, ZOOM));
             }
             else
                 setCapitalFederal();
-
-
         }
 
     }
