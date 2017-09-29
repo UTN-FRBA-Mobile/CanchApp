@@ -5,6 +5,10 @@
     android:layout_height="match_parent">
 
     <Button
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:id="@+id/btnContinuar"
         style="@style/btnContinuar"
         android:text="@string/btnContinuar" />
