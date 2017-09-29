@@ -8,36 +8,27 @@ import android.graphics.Point;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 
 import android.widget.Button;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.santiago.canchaapp.R;
 
 import android.Manifest;
 
 
-import java.util.concurrent.Executor;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,10 +40,12 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Activity activity;
-    private LatLng locationLatLng = new LatLng(-34.6191209, -58.4346567);
+    private LatLng locationLatLng;
     private Location location;
-    private Point buenosAires = new Point(-34, -58);
+    private static final LatLng CAPITAL_FEDERAL = new LatLng(-34.609404, -58.498656);
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private static final int ZOOM_PUNTO_INICIAL = 5;
+    private static final int ZOOM = 10;
 
     @BindView(R.id.btnContinuar)
     public Button continuar;
@@ -78,8 +71,14 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.moveCamera(CameraUpdateFactory.zoomBy(10, buenosAires));
+        setCapitalFederal();
         getMyLocation();
+    }
+
+    private void setCapitalFederal(){
+        Projection projection = mMap.getProjection();
+        Point capitalFederalPoint = projection.toScreenLocation(CAPITAL_FEDERAL);
+        mMap.moveCamera(CameraUpdateFactory.zoomBy(ZOOM_PUNTO_INICIAL, capitalFederalPoint));
     }
 
     private void getMyLocation() {
@@ -103,9 +102,13 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
                 locationLatLng = new LatLng(latitude, longitude);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(locationLatLng));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM));
             }
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(locationLatLng));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+            else
+                setCapitalFederal();
+
+
         }
 
     }
@@ -122,10 +125,10 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
                    setMyLocation();
                 }
                 else
-                    mMap.moveCamera(CameraUpdateFactory.zoomBy(10, new Point(-35,-59)));
+                    setCapitalFederal();
 
             } break;
-            default: mMap.moveCamera(CameraUpdateFactory.zoomBy(10, new Point(-35,-59))); break;
+            default: setCapitalFederal(); break;
         }
 
     }
