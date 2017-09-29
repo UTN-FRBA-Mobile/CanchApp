@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     android:background="@color/colorBlanco"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
     tools:context="com.santiago.canchaapp.app.fragment.RegistrarClubFragment">
 
     <ImageView
@@ -43,6 +43,7 @@
         android:layout_marginBottom="20dp"
         android:textSize="18sp"
         android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
         android:textColor="@color/colorText"
         android:text="@string/txtHorario"/>
 
@@ -82,7 +83,9 @@
             android:textSize="16sp"
             android:textColor="@color/colorText"
             android:textAlignment="textStart"
-            android:layout_alignParentEnd="true"/>
+            android:layout_gravity="start"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
     <LinearLayout
