@@ -45,7 +45,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     private static final LatLng CAPITAL_FEDERAL = new LatLng(-34.609404, -58.498656);
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static final int ZOOM_PUNTO_INICIAL = 5;
-    private static final int ZOOM = 10;
+    private static final int ZOOM = 15;
 
     @BindView(R.id.btnContinuar)
     public Button continuar;
