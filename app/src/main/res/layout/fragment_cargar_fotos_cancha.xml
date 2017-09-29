@@ -31,6 +31,7 @@
             android:layout_width="115dp"
             android:layout_height="105dp"
             android:src="@drawable/ic_add"
+            android:background="@color/colorGris"
             android:contentDescription="@string/txtDescripcionBtnCargaFotos"/>
 
         <ImageButton
@@ -38,6 +39,7 @@
             android:layout_width="@dimen/width_imageview_add"
             android:layout_height="@dimen/height_imageview_add"
             android:src="@drawable/ic_add"
+            android:background="@color/colorGris"
             android:contentDescription="@string/txtDescripcionBtnCargaFotos"/>
 
         <ImageButton
@@ -45,6 +47,7 @@
             android:layout_width="@dimen/width_imageview_add"
             android:layout_height="@dimen/height_imageview_add"
             android:src="@drawable/ic_add"
+            android:background="@color/colorGris"
             android:contentDescription="@string/txtDescripcionBtnCargaFotos"/>
     </LinearLayout>
 

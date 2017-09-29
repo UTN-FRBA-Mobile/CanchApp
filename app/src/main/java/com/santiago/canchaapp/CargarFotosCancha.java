@@ -47,7 +47,7 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
     private final int SELECT_PICTURE = 300;
 
     private ImageView mSetImage;
-    private ImageButton mOptionButton;
+    private ImageButton mOptionButton, optionButton2, optionButton3, optionButton4, optionButton5, optionButton6;
     private LinearLayout mRlView;
 
     private String mPath;
@@ -61,12 +61,29 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
 
         mSetImage = (ImageView) findViewById(R.id.btnOpciones02);
         mOptionButton = (ImageButton) findViewById(R.id.btnOpciones01);
+        //optionButton2 = (ImageButton) findViewById(R.id.btnOpciones02);
+        optionButton3 = (ImageButton) findViewById(R.id.btnOpciones03);
+        optionButton4 = (ImageButton) findViewById(R.id.btnOpciones04);
+        optionButton5 = (ImageButton) findViewById(R.id.btnOpciones05);
+        //optionButton6 = (ImageView) findViewById(R.id.imageView6);
         mRlView = (LinearLayout) findViewById(R.id.MyLinearLayout);
 
-        if(mayRequestStoragePermission())
+        if(mayRequestStoragePermission()){
             mOptionButton.setEnabled(true);
-        else
+            optionButton2.setEnabled(true);
+            optionButton3.setEnabled(true);
+            optionButton4.setEnabled(true);
+            optionButton5.setEnabled(true);
+            optionButton6.setEnabled(true);
+        } else{
             mOptionButton.setEnabled(false);
+            optionButton2.setEnabled(false);
+            optionButton3.setEnabled(false);
+            optionButton4.setEnabled(false);
+            optionButton5.setEnabled(false);
+            optionButton6.setEnabled(false);
+        }
+
 
 
         mOptionButton.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +93,7 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
             }
         });
 
-        visualizador= (ImageView) findViewById(R.id.btnOpciones03);
+        visualizador= (ImageView) findViewById(R.id.imageView6);
         imageView1= (ImageView) findViewById(R.id.ImageView01);
         imageView2= (ImageView) findViewById(R.id.ImageView02);
         imageView3= (ImageView) findViewById(R.id.ImageView03);
@@ -132,7 +149,7 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
             return true;
 
         if((shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) || (shouldShowRequestPermissionRationale(CAMERA))){
-            Snackbar.make(mRlView, "Los permisos son necesarios para poder usar la aplicación",
+            Snackbar.make(mRlView, "@string/txtDialogExplanationPermisos1",
                     Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
                 @TargetApi(Build.VERSION_CODES.M)
                 @Override
@@ -240,8 +257,13 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
 
         if(requestCode == MY_PERMISSIONS){
             if(grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(CargarFotosCancha.this, "Permisos aceptados", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CargarFotosCancha.this, "@string/txtTituloPermisosOk", Toast.LENGTH_SHORT).show();
                 mOptionButton.setEnabled(true);
+                optionButton2.setEnabled(true);
+                optionButton3.setEnabled(true);
+                optionButton4.setEnabled(true);
+                optionButton5.setEnabled(true);
+                optionButton6.setEnabled(true);
             }
         }else{
             showExplanation();
@@ -250,8 +272,8 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
 
     private void showExplanation() {
         AlertDialog.Builder builder = new AlertDialog.Builder(CargarFotosCancha.this);
-        builder.setTitle("Permisos denegados");
-        builder.setMessage("Para usar las funciones de la app necesitas aceptar los permisos");
+        builder.setTitle("@string/txtTituloPermisos");
+        builder.setMessage("@string/txtDialogExplanationPermisos2");
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -262,7 +284,7 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
                 startActivity(intent);
             }
         });
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("@string/txtAbortarPermisos", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
