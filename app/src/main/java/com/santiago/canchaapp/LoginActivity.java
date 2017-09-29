@@ -61,16 +61,17 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user != null)
+                //TODO ver si es la primera vez que se registra
+                if(user != null) {
+                    changeVisibilityButtonToLoad();
                     showDialog();
+                }
             }
         };
     }
 
     @Override
     public void onDialogPositiveClick(Boolean mostrarSeccionClub) {
-        progressBar.setVisibility(View.VISIBLE);
-        btnGoogleLogin.setVisibility(View.GONE);
         goMainScreen(mostrarSeccionClub);
     }
 
@@ -81,30 +82,28 @@ public class LoginActivity extends AppCompatActivity
             Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
                 @Override
                 public void onResult(@NonNull Status status) {
-                    if (status.isSuccess()){
-                        progressBar.setVisibility(View.GONE);
-                        btnGoogleLogin.setVisibility(View.VISIBLE);
-                    }
-                    else
+                    if (!status.isSuccess())
                         Toast.makeText(getApplicationContext(), R.string.notLogOut, Toast.LENGTH_SHORT).show();
+                    changeVisibilityLoadToButton();
                 }
             });
         }
         catch(Exception e) {
             Toast.makeText(getApplicationContext(), R.string.notLogOut, Toast.LENGTH_SHORT).show();
+            changeVisibilityLoadToButton();
         }
     }
 
     private void showDialog(){
         DialogFragment dialogoTengoClub = new DialogoTengoClub();
+        dialogoTengoClub.setCancelable(false);
         dialogoTengoClub.show(this.getFragmentManager(), "dialogoTengoClub");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        progressBar.setVisibility(View.GONE);
-        btnGoogleLogin.setVisibility(View.VISIBLE);
+        changeVisibilityLoadToButton();
         firebaseAuth.addAuthStateListener(firebaseAuthListener);
     }
 
@@ -127,8 +126,7 @@ public class LoginActivity extends AppCompatActivity
     }
 
     private void signIn() {
-        progressBar.setVisibility(View.VISIBLE);
-        btnGoogleLogin.setVisibility(View.GONE);
+        changeVisibilityButtonToLoad();
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -147,19 +145,29 @@ public class LoginActivity extends AppCompatActivity
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess())
             firebaseAuthWithGoogle(result.getSignInAccount());
-        else
+        else {
+            changeVisibilityLoadToButton();
             Toast.makeText(this, R.string.notLogIn, Toast.LENGTH_SHORT).show();
+        }
     }
 
+    private void changeVisibilityLoadToButton(){
+        progressBar.setVisibility(View.GONE);
+        btnGoogleLogin.setVisibility(View.VISIBLE);
+    }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount signInAccount) {
+    private void changeVisibilityButtonToLoad(){
         progressBar.setVisibility(View.VISIBLE);
         btnGoogleLogin.setVisibility(View.GONE);
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount signInAccount) {
         AuthCredential credential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()) {
+                    changeVisibilityLoadToButton();
                     Toast.makeText(getApplicationContext(), R.string.notFirebaseAuth, Toast.LENGTH_SHORT).show();
                 }
             }

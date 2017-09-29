@@ -34,9 +34,12 @@ public class DialogoTengoClub extends DialogFragment{
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialogo_tengo_club, null);
+        return setProperties(builder, dialogView);
+    }
+
+    private Dialog setProperties(AlertDialog.Builder builder, View dialogView) {
         final CheckBox checkBox = dialogView.findViewById(R.id.checkBoxTengoClub);
-        final String[] item = {getString(R.string.txtDialogoTengoClub)};
-        builder.setTitle("Información")
+        return builder.setTitle("Información")
                 .setPositiveButton("Ingresar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mListener.onDialogPositiveClick(checkBox.isChecked());
@@ -47,7 +50,7 @@ public class DialogoTengoClub extends DialogFragment{
                         mListener.onDialogNegativeClick();
                     }
                 })
-                .setView(dialogView);
-        return builder.create();
+                .setView(dialogView)
+                .create();
     }
 }
