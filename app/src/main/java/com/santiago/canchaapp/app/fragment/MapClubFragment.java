@@ -65,7 +65,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_map_club, container, false);
         activity = getActivity();
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_club);
-      /*  PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 activity.getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
                 .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
@@ -83,7 +83,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
             public void onError(Status status) {
                 Toast.makeText(activity.getApplicationContext(), status.toString(), Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
         ButterKnife.bind(this, view);
         continuar.setOnClickListener(new View.OnClickListener() {
             @Override
