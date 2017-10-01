@@ -128,7 +128,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void setMyLocation() {
-        if (activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
             Criteria criteria = new Criteria();
             String provider = locationManager.getBestProvider(criteria, true);
