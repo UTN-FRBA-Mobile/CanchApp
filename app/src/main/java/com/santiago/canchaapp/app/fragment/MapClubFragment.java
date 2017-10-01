@@ -17,6 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.annotation.NonNull;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -26,10 +31,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import android.widget.Button;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.santiago.canchaapp.R;
 
 import android.Manifest;
-
+import android.widget.Toast;
 
 
 import butterknife.BindView;
@@ -48,6 +54,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static final int ZOOM_PUNTO_INICIAL = 5;
     private static final int ZOOM = 15;
+    private SupportMapFragment mapFragment;
 
     @BindView(R.id.btnContinuar)
     public Button continuar;
@@ -57,9 +64,26 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_map_club, container, false);
         activity = getActivity();
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_club);
-        mapFragment.getMapAsync(this);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_club);
+      /*  PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                activity.getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
+                .build();
+        autocompleteFragment.setFilter(typeFilter);
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                LatLng myLocation = place.getLatLng();
+                mMap.addMarker(new MarkerOptions().position(myLocation).title("Mi club"));
+                setLocation(myLocation, ZOOM);
+            }
 
+            @Override
+            public void onError(Status status) {
+                Toast.makeText(activity.getApplicationContext(), status.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });*/
         ButterKnife.bind(this, view);
         continuar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +92,16 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
             }
         });
         return view;
+    }
+
+    public void setLocation(LatLng location, float zoom){
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, zoom));
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        mapFragment.getMapAsync(this);
     }
 
     @Override
@@ -94,17 +128,16 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void setMyLocation() {
-        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String provider = locationManager.getBestProvider(criteria, true);
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
+        if (activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+            String provider = locationManager.getBestProvider(criteria, true);
             location = locationManager.getLastKnownLocation(provider);
             if (location != null) {
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
                 locationLatLng = new LatLng(latitude, longitude);
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(locationLatLng, ZOOM));
+                setLocation(locationLatLng, ZOOM);
             }
             else
                 setCapitalFederal();
