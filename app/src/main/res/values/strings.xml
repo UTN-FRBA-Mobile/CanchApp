@@ -47,4 +47,6 @@
     <string name="title_activity_main">MainActivity</string>
 
     <string name="txtSeleccionarClub">Seleccione una ubicación para su club</string>
+    <string name="txtCompletarTodosLosCampos">Complete todos los campos antes de continuar</string>
+    <string name="txtEmailIncorrecto">El email ingresado es incorrecto</string>
 </resources>
