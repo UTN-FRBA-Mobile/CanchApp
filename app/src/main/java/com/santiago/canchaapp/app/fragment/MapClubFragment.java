@@ -75,7 +75,6 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onPlaceSelected(Place place) {
                 LatLng myLocation = place.getLatLng();
-                mMap.addMarker(new MarkerOptions().position(myLocation).title("Mi club"));
                 setLocation(myLocation, ZOOM);
             }
 
@@ -95,6 +94,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void setLocation(LatLng location, float zoom){
+        mMap.addMarker(new MarkerOptions().position(location).title("Mi club"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, zoom));
     }
 
