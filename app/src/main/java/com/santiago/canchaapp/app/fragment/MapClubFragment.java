@@ -2,6 +2,8 @@ package com.santiago.canchaapp.app.fragment;
 
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
@@ -164,7 +166,13 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         }
 
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getFragmentManager().beginTransaction().remove(mapFragment).commit();
+        getActivity().getFragmentManager().beginTransaction().remove(autocompleteFragment).commit();
 
+    }
     private Address getStreet(double lat, double lon) {
         Geocoder geoCoder = new Geocoder(activity, Locale.getDefault());
         List<Address> matches = null;
