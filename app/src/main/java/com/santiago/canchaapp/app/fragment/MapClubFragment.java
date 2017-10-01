@@ -5,7 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.design.widget.FloatingActionButton;
@@ -39,6 +41,10 @@ import android.Manifest;
 import android.widget.Toast;
 
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -57,7 +63,6 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     private static final int ZOOM = 15;
     private SupportMapFragment mapFragment;
     private PlaceAutocompleteFragment autocompleteFragment;
-    private Place miClub;
     @BindView(R.id.fab)
     public FloatingActionButton fab;
 
@@ -72,7 +77,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(location != null || miClub != null)
+                if(locationLatLng != null)
                     abrirFragment();
                 else
                     Toast.makeText(activity.getApplicationContext(), R.string.txtSeleccionarClub, Toast.LENGTH_SHORT).show();
@@ -94,9 +99,8 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                miClub = place;
-                LatLng myLocation = place.getLatLng();
-                setLocation(myLocation, ZOOM);
+                locationLatLng = place.getLatLng();
+                setLocation(locationLatLng, ZOOM);
             }
 
             @Override
@@ -107,6 +111,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void setLocation(LatLng location, float zoom){
+        mMap.clear();
         mMap.addMarker(new MarkerOptions().position(location).title("Mi club"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, zoom));
     }
@@ -132,7 +137,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
 
     private void getMyLocation() {
         if (ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            setMyLocation();
+            generateMyLocation();
         } else {
             requestPermissions(
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
@@ -140,16 +145,18 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void setMyLocation() {
+    private void generateMyLocation() {
         if (ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
             Criteria criteria = new Criteria();
             String provider = locationManager.getBestProvider(criteria, true);
             location = locationManager.getLastKnownLocation(provider);
             if (location != null) {
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                locationLatLng = new LatLng(latitude, longitude);
+                double lat = location.getLatitude();
+                double lon = location.getLongitude();
+                Address address = getStreet(lat, lon);
+                autocompleteFragment.setText(address.getAddressLine(0).toString());
+                locationLatLng = new LatLng(lat, lon);
                 setLocation(locationLatLng, ZOOM);
             }
             else
@@ -158,6 +165,16 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    private Address getStreet(double lat, double lon) {
+        Geocoder geoCoder = new Geocoder(activity, Locale.getDefault());
+        List<Address> matches = null;
+        try {
+            matches = geoCoder.getFromLocation(lat, lon, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return (matches.isEmpty() ? null : matches.get(0));
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[],
@@ -167,7 +184,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
             case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                   setMyLocation();
+                    generateMyLocation();
                 }
                 else
                     setCapitalFederal();
