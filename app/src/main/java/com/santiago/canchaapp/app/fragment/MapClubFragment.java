@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -55,9 +56,10 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     private static final int ZOOM_PUNTO_INICIAL = 5;
     private static final int ZOOM = 15;
     private SupportMapFragment mapFragment;
-
-    @BindView(R.id.btnContinuar)
-    public Button continuar;
+    private PlaceAutocompleteFragment autocompleteFragment;
+    private Place miClub;
+    @BindView(R.id.fab)
+    public FloatingActionButton fab;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,15 +67,34 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_map_club, container, false);
         activity = getActivity();
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_club);
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+        setAutocomplete();
+        ButterKnife.bind(this, view);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(location != null || miClub != null)
+                    abrirFragment();
+                else
+                    Toast.makeText(activity.getApplicationContext(), R.string.txtSeleccionarClub, Toast.LENGTH_SHORT).show();
+            }
+        });
+        return view;
+    }
+
+    private void setAutocomplete() {
+      autocompleteFragment = (PlaceAutocompleteFragment)
                 activity.getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
                 .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
                 .build();
         autocompleteFragment.setFilter(typeFilter);
+        autocompleteFragment.setHint("Ubicación club");
+        autocompleteFragment.setAllowEnterTransitionOverlap(true);
+        autocompleteFragment.setAllowReturnTransitionOverlap(true);
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
+                miClub = place;
                 LatLng myLocation = place.getLatLng();
                 setLocation(myLocation, ZOOM);
             }
@@ -83,14 +104,6 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
                 Toast.makeText(activity.getApplicationContext(), status.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-        ButterKnife.bind(this, view);
-        continuar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                abrirFragment();
-            }
-        });
-        return view;
     }
 
     public void setLocation(LatLng location, float zoom){

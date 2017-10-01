@@ -45,4 +45,6 @@
     <string name="txtCanchaSuperficie">Superficie: %1$s</string>
     <string name="txtCanchaTechada">Techada</string>
     <string name="title_activity_main">MainActivity</string>
+
+    <string name="txtSeleccionarClub">Seleccione una ubicación para su club</string>
 </resources>
