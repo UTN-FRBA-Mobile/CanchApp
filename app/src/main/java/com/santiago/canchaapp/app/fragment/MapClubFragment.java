@@ -162,7 +162,6 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
             } break;
             default: setCapitalFederal(); break;
         }
-
     }
 
     private void abrirFragment() {
