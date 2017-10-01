@@ -65,6 +65,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     private static final int ZOOM = 15;
     private SupportMapFragment mapFragment;
     private PlaceAutocompleteFragment autocompleteFragment;
+    private String street;
     @BindView(R.id.fab)
     public FloatingActionButton fab;
 
@@ -89,18 +90,17 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void setAutocomplete() {
-      autocompleteFragment = (PlaceAutocompleteFragment)
+        autocompleteFragment = (PlaceAutocompleteFragment)
                 activity.getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
                 .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
                 .build();
         autocompleteFragment.setFilter(typeFilter);
         autocompleteFragment.setHint("Ubicación club");
-        autocompleteFragment.setAllowEnterTransitionOverlap(true);
-        autocompleteFragment.setAllowReturnTransitionOverlap(true);
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
+                street = place.getAddress().toString();
                 locationLatLng = place.getLatLng();
                 setLocation(locationLatLng, ZOOM);
             }
@@ -127,8 +127,12 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        setCapitalFederal();
-        getMyLocation();
+        if(locationLatLng == null)
+            getMyLocation();
+        else {
+            autocompleteFragment.setText(street);
+            setLocation(locationLatLng, ZOOM);
+        }
     }
 
     private void setCapitalFederal(){
@@ -157,7 +161,8 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
                 double lat = location.getLatitude();
                 double lon = location.getLongitude();
                 Address address = getStreet(lat, lon);
-                autocompleteFragment.setText(address.getAddressLine(0).toString());
+                street = address.getAddressLine(0).toString();
+                autocompleteFragment.setText(street);
                 locationLatLng = new LatLng(lat, lon);
                 setLocation(locationLatLng, ZOOM);
             }
