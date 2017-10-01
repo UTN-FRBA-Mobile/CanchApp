@@ -1,22 +1,16 @@
 package com.santiago.canchaapp.app.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.santiago.canchaapp.R;
 
 import static com.santiago.canchaapp.app.otros.FragmentTags.MAP_CLUB;
@@ -34,8 +28,8 @@ public class RegistrarClubFragment extends Fragment{
     public TextView valorMinimo;
     @BindView(R.id.txtValorMaximo)
     public TextView valorMaximo;
-    @BindView(R.id.btnContinuar)
-    public Button continuar;
+    @BindView(R.id.boton_continuar)
+    public FloatingActionButton continuar;
     public MapClubFragment mapClubFragment = new MapClubFragment();
 
     public static RegistrarClubFragment nuevaInstancia() {
@@ -56,13 +50,13 @@ public class RegistrarClubFragment extends Fragment{
         continuar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                abrirFragment();
+                abrirFragmentSiguiente();
             }
         });
         return view;
     }
 
-    private void abrirFragment() {
+    private void abrirFragmentSiguiente() {
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_frame, mapClubFragment, MAP_CLUB.toString())
