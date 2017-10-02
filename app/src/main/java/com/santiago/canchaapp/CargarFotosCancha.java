@@ -35,10 +35,6 @@ import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class CargarFotosCancha extends Activity {
-    //private ImageButton btn_cargarFotosCancha;
-
-   // @BindView(R.id.btnImagen01)
-
     private static String APP_DIRECTORY = "MyPictureApp/";
     private static String MEDIA_DIRECTORY = APP_DIRECTORY + "PictureApp";
 
@@ -62,7 +58,7 @@ public class CargarFotosCancha extends Activity {
 
     private String mPath;
 
-    ImageView visualizador, imageView1, imageView2, imageView3, imageView4, imageView5, imageView6, imageView7;
+    ImageView imageView1, imageView2, imageView3, imageView4, imageView5, imageView6, imageView7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
