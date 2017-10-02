@@ -169,7 +169,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     public void onDestroyView() {
         super.onDestroyView();
         if (mapFragment.isAdded()) {
-            getFragmentManager().beginTransaction().remove(mapFragment).commitAllowingStateLoss();
+            getChildFragmentManager().beginTransaction().remove(mapFragment).commitAllowingStateLoss();
         }
         if (autocompleteFragment.isAdded()) {
             getActivity().getFragmentManager().beginTransaction().remove(autocompleteFragment).commitAllowingStateLoss();
