@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -69,6 +70,8 @@ public class CanchasFragment extends Fragment {
                 startActivity(new Intent(getActivity(), CargarFotosCancha.class));
             }
         });
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Canchas");
 
         return rootView;
     }

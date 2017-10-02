@@ -2,6 +2,7 @@ package com.santiago.canchaapp.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -56,6 +57,7 @@ public class ListaReservasFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_lista_reservas, container, false);
         cargarVista(rootView);
+
         return rootView;
     }
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import butterknife.ButterKnife;
 
 public class ReservasFragment extends Fragment {
 
+    private static String ARG_TITULO = "Reservas";
     private static String ARG_ALQUILERES = "alquileres";
 
     @BindView(R.id.container_reservas)
@@ -39,6 +41,12 @@ public class ReservasFragment extends Fragment {
 
         Bundle args = new Bundle();
         args.putBoolean(ARG_ALQUILERES, paraAlquileres);
+
+        if(paraAlquileres) {
+            args.putCharSequence(ARG_TITULO, "Mis alquileres");
+        } else
+            args.putCharSequence(ARG_TITULO, "Mis reservas");
+
         fragment.setArguments(args);
 
         return fragment;
@@ -58,6 +66,8 @@ public class ReservasFragment extends Fragment {
         adapter = new ReservasPageAdapter(getChildFragmentManager(), getArguments().getBoolean(ARG_ALQUILERES));
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(ARG_TITULO);
 
         return view;
     }
