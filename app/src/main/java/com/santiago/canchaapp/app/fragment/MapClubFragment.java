@@ -53,9 +53,9 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     private Activity activity;
     private LatLng locationLatLng;
     private Location location;
-    private static final LatLng CAPITAL_FEDERAL = new LatLng(-34.609404, -58.498656);
+    private static final LatLng CAPITAL_FEDERAL = new LatLng(-34.603371, -58.451497);
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private static final int ZOOM_PUNTO_INICIAL = 5;
+    private static final int ZOOM_PUNTO_INICIAL = 11;
     private static final int ZOOM = 15;
     private SupportMapFragment mapFragment;
     private PlaceAutocompleteFragment autocompleteFragment;
@@ -131,9 +131,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void setCapitalFederal(){
-        Projection projection = mMap.getProjection();
-        Point capitalFederalPoint = projection.toScreenLocation(CAPITAL_FEDERAL);
-        mMap.moveCamera(CameraUpdateFactory.zoomBy(ZOOM_PUNTO_INICIAL, capitalFederalPoint));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(CAPITAL_FEDERAL, ZOOM_PUNTO_INICIAL));
     }
 
     private void getMyLocation() {
