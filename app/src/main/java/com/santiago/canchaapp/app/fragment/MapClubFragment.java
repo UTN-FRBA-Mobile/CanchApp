@@ -80,12 +80,13 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(locationLatLng != null)
+                if (locationLatLng != null)
                     abrirFragment();
                 else
                     Toast.makeText(activity.getApplicationContext(), R.string.txtSeleccionarClub, Toast.LENGTH_SHORT).show();
             }
         });
+
         return view;
     }
 
@@ -112,14 +113,14 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
-    public void setLocation(LatLng location, float zoom){
+    public void setLocation(LatLng location, float zoom) {
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(location).title("Mi club"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, zoom));
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         mapFragment.getMapAsync(this);
     }
