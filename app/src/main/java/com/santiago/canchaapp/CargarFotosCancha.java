@@ -168,18 +168,18 @@ public class CargarFotosCancha extends Activity {
     }
 
     private void showOptions(final int opcionSelect, final int opcionCamera) {
-        final CharSequence[] option = {"Tomar foto", "Elegir de galeria", "Cancelar"};
+        final CharSequence[] option = {"Tomar foto", "Elegir de galería", "Cancelar"};
         final AlertDialog.Builder builder = new AlertDialog.Builder(CargarFotosCancha.this);
-        builder.setTitle("Eleige una opción");
+        builder.setTitle("Elegí una opción");
         builder.setItems(option, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(option[which] == "Tomar foto"){
                     openCamera(opcionCamera);
-                }else if(option[which] == "Elegir de galeria"){
+                }else if(option[which] == "Elegir de galería"){
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
-                    startActivityForResult(intent.createChooser(intent, "Por favor, selecciona app de imagen"), opcionSelect);
+                    startActivityForResult(intent.createChooser(intent, "Por favor, seleccioná app de imagen"), opcionSelect);
                 }else {
                     dialog.dismiss();
                 }
