@@ -168,10 +168,14 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        getFragmentManager().beginTransaction().remove(mapFragment).commit();
-        getActivity().getFragmentManager().beginTransaction().remove(autocompleteFragment).commit();
-
+        if (mapFragment.isAdded()) {
+            getFragmentManager().beginTransaction().remove(mapFragment).commitAllowingStateLoss();
+        }
+        if (autocompleteFragment.isAdded()) {
+            getActivity().getFragmentManager().beginTransaction().remove(autocompleteFragment).commitAllowingStateLoss();
+        }
     }
+
     private Address getStreet(double lat, double lon) {
         Geocoder geoCoder = new Geocoder(activity, Locale.getDefault());
         List<Address> matches = null;
