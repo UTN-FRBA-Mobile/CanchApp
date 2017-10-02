@@ -72,8 +72,8 @@
             android:src="@drawable/ic_add"
             android:contentDescription="@string/txtDescripcionBtnCargaFotos"/>
 
-        <ImageView
-            android:id="@+id/imageView6"
+        <ImageButton
+            android:id="@+id/btnOpciones06"
             android:layout_width="@dimen/width_imageview_add"
             android:layout_height="@dimen/height_imageview_add"
             android:src="@drawable/ic_add"

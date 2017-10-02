@@ -34,49 +34,61 @@ import java.io.File;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-public class CargarFotosCancha extends Activity implements View.OnClickListener{
-    //private ImageButton btn_cargarFotosCancha;
-
-   // @BindView(R.id.btnImagen01)
-
+public class CargarFotosCancha extends Activity {
     private static String APP_DIRECTORY = "MyPictureApp/";
     private static String MEDIA_DIRECTORY = APP_DIRECTORY + "PictureApp";
 
     private final int MY_PERMISSIONS = 100;
     private final int PHOTO_CODE = 200;
-    private final int SELECT_PICTURE = 300;
+    private final int PHOTO_CODE_DOS = 220;
+    private final int PHOTO_CODE_TRES = 230;
+    private final int PHOTO_CODE_CUATRO = 240;
+    private final int PHOTO_CODE_CINCO = 250;
+    private final int PHOTO_CODE_SEIS = 260;
+    private final int SELECT_PICTURE_UNO = 300;
+    private final int SELECT_PICTURE_DOS = 400;
+    private final int SELECT_PICTURE_TRES = 500;
+    private final int SELECT_PICTURE_CUATRO = 600;
+    private final int SELECT_PICTURE_CINCO = 700;
+    private final int SELECT_PICTURE_SEIS = 800;
 
-    private ImageView mSetImage;
-    private ImageButton mOptionButton, optionButton2, optionButton3, optionButton4, optionButton5, optionButton6;
+    private ImageView setImage1, setImage2, setImage3, setImage4, setImage5, setImage6;
+    private ImageButton optionButton1, optionButton2, optionButton3, optionButton4, optionButton5, optionButton6;
     private LinearLayout mRlView;
 
     private String mPath;
 
-    ImageView visualizador, imageView1, imageView2, imageView3, imageView4, imageView5, imageView6, imageView7;
+    ImageView imageView1, imageView2, imageView3, imageView4, imageView5, imageView6, imageView7;
 
-    //@Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_cargar_fotos_cancha);
 
-        mSetImage = (ImageView) findViewById(R.id.btnOpciones02);
-        mOptionButton = (ImageButton) findViewById(R.id.btnOpciones01);
-        //optionButton2 = (ImageButton) findViewById(R.id.btnOpciones02);
+        setImage1 = (ImageView) findViewById(R.id.btnOpciones01);
+        setImage2 = (ImageView) findViewById(R.id.btnOpciones02);
+        setImage3 = (ImageView) findViewById(R.id.btnOpciones03);
+        setImage4 = (ImageView) findViewById(R.id.btnOpciones04);
+        setImage5 = (ImageView) findViewById(R.id.btnOpciones05);
+        setImage6 = (ImageView) findViewById(R.id.btnOpciones06);
+
+        optionButton1 = (ImageButton) findViewById(R.id.btnOpciones01);
+        optionButton2 = (ImageButton) findViewById(R.id.btnOpciones02);
         optionButton3 = (ImageButton) findViewById(R.id.btnOpciones03);
         optionButton4 = (ImageButton) findViewById(R.id.btnOpciones04);
         optionButton5 = (ImageButton) findViewById(R.id.btnOpciones05);
-        //optionButton6 = (ImageView) findViewById(R.id.imageView6);
+        optionButton6 = (ImageButton) findViewById(R.id.btnOpciones06);
         mRlView = (LinearLayout) findViewById(R.id.MyLinearLayout);
 
         if(mayRequestStoragePermission()){
-            mOptionButton.setEnabled(true);
+            optionButton1.setEnabled(true);
             optionButton2.setEnabled(true);
             optionButton3.setEnabled(true);
             optionButton4.setEnabled(true);
             optionButton5.setEnabled(true);
             optionButton6.setEnabled(true);
         } else{
-            mOptionButton.setEnabled(false);
+            optionButton1.setEnabled(false);
             optionButton2.setEnabled(false);
             optionButton3.setEnabled(false);
             optionButton4.setEnabled(false);
@@ -84,16 +96,43 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
             optionButton6.setEnabled(false);
         }
 
-
-
-        mOptionButton.setOnClickListener(new View.OnClickListener() {
+        optionButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOptions(SELECT_PICTURE);
+                showOptions(SELECT_PICTURE_UNO, PHOTO_CODE);
+            }
+        });
+        optionButton2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                showOptions(SELECT_PICTURE_DOS, PHOTO_CODE_DOS);
+            }
+        });
+        optionButton3.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                showOptions(SELECT_PICTURE_TRES, PHOTO_CODE_TRES);
+            }
+        });
+        optionButton4.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                showOptions(SELECT_PICTURE_CUATRO, PHOTO_CODE_CUATRO);
+            }
+        });
+        optionButton5.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                showOptions(SELECT_PICTURE_CINCO, PHOTO_CODE_CINCO);
+            }
+        });
+        optionButton6.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                showOptions(SELECT_PICTURE_SEIS, PHOTO_CODE_SEIS);
             }
         });
 
-        visualizador= (ImageView) findViewById(R.id.imageView6);
         imageView1= (ImageView) findViewById(R.id.ImageView01);
         imageView2= (ImageView) findViewById(R.id.ImageView02);
         imageView3= (ImageView) findViewById(R.id.ImageView03);
@@ -101,42 +140,6 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
         imageView5= (ImageView) findViewById(R.id.ImageView05);
         imageView6= (ImageView) findViewById(R.id.ImageView06);
         imageView7= (ImageView) findViewById(R.id.ImageView07);
-
-        imageView1.setOnClickListener(this);
-        imageView2.setOnClickListener(this);
-        imageView3.setOnClickListener(this);
-        imageView4.setOnClickListener(this);
-        imageView5.setOnClickListener(this);
-        imageView6.setOnClickListener(this);
-        imageView7.setOnClickListener(this);
-
-    }
-
-    @Override
-    public void onClick(View view){
-        switch (view.getId()){
-            case R.id.ImageView01:
-                visualizador.setImageResource(R.drawable.imagen01);
-                break;
-            case R.id.ImageView02:
-                visualizador.setImageResource(R.drawable.imagen02);
-                break;
-            case R.id.ImageView03:
-                visualizador.setImageResource(R.drawable.imagen03);
-                break;
-            case R.id.ImageView04:
-                visualizador.setImageResource(R.drawable.imagen05);
-                break;
-            case R.id.ImageView05:
-                visualizador.setImageResource(R.drawable.imagen05);
-                break;
-            case R.id.ImageView06:
-                visualizador.setImageResource(R.drawable.imagen06);
-                break;
-            case R.id.ImageView07:
-                visualizador.setImageResource(R.drawable.imagen07);
-                break;
-        }
     }
 
     private boolean mayRequestStoragePermission() {
@@ -164,19 +167,19 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
         return false;
     }
 
-    private void showOptions(final int optionSelect) {
-        final CharSequence[] option = {"Tomar foto", "Elegir de galeria", "Cancelar"};
+    private void showOptions(final int opcionSelect, final int opcionCamera) {
+        final CharSequence[] option = {"Tomar foto", "Elegir de galería", "Cancelar"};
         final AlertDialog.Builder builder = new AlertDialog.Builder(CargarFotosCancha.this);
-        builder.setTitle("Eleige una opción");
+        builder.setTitle("Elegí una opción");
         builder.setItems(option, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(option[which] == "Tomar foto"){
-                    openCamera();
-                }else if(option[which] == "Elegir de galeria"){
+                    openCamera(opcionCamera);
+                }else if(option[which] == "Elegir de galería"){
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
-                    startActivityForResult(intent.createChooser(intent, "Por favor, selecciona app de imagen"), optionSelect);
+                    startActivityForResult(intent.createChooser(intent, "Por favor, seleccioná app de imagen"), opcionSelect);
                 }else {
                     dialog.dismiss();
                 }
@@ -186,7 +189,7 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
         builder.show();
     }
 
-    private void openCamera() {
+    private void openCamera(final int opcionCamera) {
         File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
         boolean isDirectoryCreated = file.exists();
 
@@ -204,7 +207,7 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
 
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
-            startActivityForResult(intent, PHOTO_CODE);
+            startActivityForResult(intent, opcionCamera);
         }
     }
 
@@ -228,27 +231,72 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
         if(resultCode == RESULT_OK){
             switch (requestCode){
                 case PHOTO_CODE:
-                    MediaScannerConnection.scanFile(this,
-                            new String[]{mPath}, null,
-                            new MediaScannerConnection.OnScanCompletedListener() {
-                                @Override
-                                public void onScanCompleted(String path, Uri uri) {
-                                    Log.i("ExternalStorage", "Scanned " + path + ":");
-                                    Log.i("ExternalStorage", "-> Uri = " + uri);
-                                }
-                            });
-
-
-                    Bitmap bitmap = BitmapFactory.decodeFile(mPath);
-                    mSetImage.setImageBitmap(bitmap);
+                    setLocationImage(mPath);
+                    setImageButton(mPath, setImage1);
                     break;
-                case SELECT_PICTURE:
-                    Uri path = data.getData();
-                    mSetImage.setImageURI(path);
+                case PHOTO_CODE_DOS:
+                    setLocationImage(mPath);
+                    setImageButton(mPath, setImage2);
                     break;
-
+                case PHOTO_CODE_TRES:
+                    setLocationImage(mPath);
+                    setImageButton(mPath, setImage3);
+                    break;
+                case PHOTO_CODE_CUATRO:
+                    setLocationImage(mPath);
+                    setImageButton(mPath, setImage4);
+                    break;
+                case PHOTO_CODE_CINCO:
+                    setLocationImage(mPath);
+                    setImageButton(mPath, setImage5);
+                    break;
+                case PHOTO_CODE_SEIS:
+                    setLocationImage(mPath);
+                    setImageButton(mPath, setImage6);
+                    break;
+                case SELECT_PICTURE_UNO:
+                    Uri path1 = data.getData();
+                    setImage1.setImageURI(path1);
+                    break;
+                case SELECT_PICTURE_DOS:
+                    Uri path2 = data.getData();
+                    setImage2.setImageURI(path2);
+                    break;
+                case SELECT_PICTURE_TRES:
+                    Uri path3 = data.getData();
+                    setImage3.setImageURI(path3);
+                    break;
+                case SELECT_PICTURE_CUATRO:
+                    Uri path4 = data.getData();
+                    setImage4.setImageURI(path4);
+                    break;
+                case SELECT_PICTURE_CINCO:
+                    Uri path5 = data.getData();
+                    setImage5.setImageURI(path5);
+                    break;
+                case SELECT_PICTURE_SEIS:
+                    Uri path6 = data.getData();
+                    setImage6.setImageURI(path6);
+                    break;
             }
         }
+    }
+
+    private void setLocationImage(String mPath) {
+        MediaScannerConnection.scanFile(this,
+                new String[]{mPath}, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    @Override
+                    public void onScanCompleted(String path, Uri uri) {
+                        Log.i("ExternalStorage", "Scanned " + path + ":");
+                        Log.i("ExternalStorage", "-> Uri = " + uri);
+                    }
+                });
+    }
+
+    private void setImageButton(String mPath, ImageView unaImageView) {
+        Bitmap bitmap = BitmapFactory.decodeFile(mPath);
+        unaImageView.setImageBitmap(bitmap);
     }
 
     @Override
@@ -258,7 +306,7 @@ public class CargarFotosCancha extends Activity implements View.OnClickListener{
         if(requestCode == MY_PERMISSIONS){
             if(grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(CargarFotosCancha.this, "@string/txtTituloPermisosOk", Toast.LENGTH_SHORT).show();
-                mOptionButton.setEnabled(true);
+                optionButton1.setEnabled(true);
                 optionButton2.setEnabled(true);
                 optionButton3.setEnabled(true);
                 optionButton4.setEnabled(true);

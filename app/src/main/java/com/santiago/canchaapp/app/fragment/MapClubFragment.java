@@ -2,8 +2,6 @@ package com.santiago.canchaapp.app.fragment;
 
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
@@ -16,7 +14,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,13 +30,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 
-import android.widget.Button;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.santiago.canchaapp.R;
 
-import android.Manifest;
 import android.widget.Toast;
 
 
@@ -80,10 +74,10 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (locationLatLng != null)
-                    abrirFragment();
-                else
-                    Toast.makeText(activity.getApplicationContext(), R.string.txtSeleccionarClub, Toast.LENGTH_SHORT).show();
+            if (locationLatLng != null)
+                abrirFragmentSiguiente();
+            else
+                Toast.makeText(activity.getApplicationContext(), R.string.txtSeleccionarClub, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -175,10 +169,14 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        getFragmentManager().beginTransaction().remove(mapFragment).commit();
-        getActivity().getFragmentManager().beginTransaction().remove(autocompleteFragment).commit();
-
+        if (mapFragment.isAdded()) {
+            getChildFragmentManager().beginTransaction().remove(mapFragment).commitAllowingStateLoss();
+        }
+        if (autocompleteFragment.isAdded()) {
+            getActivity().getFragmentManager().beginTransaction().remove(autocompleteFragment).commitAllowingStateLoss();
+        }
     }
+
     private Address getStreet(double lat, double lon) {
         Geocoder geoCoder = new Geocoder(activity, Locale.getDefault());
         List<Address> matches = null;
@@ -208,7 +206,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void abrirFragment() {
+    private void abrirFragmentSiguiente() {
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_frame, CanchasFragment.nuevaInstancia(), MIS_CANCHAS.toString())
