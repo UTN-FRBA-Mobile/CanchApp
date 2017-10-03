@@ -68,11 +68,11 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         ButterKnife.bind(this, view);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-            if (locationLatLng != null)
+            public void onClick(View view) { //quito las validaciones por ahora
+            //if (locationLatLng != null)
                 abrirFragmentSiguiente();
-            else
-                Toast.makeText(activity.getApplicationContext(), R.string.txtSeleccionarClub, Toast.LENGTH_SHORT).show();
+            //else
+            //    Toast.makeText(activity.getApplicationContext(), R.string.txtSeleccionarClub, Toast.LENGTH_SHORT).show();
             }
         });
 

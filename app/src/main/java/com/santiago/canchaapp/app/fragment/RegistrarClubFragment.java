@@ -75,14 +75,14 @@ public class RegistrarClubFragment extends Fragment{
         return view;
     }
 
-    private boolean validarCampos(Context context) {
-        if (estaVacio(nombre()) || estaVacio(telefono()) || estaVacio(email())) {
-            Toast.makeText(context, R.string.txtCompletarTodosLosCampos, LENGTH_SHORT).show();
-            return false;
-        } else if (!esUnEmail(email())) {
-            Toast.makeText(context, R.string.txtEmailIncorrecto, LENGTH_SHORT).show();
-            return false;
-        }
+    private boolean validarCampos(Context context) { //quito las validaciones por ahora
+//        if (estaVacio(nombre()) || estaVacio(telefono()) || estaVacio(email())) {
+//            Toast.makeText(context, R.string.txtCompletarTodosLosCampos, LENGTH_SHORT).show();
+//            return false;
+//        } else if (!esUnEmail(email())) {
+//            Toast.makeText(context, R.string.txtEmailIncorrecto, LENGTH_SHORT).show();
+//            return false;
+//        }
         return true;
     }
 
