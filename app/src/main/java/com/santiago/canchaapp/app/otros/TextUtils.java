@@ -12,4 +12,8 @@ public class TextUtils {
         return Patterns.EMAIL_ADDRESS.matcher(texto).matches();
     }
 
+    public static String textoOVacio(String texto) {
+        return texto.isEmpty() ? "" : texto;
+    }
+
 }

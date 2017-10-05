@@ -3,16 +3,15 @@ package com.santiago.canchaapp.app.fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -40,21 +39,28 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static android.support.v4.content.ContextCompat.checkSelfPermission;
+import static android.widget.Toast.LENGTH_SHORT;
+import static com.google.android.gms.location.places.AutocompleteFilter.TYPE_FILTER_ADDRESS;
 import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_CANCHAS;
+import static com.santiago.canchaapp.app.otros.TextUtils.textoOVacio;
 
 public class MapClubFragment extends Fragment implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
-    private Activity activity;
-    private LatLng locationLatLng;
-    private Location location;
     private static final LatLng CAPITAL_FEDERAL = new LatLng(-34.603371, -58.451497);
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static final int ZOOM_PUNTO_INICIAL = 11;
     private static final int ZOOM = 15;
+
+    private Activity activity;
+    private GoogleMap mMap;
     private SupportMapFragment mapFragment;
     private PlaceAutocompleteFragment autocompleteFragment;
-    private String street;
+
+    private LatLng ubicacion;
+
     @BindView(R.id.fab)
     public FloatingActionButton fab;
 
@@ -63,9 +69,10 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_map_club, container, false);
         activity = getActivity();
+        inicializarBuscador();
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_club);
-        setAutocomplete();
         ButterKnife.bind(this, view);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { //quito las validaciones por ahora
@@ -81,33 +88,25 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
-    private void setAutocomplete() {
+    private void inicializarBuscador() {
         autocompleteFragment = (PlaceAutocompleteFragment)
                 activity.getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
-                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
+                .setTypeFilter(TYPE_FILTER_ADDRESS)
                 .build();
         autocompleteFragment.setFilter(typeFilter);
-        autocompleteFragment.setHint("Ubicación club");
+        autocompleteFragment.setHint(getResources().getString(R.string.txtHintAutocompleteMapa));
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                street = place.getAddress().toString();
-                locationLatLng = place.getLatLng();
-                setLocation(locationLatLng, ZOOM);
+                setearUbicacion(place.getLatLng(), ZOOM);
             }
 
             @Override
             public void onError(Status status) {
-                Toast.makeText(activity.getApplicationContext(), status.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity.getApplicationContext(), status.toString(), LENGTH_SHORT).show();
             }
         });
-    }
-
-    public void setLocation(LatLng location, float zoom) {
-        mMap.clear();
-        mMap.addMarker(new MarkerOptions().position(location).title("Mi club"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, zoom));
     }
 
     @Override
@@ -119,48 +118,96 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if(locationLatLng == null)
-            getMyLocation();
+        inicializarUbicacion();
+    }
+
+    private void inicializarUbicacion() {
+        if(ubicacion == null)
+            pedirUbicacionActual();
         else {
-            autocompleteFragment.setText(street);
-            setLocation(locationLatLng, ZOOM);
+            setearUbicacion(ubicacion, ZOOM);
         }
     }
 
-    private void setCapitalFederal(){
+    private void setearUbicacion(LatLng ubicacion, float zoom) {
+        this.ubicacion = ubicacion;
+        actualizarBuscador(textoOVacio(obtenerDireccion(ubicacion.latitude, ubicacion.longitude)));
+        actualizarMapa(ubicacion, zoom);
+    }
+
+    private void actualizarMapa(LatLng ubicacionLatLng, float zoom) {
+        mMap.clear();
+        mMap.addMarker(new MarkerOptions().position(ubicacionLatLng)
+                .title(getResources().getString(R.string.txtTituloMarcadorMapaClub)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionLatLng, zoom));
+    }
+
+    private void actualizarBuscador(String direccion) {
+        if (autocompleteFragment.isVisible()) {
+            autocompleteFragment.setText(direccion);
+        }
+
+    }
+
+    private void ponerMapaEnUbicacionDefault() {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(CAPITAL_FEDERAL, ZOOM_PUNTO_INICIAL));
     }
 
-    private void getMyLocation() {
-        if (ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            generateMyLocation();
+    private void pedirUbicacionActual() {
+        if (checkSelfPermission(activity, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED) {
+            generarUbicacionActual();
         } else {
-            requestPermissions(
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            pedirPermisosParaUbicacion();
         }
     }
 
-    private void generateMyLocation() {
-        if (ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+    private void generarUbicacionActual() {
+        ponerMapaEnUbicacionDefault();
+        inicializarLocationService();
+    }
+
+    private void inicializarLocationService() {
+        if (checkSelfPermission(activity, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED) {
             LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-            Criteria criteria = new Criteria();
-            String provider = locationManager.getBestProvider(criteria, true);
-            location = locationManager.getLastKnownLocation(provider);
-            if (location != null) {
-                double lat = location.getLatitude();
-                double lon = location.getLongitude();
-                Address address = getStreet(lat, lon);
-                street = address.getAddressLine(0).toString();
-                autocompleteFragment.setText(street);
-                locationLatLng = new LatLng(lat, lon);
-                setLocation(locationLatLng, ZOOM);
-            }
-            else
-                setCapitalFederal();
-        }
+            locationManager.requestSingleUpdate(new Criteria(), new LocationListener() {
+                @Override
+                public void onLocationChanged(Location ubicacionActual) {
+                    if (ubicacionActual != null) {
+                        double lat = ubicacionActual.getLatitude();
+                        double lon = ubicacionActual.getLongitude();
+                        setearUbicacion(new LatLng(lat, lon), ZOOM);
+                    }
+                }
 
+                @Override
+                public void onStatusChanged(String s, int i, Bundle bundle) { }
+
+                @Override
+                public void onProviderEnabled(String s) { }
+
+                @Override
+                public void onProviderDisabled(String s) { }
+            }, null);
+        }
     }
+
+    private void pedirPermisosParaUbicacion() {
+        requestPermissions(new String[]{ ACCESS_FINE_LOCATION }, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+    }
+
+    private String obtenerDireccion(double lat, double lon) {
+        Geocoder geoCoder = new Geocoder(activity, Locale.getDefault());
+        List<Address> matches = null;
+        try {
+            matches = geoCoder.getFromLocation(lat, lon, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return (matches != null)
+                ? (matches.isEmpty() ? null : matches.get(0).getAddressLine(0))
+                : null;
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -172,32 +219,21 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private Address getStreet(double lat, double lon) {
-        Geocoder geoCoder = new Geocoder(activity, Locale.getDefault());
-        List<Address> matches = null;
-        try {
-            matches = geoCoder.getFromLocation(lat, lon, 1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return (matches.isEmpty() ? null : matches.get(0));
-    }
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    generateMyLocation();
+            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION:
+                if (grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
+                    generarUbicacionActual();
                 }
-                else
-                    setCapitalFederal();
-
-            } break;
-            default: setCapitalFederal(); break;
+                else {
+                    ponerMapaEnUbicacionDefault();
+                }
+            break;
+            default: ponerMapaEnUbicacionDefault(); break;
         }
     }
 

@@ -49,4 +49,7 @@
     <string name="txtSeleccionarClub">Seleccione una ubicación para su club</string>
     <string name="txtCompletarTodosLosCampos">Complete todos los campos antes de continuar</string>
     <string name="txtEmailIncorrecto">El email ingresado es incorrecto</string>
+
+    <string name="txtHintAutocompleteMapa">Ubicación actual</string>
+    <string name="txtTituloMarcadorMapaClub">Mi Club</string>
 </resources>
