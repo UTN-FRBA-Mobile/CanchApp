@@ -71,7 +71,7 @@
                 app:corner_radius="100"
                 app:gap="1"
                 app:min_value="9"
-                app:max_value="23"
+                app:max_value="24"
                 app:bar_color="@color/colorBar"
                 app:bar_highlight_color="@color/colorPrimary"
                 app:left_thumb_color="@color/colorPrimary"
