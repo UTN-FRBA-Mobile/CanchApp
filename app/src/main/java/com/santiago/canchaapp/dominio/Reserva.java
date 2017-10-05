@@ -12,11 +12,21 @@ public class Reserva implements Serializable {
 
     private int hora;
 
-    public Reserva(Club club, TipoCancha tipoCancha, String fecha, int hora) {
+    private EstadoReserva estado;
+
+    private String motivoCancelacion;
+
+    public Reserva(Club club, TipoCancha tipoCancha, String fecha, int hora, EstadoReserva estado, String motivoCancelacion) {
         this.club = club;
         this.tipoCancha = tipoCancha;
         this.fecha = fecha;
         this.hora = hora;
+        this.estado = estado;
+        this.motivoCancelacion = motivoCancelacion;
+    }
+
+    public Reserva(Club club, TipoCancha tipoCancha, String fecha, int hora, EstadoReserva estado) {
+        this(club, tipoCancha, fecha, hora, estado, null);
     }
 
     public TipoCancha getTipoCancha() {
@@ -37,6 +47,14 @@ public class Reserva implements Serializable {
 
     public String getDireccion() {
         return club.getDireccion();
+    }
+
+    public EstadoReserva getEstado() {
+        return estado;
+    }
+
+    public String getMotivoCancelacion() {
+        return motivoCancelacion;
     }
 
 }

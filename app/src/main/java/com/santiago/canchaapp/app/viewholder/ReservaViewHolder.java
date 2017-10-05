@@ -2,10 +2,13 @@ package com.santiago.canchaapp.app.viewholder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
+import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
 import com.santiago.canchaapp.dominio.Reserva;
 
 import butterknife.BindView;
@@ -13,6 +16,7 @@ import butterknife.ButterKnife;
 
 import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static com.santiago.canchaapp.app.otros.TextUtils.estaVacio;
 
 public class ReservaViewHolder extends RecyclerView.ViewHolder {
 
@@ -25,8 +29,14 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.reserva_hora)
     public TextView textoHora;
 
-    @BindView(R.id.botones_reserva)
-    public LinearLayout botonesAprobacion;
+    @BindView(R.id.reserva_motivo_cancelacion)
+    public TextView textMotivoCancelacion;
+
+    @BindView(R.id.boton_aprobar_reserva)
+    public Button botonAprobar;
+
+    @BindView(R.id.boton_cancelar_reserva)
+    public Button botonCancelar;
 
     @BindView(R.id.texto_reserva)
     public LinearLayout textoReserva;
@@ -36,18 +46,26 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, v);
     }
 
-    public void cargarDatosEnVista(Reserva reserva, Boolean mostrarBotonesDeAprobacion) {
+    public void cargarDatosEnVista(Reserva reserva, AccionesSobreReserva acciones) {
         textoClub.setText(reserva.getTipoCancha().nombre + " - " + reserva.getNombreClub());
         textoDireccion.setText(reserva.getDireccion());
         textoHora.setText(reserva.getFecha() + " - " + reserva.getHora() + "hs");
-        if (mostrarBotonesDeAprobacion) {
-            botonesAprobacion.setVisibility(VISIBLE);
-            textoReserva.setLayoutParams(textLayoutReservasPendientes());
+        if (!estaVacio(reserva.getMotivoCancelacion())) {
+            textMotivoCancelacion.setVisibility(VISIBLE);
+            textMotivoCancelacion.setText("Cancelada por: " + reserva.getMotivoCancelacion());
+        }
+        switch (acciones) {
+            case SOLO_CANCELAR: mostrarBotones(1.25f, botonCancelar); break;
+            case TODAS: mostrarBotones(0.5f, botonAprobar, botonCancelar); break;
         }
     }
 
-    private LinearLayout.LayoutParams textLayoutReservasPendientes() {
-        return new LinearLayout.LayoutParams(0, WRAP_CONTENT, 0.5f);
+    private void mostrarBotones(float tamanioLayout, Button... botones) {
+        for(Button boton : botones) {
+            boton.setVisibility(VISIBLE);
+        }
+        textoReserva.setLayoutParams(
+                new LayoutParams(0, WRAP_CONTENT, tamanioLayout));
     }
 
 }

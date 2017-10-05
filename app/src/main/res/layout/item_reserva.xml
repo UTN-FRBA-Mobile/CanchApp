@@ -42,6 +42,14 @@
                 android:paddingLeft="5dp"
                 />
 
+            <TextView
+                android:id="@+id/reserva_motivo_cancelacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:visibility="gone"
+                />
+
         </LinearLayout>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -50,7 +58,6 @@
             android:layout_weight="0.5"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:visibility="invisible"
             android:gravity="center_vertical">
 
             <Button
@@ -59,7 +66,8 @@
                 android:text="@string/btnAprobarReserva"
                 android:layout_margin="3dp"
                 android:layout_width="0dp"
-                android:layout_weight="0.5"/>
+                android:layout_weight="0.5"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/boton_cancelar_reserva"
@@ -67,7 +75,8 @@
                 android:text="@string/btnCancelarReserva"
                 android:layout_margin="3dp"
                 android:layout_width="0dp"
-                android:layout_weight="0.5"/>
+                android:layout_weight="0.5"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

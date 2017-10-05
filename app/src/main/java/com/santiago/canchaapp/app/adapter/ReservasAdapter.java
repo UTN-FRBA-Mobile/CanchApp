@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.santiago.canchaapp.R;
+import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
 import com.santiago.canchaapp.app.viewholder.ReservaViewHolder;
 import com.santiago.canchaapp.dominio.Reserva;
 
@@ -15,11 +16,11 @@ public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
 
     private List<Reserva> reservas;
 
-    private Boolean sonAlquileresPendientes;
+    private AccionesSobreReserva accionesSobreReserva;
 
-    public ReservasAdapter(List<Reserva> reservas, Boolean sonAlquileresPendientes) {
+    public ReservasAdapter(List<Reserva> reservas, AccionesSobreReserva accionesSobreReserva) {
         this.reservas = reservas;
-        this.sonAlquileresPendientes = sonAlquileresPendientes;
+        this.accionesSobreReserva = accionesSobreReserva;
     }
 
     @Override
@@ -31,7 +32,7 @@ public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
 
     @Override
     public void onBindViewHolder(ReservaViewHolder viewHolder, final int position) {
-        viewHolder.cargarDatosEnVista(reservas.get(position), sonAlquileresPendientes);
+        viewHolder.cargarDatosEnVista(reservas.get(position), accionesSobreReserva);
     }
 
     @Override
