@@ -1,12 +1,12 @@
 package com.santiago.canchaapp.servicios;
 
 import com.santiago.canchaapp.dominio.Cancha;
-import com.santiago.canchaapp.dominio.CanchaHeader;
 import com.santiago.canchaapp.dominio.Club;
-import com.santiago.canchaapp.dominio.EstadoReserva;
-import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.dominio.Reserva;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.santiago.canchaapp.dominio.EstadoReserva.APROBADA;
@@ -18,6 +18,7 @@ import static com.santiago.canchaapp.dominio.TipoCancha.FUTBOL7;
 import static com.santiago.canchaapp.dominio.TipoCancha.TENIS;
 import static com.santiago.canchaapp.dominio.TipoSuperficie.*;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 public class Servidor {
 
@@ -81,17 +82,17 @@ public class Servidor {
                 new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL7, "29/09/19", horaDesde(22), CANCELADA, "No pagaron")
         );
 
-    private List<CanchaHeader> canchas = asList(
-                new CanchaHeader("CanchaHeader Central", FUTBOL7, PASTO, false, "http://cancun.gob.mx/obras/files/2013/12/BkZxtXKCUAAAuxe-599x280.jpg"),
-                new CanchaHeader("CanchaHeader 1", FUTBOL7, PASTO, false, "http://pastossintetico.com/img/images/cancha-futbol7-pastosintetico-toluca4.jpg"),
-                new CanchaHeader("CanchaHeader 2", FUTBOL7, PASTO, false, "https://www.mexicanbusinessweb.mx/wp-content/uploads/2014/09/pastosintetico-lacanchita-futbol7-5.jpg"),
-                new CanchaHeader("CanchaHeader chica central", FUTBOL5, BALDOSA, true, "http://www.hoysejuega.com/uploads/Modules/ImagenesComplejos/800_600_captura-de-pantalla-2012-11-29-a-la(s)-15.38.50.png"),
-                new CanchaHeader("CanchaHeader chica 1", FUTBOL5, BALDOSA, true, "http://www.platensealoancho.com.ar/web/wp-content/uploads/2013/03/gimnasio-futsal-handball-pintura02.jpg"),
-                new CanchaHeader("CanchaHeader chica 2", FUTBOL5, BALDOSA, true, "http://www.pasionfutsal.com.ar/imagenes/noticias/secla.jpg"),
-                new CanchaHeader("CanchaHeader chica 3", FUTBOL5, BALDOSA, true, "http://3.bp.blogspot.com/_0SKG4k0u_dI/TTpe4b6DZWI/AAAAAAAABLY/XdF_4pY-l38/s1600/269.JPG"),
-                new CanchaHeader("CanchaHeader chica 4", FUTBOL5, BALDOSA, true, "http://www.pasionfutsal.com.ar/imagenes/noticias/almafuerte%20cancha.jpg"),
-                new CanchaHeader("CanchaHeader tenis 1", TENIS, POLVO_LADRILLO, false, "http://tenisayh.com.ar/gallery/img_4.jpg"),
-                new CanchaHeader("CanchaHeader tenis 2", TENIS, POLVO_LADRILLO, false, "https://ar.all.biz/img/ar/catalog/11918.jpeg")
+    private List<Cancha> canchas = asList(
+                new Cancha("Cancha Central", FUTBOL7, PASTO, false, singletonList("http://cancun.gob.mx/obras/files/2013/12/BkZxtXKCUAAAuxe-599x280.jpg")),
+                new Cancha("Cancha 1", FUTBOL7, PASTO, false, singletonList("http://pastossintetico.com/img/images/cancha-futbol7-pastosintetico-toluca4.jpg")),
+                new Cancha("Cancha 2", FUTBOL7, PASTO, false, singletonList("https://www.mexicanbusinessweb.mx/wp-content/uploads/2014/09/pastosintetico-lacanchita-futbol7-5.jpg")),
+                new Cancha("Cancha chica central", FUTBOL5, BALDOSA, true, singletonList("http://www.hoysejuega.com/uploads/Modules/ImagenesComplejos/800_600_captura-de-pantalla-2012-11-29-a-la(s)-15.38.50.png")),
+                new Cancha("Cancha chica 1", FUTBOL5, BALDOSA, true, singletonList("http://www.platensealoancho.com.ar/web/wp-content/uploads/2013/03/gimnasio-futsal-handball-pintura02.jpg")),
+                new Cancha("Cancha chica 2", FUTBOL5, BALDOSA, true, singletonList("http://www.pasionfutsal.com.ar/imagenes/noticias/secla.jpg")),
+                new Cancha("Cancha chica 3", FUTBOL5, BALDOSA, true, new ArrayList<String>()),
+                new Cancha("Cancha chica 4", FUTBOL5, BALDOSA, true, singletonList("http://www.pasionfutsal.com.ar/imagenes/noticias/almafuerte%20cancha.jpg")),
+                new Cancha("Cancha tenis 1", TENIS, POLVO_LADRILLO, false, new ArrayList<String>()),
+                new Cancha("Cancha tenis 2", TENIS, POLVO_LADRILLO, false, singletonList("https://ar.all.biz/img/ar/catalog/11918.jpeg"))
         );
 
     public List<Reserva> getReservasPendientes() {
@@ -118,12 +119,12 @@ public class Servidor {
         return alquileresCancelados;
     }
 
-    public List<CanchaHeader> getCanchas() {
+    public List<Cancha> getCanchas() {
         return canchas;
     }
 
     public Cancha getCancha() {
-        return new Cancha(new CanchaHeader("Camp Nou", FUTBOL7, PASTO, false, "https://images.clarin.com/2014/01/20/HJH9P2Ii7e_930x525.jpg"),
+        return new Cancha("Camp Nou", FUTBOL7, PASTO, false,
                 asList(
                         "https://www.blaugranas.com/media/galeria/25/8/7/8/3/n_f_c_barcelona_camp_nou-2253878.jpg",
                         "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Campnou_1.jpg/1125px-Campnou_1.jpg",
