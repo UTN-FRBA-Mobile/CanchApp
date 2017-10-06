@@ -10,23 +10,23 @@ public class Reserva implements Serializable {
 
     private String fecha;
 
-    private int hora;
+    private Horario horario;
 
     private EstadoReserva estado;
 
     private String motivoCancelacion;
 
-    public Reserva(Club club, TipoCancha tipoCancha, String fecha, int hora, EstadoReserva estado, String motivoCancelacion) {
+    public Reserva(Club club, TipoCancha tipoCancha, String fecha, Horario horario, EstadoReserva estado, String motivoCancelacion) {
         this.club = club;
         this.tipoCancha = tipoCancha;
         this.fecha = fecha;
-        this.hora = hora;
+        this.horario = horario;
         this.estado = estado;
         this.motivoCancelacion = motivoCancelacion;
     }
 
-    public Reserva(Club club, TipoCancha tipoCancha, String fecha, int hora, EstadoReserva estado) {
-        this(club, tipoCancha, fecha, hora, estado, null);
+    public Reserva(Club club, TipoCancha tipoCancha, String fecha, Horario horario, EstadoReserva estado) {
+        this(club, tipoCancha, fecha, horario, estado, null);
     }
 
     public TipoCancha getTipoCancha() {
@@ -37,8 +37,8 @@ public class Reserva implements Serializable {
         return fecha;
     }
 
-    public int getHora() {
-        return hora;
+    public Horario getHorario() {
+        return horario;
     }
 
     public String getNombreClub() {

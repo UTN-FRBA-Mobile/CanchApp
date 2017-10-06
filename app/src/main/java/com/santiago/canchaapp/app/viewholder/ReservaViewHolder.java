@@ -49,7 +49,7 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
     public void cargarDatosEnVista(Reserva reserva, AccionesSobreReserva acciones) {
         textoClub.setText(reserva.getTipoCancha().nombre + " - " + reserva.getNombreClub());
         textoDireccion.setText(reserva.getDireccion());
-        textoHora.setText(reserva.getFecha() + " - " + reserva.getHora() + "hs");
+        textoHora.setText(reserva.getFecha() + ", " + reserva.getHorario());
         if (!estaVacio(reserva.getMotivoCancelacion())) {
             textMotivoCancelacion.setVisibility(VISIBLE);
             textMotivoCancelacion.setText("Cancelada por: " + reserva.getMotivoCancelacion());
