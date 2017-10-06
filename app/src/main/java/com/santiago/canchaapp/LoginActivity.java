@@ -25,7 +25,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.santiago.canchaapp.dominio.DataBase;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +50,43 @@ public class LoginActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        setGoogleApiClient();
+        setBtnLogin();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user != null)
+                    showActivityFinal(user);
+                else
+                    changeVisibilityLoadToButton();
+            }
+        };
+    }
+
+    private void showActivityFinal(FirebaseUser user) {
+        DatabaseReference referenceUser = DataBase.getInstancia().getReferenceUser(user.getUid());
+        referenceUser.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //Usuario usuario = null;
+                        if(dataSnapshot.getValue() != null)
+                            goMainScreen(Boolean.valueOf(dataSnapshot.child("tieneClub").toString()));
+                        else
+                            showDialog();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        changeVisibilityLoadToButton();
+                        Toast.makeText(LoginActivity.this, R.string.txtErrorLogin, Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    private void setGoogleApiClient() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -54,25 +95,17 @@ public class LoginActivity extends AppCompatActivity
                 .enableAutoManage(LoginActivity.this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+    }
+
+    private void setBtnLogin() {
         btnGoogleLogin.setSize(SignInButton.SIZE_WIDE);
         btnGoogleLogin.setColorScheme(SignInButton.COLOR_DARK);
         btnGoogleLogin.setOnClickListener(LoginActivity.this);
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                //TODO ver si es la primera vez que se registra
-                if(user != null) {
-                    changeVisibilityButtonToLoad();
-                    showDialog();
-                }
-            }
-        };
     }
 
     @Override
     public void onDialogPositiveClick(Boolean mostrarSeccionClub) {
+        DataBase.getInstancia().insertUser(firebaseAuth.getCurrentUser(), mostrarSeccionClub);
         goMainScreen(mostrarSeccionClub);
     }
 
@@ -104,7 +137,7 @@ public class LoginActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        changeVisibilityLoadToButton();
+        changeVisibilityButtonToLoad();
         firebaseAuth.addAuthStateListener(firebaseAuthListener);
     }
 
@@ -118,8 +151,7 @@ public class LoginActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
-        int i = v.getId();
-        switch (i) {
+        switch (v.getId()) {
             case R.id.btnLogin:
                 signIn();
                 break;
@@ -139,8 +171,11 @@ public class LoginActivity extends AppCompatActivity
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
-        else
-            Toast.makeText(LoginActivity.this, "Ha ocurrido un error", Toast.LENGTH_LONG).show();
+        else {
+            changeVisibilityLoadToButton();
+            Toast.makeText(LoginActivity.this, R.string.txtErrorLogin, Toast.LENGTH_LONG).show();
+
+        }
     }
 
     private void handleSignInResult(GoogleSignInResult result) {

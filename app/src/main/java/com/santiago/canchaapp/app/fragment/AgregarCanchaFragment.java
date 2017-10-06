@@ -7,14 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.santiago.canchaapp.app.otros.FragmentTags.MAP_CLUB;
 
 public class AgregarCanchaFragment extends Fragment {
 

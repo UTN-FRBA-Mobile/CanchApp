@@ -12,9 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.santiago.canchaapp.CargarFotosCancha;
-import com.santiago.canchaapp.DialogoTengoClub;
-import com.santiago.canchaapp.LoginActivity;
-import com.santiago.canchaapp.MenuNavegacion;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.CanchasAdapter;
 import com.santiago.canchaapp.dominio.CanchaHeader;

@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.support.v7.widget.Toolbar;
 
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
@@ -21,12 +19,7 @@ import com.santiago.canchaapp.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.widget.Toast.LENGTH_SHORT;
 import static com.santiago.canchaapp.app.otros.FragmentTags.MAP_CLUB;
-import static com.santiago.canchaapp.app.otros.TextUtils.esUnEmail;
-import static com.santiago.canchaapp.app.otros.TextUtils.estaVacio;
-
-
 
 public class RegistrarClubFragment extends Fragment{
 

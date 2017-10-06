@@ -14,8 +14,6 @@ import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.servicios.Servidor;
 import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
