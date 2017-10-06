@@ -12,7 +12,7 @@ import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.fragment.CanchaFragment;
 import com.santiago.canchaapp.app.otros.RecyclerViewOnItemClickListener;
 import com.santiago.canchaapp.app.viewholder.CanchaViewHolder;
-import com.santiago.canchaapp.dominio.CanchaHeader;
+import com.santiago.canchaapp.dominio.Cancha;
 
 import java.util.List;
 
@@ -20,11 +20,11 @@ import static com.santiago.canchaapp.app.otros.FragmentTags.CANCHA;
 
 public class CanchasAdapter extends RecyclerView.Adapter<CanchaViewHolder> implements RecyclerViewOnItemClickListener {
 
-    private List<CanchaHeader> canchas;
+    private List<Cancha> canchas;
 
     private Context context;
 
-    public CanchasAdapter(Context context, List<CanchaHeader> canchas) {
+    public CanchasAdapter(Context context, List<Cancha> canchas) {
         this.canchas = canchas;
         this.context = context;
     }

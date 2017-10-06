@@ -17,8 +17,8 @@ import butterknife.ButterKnife;
 
 public class ReservasFragment extends Fragment {
 
-    private static String ARG_TITULO = "Reservas";
-    private static String ARG_ALQUILERES = "alquileres";
+    private static String ARG_TITULO = "titulo";
+    private static String ARG_ALQUILERES = "Alquileres";
 
     @BindView(R.id.container_reservas)
     public ViewPager viewPager;
@@ -44,8 +44,9 @@ public class ReservasFragment extends Fragment {
 
         if(paraAlquileres) {
             args.putCharSequence(ARG_TITULO, "Mis alquileres");
-        } else
+        } else {
             args.putCharSequence(ARG_TITULO, "Mis reservas");
+        }
 
         fragment.setArguments(args);
 
@@ -67,7 +68,8 @@ public class ReservasFragment extends Fragment {
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(ARG_TITULO);
+        ((AppCompatActivity) getActivity()).getSupportActionBar()
+                .setTitle(getArguments().getCharSequence(ARG_TITULO));
 
         return view;
     }

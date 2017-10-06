@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.ReservasAdapter;
+import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
 import com.santiago.canchaapp.app.otros.TipoReservas;
 import com.santiago.canchaapp.dominio.Reserva;
 import com.santiago.canchaapp.servicios.Servidor;
@@ -21,6 +22,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.santiago.canchaapp.app.otros.AccionesSobreReserva.NINGUNA;
+import static com.santiago.canchaapp.app.otros.AccionesSobreReserva.SOLO_CANCELAR;
+import static com.santiago.canchaapp.app.otros.AccionesSobreReserva.TODAS;
+import static com.santiago.canchaapp.app.otros.TipoReservas.APROBADAS;
 import static com.santiago.canchaapp.app.otros.TipoReservas.PENDIENTES;
 import static com.santiago.canchaapp.app.otros.TipoReservas.valueOf;
 
@@ -68,7 +73,7 @@ public class ListaReservasFragment extends Fragment {
         reservasRecyclerView.setLayoutManager(layoutManager);
 
         // Adapter
-        adapter = new ReservasAdapter(reservas(), sonAlquileres() && tipoReservas() == PENDIENTES);
+        adapter = new ReservasAdapter(reservas(), accionesSobreReservas());
         reservasRecyclerView.setAdapter(adapter);
     }
 
@@ -83,6 +88,17 @@ public class ListaReservasFragment extends Fragment {
                 return sonAlquileres ? servidor.getAlquileresPendientes() : servidor.getReservasPendientes();
         }
         return new ArrayList<Reserva>();
+    }
+
+    private AccionesSobreReserva accionesSobreReservas() {
+        Boolean alquileres = sonAlquileres();
+        TipoReservas tipo = tipoReservas();
+        if (alquileres && tipo == PENDIENTES) {
+            return TODAS;
+        } else if (tipo == APROBADAS || (tipo == PENDIENTES && !sonAlquileres())) {
+            return SOLO_CANCELAR;
+        }
+        return NINGUNA;
     }
 
     private Boolean sonAlquileres() {

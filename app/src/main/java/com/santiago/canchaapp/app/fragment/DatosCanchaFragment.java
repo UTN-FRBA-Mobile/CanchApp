@@ -62,20 +62,20 @@ public class DatosCanchaFragment extends Fragment {
 
     private void cargarVista(LayoutInflater inflater, View view, Cancha cancha) {
         // Setea textos
-        textoNombre.setText(cancha.getDatos().getNombre());
-        textoTipo.setText(cancha.getDatos().getTipoCancha().nombre);
-        textoSuperficie.setText(view.getResources().getString(R.string.txtCanchaSuperficie, cancha.getDatos().getSuperficie().nombre));
-        if (cancha.getDatos().esTechada()) {
+        textoNombre.setText(cancha.getNombre());
+        textoTipo.setText(cancha.getTipoCancha().nombre);
+        textoSuperficie.setText(view.getResources().getString(R.string.txtCanchaSuperficie, cancha.getSuperficie().nombre));
+        if (cancha.esTechada()) {
             textoExtra.setText(view.getResources().getString(R.string.txtCanchaTechada));
         } else {
             textoExtra.setVisibility(GONE);
         }
 
         // Setea imagen principal
-        Picasso.with(view.getContext()).load(cancha.getDatos().getFotoUrl()).fit().centerCrop().into(fotoPrincipal);
+        Picasso.with(view.getContext()).load(cancha.getFotoPrincipalUrl()).fit().centerCrop().into(fotoPrincipal);
 
         // Setea resto de las imagenes
-        for (String foto : cancha.getFotos()) {
+        for (String foto : cancha.getFotosUrls()) {
             View fotosView = inflater.inflate(R.layout.item_foto_cancha, fotos, false);
             ImageView fotoView = fotosView.findViewById(R.id.foto_cancha_item);
             Picasso.with(view.getContext()).load(foto).fit().centerCrop().into(fotoView);

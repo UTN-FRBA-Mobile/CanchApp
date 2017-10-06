@@ -71,7 +71,6 @@ public class LoginActivity extends AppCompatActivity
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        //Usuario usuario = null;
                         if(dataSnapshot.getValue() != null)
                             goMainScreen(Boolean.valueOf(dataSnapshot.child("tieneClub").toString()));
                         else
