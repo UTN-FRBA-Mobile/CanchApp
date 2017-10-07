@@ -18,7 +18,7 @@ public class HorariosPageAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return ListaHorariosFragment.nuevaInstancia(hoyMasDias(position));
+        return ListaHorariosFragment.nuevaInstancia(hoyMasDias(position), position);
     }
 
     @Override

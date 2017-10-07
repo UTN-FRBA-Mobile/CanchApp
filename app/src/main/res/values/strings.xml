@@ -52,4 +52,5 @@
 
     <string name="txtHintAutocompleteMapa">Ubicación actual</string>
     <string name="txtTituloMarcadorMapaClub">Mi Club</string>
+    <string name="txtHorariosFechaHoy">Hoy</string>
 </resources>

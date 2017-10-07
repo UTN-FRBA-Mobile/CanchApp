@@ -16,8 +16,6 @@ public class DateUtils {
 
     private static DateFormat FORMATO_DIA = new SimpleDateFormat("dd/MM", IDIOMA_ESP);
 
-    private static int CODIGO_DIA = 5;
-
     public static Date hoy() {
         return calendario().getTime();
     }
