@@ -18,4 +18,13 @@
         <item name="android:textColor">@color/colorRojo</item>
         <item name="android:textSize">10sp</item>
     </style>
+    <style name="btnReservar">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:background">@drawable/btn_redeondeado_azul</item>
+        <item name="android:padding">2dp</item>
+        <item name="android:textColor">@color/colorBlanco</item>
+        <item name="android:textSize">10sp</item>
+    </style>
 </resources>

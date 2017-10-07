@@ -1,7 +1,6 @@
 package com.santiago.canchaapp.app.fragment;
 
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
-import com.santiago.canchaapp.app.otros.DateUtils;
-
-import org.w3c.dom.Text;
 
 import java.util.Date;
 
@@ -89,7 +85,7 @@ public class ListaHorariosFragment extends Fragment {
     }
 
     private boolean ultimoDia() {
-        return getArguments().getInt(ARG_POSICION_DIA) == 6;
+        return getArguments().getInt(ARG_POSICION_DIA) == 7;
     }
 
 }

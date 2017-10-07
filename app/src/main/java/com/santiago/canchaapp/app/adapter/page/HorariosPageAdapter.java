@@ -10,7 +10,7 @@ import static com.santiago.canchaapp.app.otros.DateUtils.hoyMasDias;
 
 public class HorariosPageAdapter extends FragmentPagerAdapter {
 
-    private static int CANTIDAD_DIAS = 7;
+    private static int CANTIDAD_DIAS = 8; // 1 semana (incluyendo el primer y último día parcialmente
 
     public HorariosPageAdapter(FragmentManager fm) {
         super(fm);

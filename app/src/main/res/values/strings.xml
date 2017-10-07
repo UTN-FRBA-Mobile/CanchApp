@@ -36,21 +36,20 @@
     <string name="txtSubirFotosCancha">Subi fotos de tu cancha:</string>
     <string name="txtDescripcionBtnCargaFotos">Para mostrar opciones y luego imagen.</string>
     <string name="txtDescripcionScrollCargaFotos">Para visualizar en el Scroll.</string>
-
-
     <string name="btnAprobarReserva">Aprobar</string>
     <string name="btnCancelarReserva">Cancelar</string>
+    <string name="btnReservar">Reservar</string>
     <string name="title_activity_maps">Map</string>
-
     <string name="txtCanchaSuperficie">Superficie: %1$s</string>
     <string name="txtCanchaTechada">Techada</string>
     <string name="title_activity_main">MainActivity</string>
-
     <string name="txtSeleccionarClub">Seleccione una ubicación para su club</string>
     <string name="txtCompletarTodosLosCampos">Complete todos los campos antes de continuar</string>
     <string name="txtEmailIncorrecto">El email ingresado es incorrecto</string>
-
     <string name="txtHintAutocompleteMapa">Ubicación actual</string>
     <string name="txtTituloMarcadorMapaClub">Mi Club</string>
     <string name="txtHorariosFechaHoy">Hoy</string>
+    <string name="txtHorarioLibre">Libre</string>
+    <string name="txtHorarioReservado">Reservado</string>
+    <string name="txtHorarioPendienteAprobacion">Pendiente</string>
 </resources>
