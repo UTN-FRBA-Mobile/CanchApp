@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content_reservas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<!--
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_horarios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <TextView
+            android:id="@+id/fecha_horarios"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_margin="4dp"
+            android:text="sarasa"
+            android:layout_gravity="center"/>
+
+    </android.support.design.widget.AppBarLayout>
+-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sarasa"/>
+    </android.support.design.widget.CoordinatorLayout>
+
+
+</RelativeLayout>
