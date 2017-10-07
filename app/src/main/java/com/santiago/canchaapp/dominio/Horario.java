@@ -1,6 +1,10 @@
 package com.santiago.canchaapp.dominio;
 
-public class Horario {
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class Horario implements Serializable {
 
     public static int HORA_MIN = 9;
 
