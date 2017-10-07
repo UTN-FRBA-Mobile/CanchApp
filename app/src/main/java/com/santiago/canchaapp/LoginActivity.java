@@ -40,6 +40,8 @@ public class LoginActivity extends AppCompatActivity
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
     private GoogleApiClient googleApiClient;
+    private DatabaseReference referenceUser;
+    private ValueEventListener valueEventListener;
     @BindView(R.id.btnLogin)
     public SignInButton btnGoogleLogin;
     @BindView(R.id.progressBar)
@@ -57,8 +59,9 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user != null)
+                if(user != null){
                     showActivityFinal(user);
+                }
                 else
                     changeVisibilityLoadToButton();
             }
@@ -66,23 +69,22 @@ public class LoginActivity extends AppCompatActivity
     }
 
     private void showActivityFinal(FirebaseUser user) {
-        DatabaseReference referenceUser = DataBase.getInstancia().getReferenceUser(user.getUid());
-        referenceUser.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.getValue() != null)
-                            goMainScreen(Boolean.valueOf(dataSnapshot.child("tieneClub").toString()));
-                        else
-                            showDialog();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        changeVisibilityLoadToButton();
-                        Toast.makeText(LoginActivity.this, R.string.txtErrorLogin, Toast.LENGTH_LONG).show();
-                    }
-                });
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() != null)
+                    goMainScreen(Boolean.valueOf(dataSnapshot.child("tieneClub").getValue().toString()));
+                else
+                    showDialog();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                changeVisibilityLoadToButton();
+                Toast.makeText(LoginActivity.this, R.string.txtErrorLogin, Toast.LENGTH_LONG).show();
+            }
+        };
+        referenceUser = DataBase.getInstancia().getReferenceUser(user.getUid());
+        referenceUser.addListenerForSingleValueEvent(valueEventListener);
     }
 
     private void setGoogleApiClient() {
@@ -143,9 +145,10 @@ public class LoginActivity extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-        if (firebaseAuthListener != null) {
+        if (firebaseAuthListener != null)
             firebaseAuth.removeAuthStateListener(firebaseAuthListener);
-        }
+        if (referenceUser != null)
+            referenceUser.removeEventListener(valueEventListener);
     }
 
     @Override
