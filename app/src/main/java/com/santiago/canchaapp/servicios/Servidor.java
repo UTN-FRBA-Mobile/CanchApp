@@ -146,31 +146,33 @@ public class Servidor {
         switch (dia) {
             case 0:
                 return asList(
-                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(16), PENDIENTE, "juancito"),
-                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(17), PENDIENTE, "juancito"),
-                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(20), PENDIENTE, "xavi"),
-                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(21), PENDIENTE, "piqué")
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(16), PENDIENTE, null, "juancito"),
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(17), APROBADA, null, "juancito"),
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(20), PENDIENTE, null, "xavi"),
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(21), APROBADA, null, "piqué")
                 );
             case 1:
                 return asList(
-                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(12), PENDIENTE, "messi"),
-                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(13), PENDIENTE, "messi"),
-                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(14), PENDIENTE, "messi"),
-                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(17), PENDIENTE, "suarez"),
-                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(20), PENDIENTE, "alguien"),
-                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(21), PENDIENTE, "mascherano")
+                        new Reserva(club, FUTBOL7, "09/10/17", horaDesde(10), APROBADA, null, "messi"),
+                        new Reserva(club, FUTBOL7, "09/10/17", horaDesde(11), APROBADA, null, "messi"),
+                        new Reserva(club, FUTBOL7, "09/10/17", horaDesde(12), PENDIENTE, null, "iniesta"),
+                        new Reserva(club, FUTBOL7, "09/10/17", horaDesde(13), APROBADA, null, "messi"),
+                        new Reserva(club, FUTBOL7, "09/10/17", horaDesde(14), APROBADA, null, "messi"),
+                        new Reserva(club, FUTBOL7, "09/10/17", horaDesde(17), PENDIENTE, null, "suarez"),
+                        new Reserva(club, FUTBOL7, "09/10/17", horaDesde(20), PENDIENTE, null, "alguien"),
+                        new Reserva(club, FUTBOL7, "09/10/17", horaDesde(21), APROBADA, null, "mascherano")
                 );
             case 2:
                 return asList(
-                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(12), PENDIENTE, "messi"),
-                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(14), PENDIENTE, "messi"),
-                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(17), PENDIENTE, "suarez"),
-                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(20), PENDIENTE, "alguien"),
-                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(21), PENDIENTE, "mascherano")
+                        new Reserva(club, FUTBOL7, "10/10/17", horaDesde(12), PENDIENTE, null, "messi"),
+                        new Reserva(club, FUTBOL7, "10/10/17", horaDesde(14), PENDIENTE, null, "messi"),
+                        new Reserva(club, FUTBOL7, "10/10/17", horaDesde(17), PENDIENTE, null, "suarez"),
+                        new Reserva(club, FUTBOL7, "10/10/17", horaDesde(20), APROBADA, null, "alguien"),
+                        new Reserva(club, FUTBOL7, "10/10/17", horaDesde(21), APROBADA, null, "mascherano")
                 );
             case 3:
                 return asList(
-                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(19), PENDIENTE, "suarez")
+                        new Reserva(club, FUTBOL7, "11/10/17", horaDesde(19), PENDIENTE, null, "suarez")
                 );
         }
         return new ArrayList<>();

@@ -50,6 +50,9 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.boton_cancelar_reserva)
     public Button botonCancelar;
 
+    @BindView(R.id.layout_texto_reserva)
+    public LinearLayout layoutTextoReserva;
+
     // Horario Libre
 
     @BindView(R.id.layout_horario_libre)
@@ -81,23 +84,22 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
 
     private void cargarHorarioReservado(Reserva reserva) {
         layoutHorarioReservado.setVisibility(VISIBLE);
+        usuarioReserva.setText("por " + reserva.getUsuario());
         if (reserva.getEstado() == PENDIENTE) {
             estadoReserva.setText(view.getResources().getString(R.string.txtHorarioPendienteAprobacion));
-            usuarioReserva.setText(reserva.getUsuario());
-            botonAprobar.setVisibility(VISIBLE);
-            botonCancelar.setVisibility(VISIBLE);
+            mostrarBotones(0.5f, botonAprobar, botonCancelar);
         } else {
             estadoReserva.setText(view.getResources().getString(R.string.txtHorarioReservado));
-            botonCancelar.setVisibility(VISIBLE);
+            mostrarBotones(0.5f, botonCancelar);
         }
     }
-/*
+
     private void mostrarBotones(float tamanioLayout, Button... botones) {
         for(Button boton : botones) {
             boton.setVisibility(VISIBLE);
         }
-        textoReserva.setLayoutParams(
+        layoutTextoReserva.setLayoutParams(
                 new LayoutParams(0, WRAP_CONTENT, tamanioLayout));
     }
-*/
+
 }
