@@ -35,7 +35,7 @@ import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.app.Activity.RESULT_OK;
 
-public class CargarFotosCancha extends Fragment {
+public class CargarFotosCanchaFragment extends Fragment {
     private static String APP_DIRECTORY = "MyPictureApp/";
     private static String MEDIA_DIRECTORY = APP_DIRECTORY + "PictureApp";
 
@@ -61,7 +61,7 @@ public class CargarFotosCancha extends Fragment {
 
     ImageView imageView1, imageView2, imageView3, imageView4, imageView5, imageView6, imageView7;
 
-    public CargarFotosCancha() {
+    public CargarFotosCanchaFragment() {
         // Required empty public constructor
     }
 
@@ -161,7 +161,7 @@ public class CargarFotosCancha extends Fragment {
 
     private void showOptions(final int opcionSelect, final int opcionCamera) {
         final CharSequence[] option = {"Tomar foto", "Elegir de galería", "Cancelar"};
-        final AlertDialog.Builder builder = new AlertDialog.Builder(com.santiago.canchaapp.app.fragment.CargarFotosCancha.this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(com.santiago.canchaapp.app.fragment.CargarFotosCanchaFragment.this);
         //Toast.makeText(context, R.string.txtEmailIncorrecto, LENGTH_SHORT).show();
         builder.setTitle("Elegí una opción");
         builder.setItems(option, new DialogInterface.OnClickListener() {

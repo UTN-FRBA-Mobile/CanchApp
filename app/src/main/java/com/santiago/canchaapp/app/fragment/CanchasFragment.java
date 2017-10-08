@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.santiago.canchaapp.CargarFotosCancha; //Entiendo que no se usa.
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.CanchasAdapter;
 import com.santiago.canchaapp.dominio.Cancha;
