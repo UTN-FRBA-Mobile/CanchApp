@@ -21,13 +21,13 @@ public class AgregarCanchaFragment extends Fragment {
     public Button continuar;
 
     public static AgregarCanchaFragment nuevaInstancia() {
-        AgregarCanchaFragment fragment = new AgregarCanchaFragment();
 
-        /*Bundle args = new Bundle();
+        /* Por si hay que agregar el link del club.
+        Bundle args = new Bundle();
         args.putSerializable(ARG_CANCHAS, (Serializable) datosDeCanchas());
         fragment.setArguments(args);*/
 
-        return fragment;
+        return new AgregarCanchaFragment();
     }
 
     @Override

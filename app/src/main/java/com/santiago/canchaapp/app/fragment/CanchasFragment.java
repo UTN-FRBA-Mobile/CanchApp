@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.santiago.canchaapp.CargarFotosCancha;
+import com.santiago.canchaapp.CargarFotosCancha; //Entiendo que no se usa.
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.CanchasAdapter;
 import com.santiago.canchaapp.dominio.Cancha;
@@ -33,7 +33,6 @@ public class CanchasFragment extends Fragment {
 
     @BindView(R.id.fab)
     public FloatingActionButton fab;
-    //public AgregarCanchaFragment agregarCanchaFragment = new AgregarCanchaFragment();
 
     private RecyclerView.LayoutManager layoutManager;
 
@@ -66,12 +65,7 @@ public class CanchasFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //startActivity(new Intent(getActivity(), AgregarCanchaFragment.class));
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, AgregarCanchaFragment.nuevaInstancia(), REGISTRAR_CANCHA.toString())
-                        .addToBackStack(null)
-                        .commit();
+                abrirFragmentSiguiente();
             }
         });
 
@@ -81,6 +75,11 @@ public class CanchasFragment extends Fragment {
     }
 
     private void abrirFragmentSiguiente() {
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_frame, AgregarCanchaFragment.nuevaInstancia(), REGISTRAR_CANCHA.toString())
+                .addToBackStack(null)
+                .commit();
     }
 
     private static List<Cancha> datosDeCanchas() {
