@@ -1,13 +1,14 @@
 package com.santiago.canchaapp.app.fragment;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.santiago.canchaapp.CargarFotosCancha;
 import com.santiago.canchaapp.R;
 
 import java.io.Serializable;
@@ -15,13 +16,14 @@ import java.io.Serializable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.santiago.canchaapp.app.otros.FragmentTags.CARGAR_FOTOS_CANCHA;
+
 public class AgregarCanchaFragment extends Fragment {
 
     @BindView(R.id.btnContinuar)
     public Button continuar;
 
     public static AgregarCanchaFragment nuevaInstancia() {
-
         /* Por si hay que agregar el link del club.
         Bundle args = new Bundle();
         args.putSerializable(ARG_CANCHAS, (Serializable) datosDeCanchas());
@@ -39,7 +41,7 @@ public class AgregarCanchaFragment extends Fragment {
         continuar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                abrirFragment();
+                abrirFragmentSiguiente();
             }
         });
 
@@ -48,10 +50,10 @@ public class AgregarCanchaFragment extends Fragment {
         return view;
     }
 
-    private void abrirFragment() {
+    private void abrirFragmentSiguiente() {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_frame, new AgregarCanchaFragment())
+                .replace(R.id.content_frame, CargarFotosCanchaFragment.nuevaInstancia(), CARGAR_FOTOS_CANCHA.toString())
                 .addToBackStack(null)
                 .commit();
     }
