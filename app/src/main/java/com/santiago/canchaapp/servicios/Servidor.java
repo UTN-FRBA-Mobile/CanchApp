@@ -2,7 +2,9 @@ package com.santiago.canchaapp.servicios;
 
 import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.dominio.Club;
+import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.dominio.Reserva;
+import com.santiago.canchaapp.dominio.SlotReserva;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -133,6 +135,63 @@ public class Servidor {
                         "http://bolavip.cdnfsn.com/imagenes/670x400/1433363993_barcelona-mes-que-un-club.png",
                         "http://www.lapagina.com.sv/userfiles/image/Mosaico.jpg"
                 ));
+    }
+
+    public Club getClub() {
+        return new Club("Barcelona", "Barcelona 2333", new Horario(9, 22));
+    }
+
+    private List<Reserva> getReservasCanchaDia(int dia) {
+        Club club = getClub();
+        switch (dia) {
+            case 0:
+                return asList(
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(16), PENDIENTE, "juancito"),
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(17), PENDIENTE, "juancito"),
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(20), PENDIENTE, "xavi"),
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(21), PENDIENTE, "piqué")
+                );
+            case 1:
+                return asList(
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(12), PENDIENTE, "messi"),
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(13), PENDIENTE, "messi"),
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(14), PENDIENTE, "messi"),
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(17), PENDIENTE, "suarez"),
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(20), PENDIENTE, "alguien"),
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(21), PENDIENTE, "mascherano")
+                );
+            case 2:
+                return asList(
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(12), PENDIENTE, "messi"),
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(14), PENDIENTE, "messi"),
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(17), PENDIENTE, "suarez"),
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(20), PENDIENTE, "alguien"),
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(21), PENDIENTE, "mascherano")
+                );
+            case 3:
+                return asList(
+                        new Reserva(club, FUTBOL7, "08/10/17", horaDesde(19), PENDIENTE, "suarez")
+                );
+        }
+        return new ArrayList<>();
+    }
+
+    public List<SlotReserva> getHorarios(Horario rangoHorario, int dia) {
+        List<Reserva> reservas = getReservasCanchaDia(dia);
+        List<SlotReserva> horarios = new ArrayList<>();
+        for (int h = rangoHorario.getDesde(); h < rangoHorario.getHasta(); h++) {
+            horarios.add(new SlotReserva(horaDesde(h), reservaEnHorario(h, reservas)));
+        }
+        return horarios;
+    }
+
+    private Reserva reservaEnHorario(int hora, List<Reserva> reservas) {
+        for (Reserva reserva: reservas) {
+            if (reserva.getHorario().getDesde() == hora) {
+                return reserva;
+            }
+        }
+        return null;
     }
 
 }

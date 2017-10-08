@@ -2,6 +2,8 @@ package com.santiago.canchaapp.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
+import com.santiago.canchaapp.app.adapter.HorariosAdapter;
+import com.santiago.canchaapp.dominio.SlotReserva;
+import com.santiago.canchaapp.servicios.Servidor;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +31,8 @@ public class ListaHorariosFragment extends Fragment {
 
     private static String ARG_POSICION_DIA = "pos_dia";
 
+    private static String ARG_HORARIOS = "horarios";
+
     @BindView(R.id.fecha_horarios)
     public TextView fecha;
 
@@ -33,13 +42,12 @@ public class ListaHorariosFragment extends Fragment {
     @BindView(R.id.dia_next)
     public ImageView flechaDiaSiguiente;
 
-/*
-    @BindView(R.id.recycler_view_reservas)
-    public RecyclerView reservasRecyclerView;
+    @BindView(R.id.recycler_view_horarios)
+    public RecyclerView horariosRecyclerView;
 
     private RecyclerView.LayoutManager layoutManager;
 
-    private ReservasAdapter adapter;*/
+    private HorariosAdapter adapter;
 
     public static ListaHorariosFragment nuevaInstancia(Date dia, int posicionDia) {
         ListaHorariosFragment fragment = new ListaHorariosFragment();
@@ -47,6 +55,7 @@ public class ListaHorariosFragment extends Fragment {
         Bundle args = new Bundle();
         args.putSerializable(ARG_DIA, dia);
         args.putInt(ARG_POSICION_DIA, posicionDia);
+        args.putSerializable(ARG_HORARIOS, (Serializable) datosHorarios(posicionDia));
         fragment.setArguments(args);
 
         return fragment;
@@ -63,6 +72,7 @@ public class ListaHorariosFragment extends Fragment {
     private void cargarVista(View rootView) {
         ButterKnife.bind(this, rootView);
 
+        // Appbar
         if (primerDia()) {
             fecha.setText(getResources().getString(R.string.txtHorariosFechaHoy));
             flechaDiaAnterior.setVisibility(INVISIBLE);
@@ -72,6 +82,14 @@ public class ListaHorariosFragment extends Fragment {
                 flechaDiaSiguiente.setVisibility(INVISIBLE);
             }
         }
+
+        // Recycler view
+        layoutManager = new LinearLayoutManager(getActivity());
+        horariosRecyclerView.setLayoutManager(layoutManager);
+
+        // Adapter
+        adapter = new HorariosAdapter(horarios());
+        horariosRecyclerView.setAdapter(adapter);
 
     }
 
@@ -86,6 +104,15 @@ public class ListaHorariosFragment extends Fragment {
 
     private boolean ultimoDia() {
         return getArguments().getInt(ARG_POSICION_DIA) == 7;
+    }
+
+    private static List<SlotReserva> datosHorarios(int dia) {
+        Servidor servidor = Servidor.instancia();
+        return servidor.getHorarios(servidor.getClub().getRangoHorario(), dia);
+    }
+
+    private List<SlotReserva> horarios() {
+        return (List<SlotReserva>) getArguments().getSerializable(ARG_HORARIOS);
     }
 
 }

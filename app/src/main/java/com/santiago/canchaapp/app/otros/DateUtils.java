@@ -1,5 +1,7 @@
 package com.santiago.canchaapp.app.otros;
 
+import com.santiago.canchaapp.dominio.Horario;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,6 +34,11 @@ public class DateUtils {
 
     private static Calendar calendario() {
         return Calendar.getInstance();
+    }
+
+    public static String textoHorario(Horario horario) {
+        int desde = horario.getDesde();
+        return ((desde < 10) ? "0" : "") + desde + ":00";
     }
 
 }

@@ -20,7 +20,6 @@
             android:layout_height="match_parent"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
             android:gravity="center_vertical"
-            android:text="18:00"
             android:textColor="@color/colorAclaracion"/>
 
         <LinearLayout
@@ -93,7 +92,8 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:layout_marginRight="10dp"
+            android:visibility="gone">
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
@@ -106,7 +106,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:text="@string/txtHorarioPendienteAprobacion"
                     />
 
             </LinearLayout>
