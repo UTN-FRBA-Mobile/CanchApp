@@ -1,14 +1,16 @@
 package com.santiago.canchaapp.app.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.santiago.canchaapp.R;
+
+import java.io.Serializable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,7 +21,13 @@ public class AgregarCanchaFragment extends Fragment {
     public Button continuar;
 
     public static AgregarCanchaFragment nuevaInstancia() {
-        return new AgregarCanchaFragment();
+        AgregarCanchaFragment fragment = new AgregarCanchaFragment();
+
+        /*Bundle args = new Bundle();
+        args.putSerializable(ARG_CANCHAS, (Serializable) datosDeCanchas());
+        fragment.setArguments(args);*/
+
+        return fragment;
     }
 
     @Override

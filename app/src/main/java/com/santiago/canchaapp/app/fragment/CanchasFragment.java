@@ -16,6 +16,7 @@ import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.CanchasAdapter;
 import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.servicios.Servidor;
+import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHA;
 
 import java.io.Serializable;
 import java.util.List;
@@ -32,6 +33,7 @@ public class CanchasFragment extends Fragment {
 
     @BindView(R.id.fab)
     public FloatingActionButton fab;
+    //public AgregarCanchaFragment agregarCanchaFragment = new AgregarCanchaFragment();
 
     private RecyclerView.LayoutManager layoutManager;
 
@@ -64,13 +66,22 @@ public class CanchasFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), CargarFotosCancha.class));
+                //startActivity(new Intent(getActivity(), AgregarCanchaFragment.class));
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, AgregarCanchaFragment.nuevaInstancia(), REGISTRAR_CANCHA.toString())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Canchas");
 
         return rootView;
+    }
+
+    private void abrirFragmentSiguiente() {
+
     }
 
     private static List<Cancha> datosDeCanchas() {
