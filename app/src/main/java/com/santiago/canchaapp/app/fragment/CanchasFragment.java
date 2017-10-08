@@ -81,7 +81,6 @@ public class CanchasFragment extends Fragment {
     }
 
     private void abrirFragmentSiguiente() {
-
     }
 
     private static List<Cancha> datosDeCanchas() {
