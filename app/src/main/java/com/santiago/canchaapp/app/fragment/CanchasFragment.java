@@ -68,8 +68,6 @@ public class CanchasFragment extends Fragment {
             }
         });
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Canchas");
-
         return rootView;
     }
 
