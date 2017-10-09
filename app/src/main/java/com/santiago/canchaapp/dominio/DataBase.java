@@ -13,6 +13,7 @@ public class DataBase {
     private static DataBase instancia = null;
     private static DatabaseReference mDatabase;
     private static String keyUsuarios = "usuarios";
+    private static String keyClubes = "clubes";
 
     private DataBase() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -33,7 +34,8 @@ public class DataBase {
     }
 
     public void insertClub(FirebaseUser user, Club club){
-        mDatabase.child(keyUsuarios).child(user.getUid()).child("club").setValue(club);
+        mDatabase.child(keyUsuarios).child(user.getUid()).child("idClub").setValue(club.getUuid());
+        mDatabase.child(keyClubes).child(club.getUuid()).setValue(club);
     }
 
 }

@@ -82,7 +82,8 @@ public class RegistrarClubFragment extends Fragment{
     }
 
     private void abrirFragmentSiguiente() {
-        addParameters();
+        Bundle args = getParameters();
+        mapClubFragment.setArguments(args);
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_frame, mapClubFragment, MAP_CLUB.toString())
@@ -90,13 +91,13 @@ public class RegistrarClubFragment extends Fragment{
                 .commit();
     }
 
-    private void addParameters() {
+    private Bundle getParameters() {
         Bundle args = new Bundle();
         args.putString("nombreClub", nombre());
         args.putString("telefono", telefono());
         args.putString("email", email());
         args.putSerializable("rangoHorario", new Horario(valorMinimo(), valorMaximo()));
-        mapClubFragment.setArguments(args);
+        return args;
     }
 
     // Utils
@@ -115,6 +116,6 @@ public class RegistrarClubFragment extends Fragment{
 
     private Integer valorMinimo() {return parseInt(valorMinimo.getText().toString());}
 
-    private Integer valorMaximo() {return parseInt(valorMinimo.getText().toString());}
+    private Integer valorMaximo() {return parseInt(valorMaximo.getText().toString());}
 
 }

@@ -40,6 +40,7 @@ import com.santiago.canchaapp.dominio.Horario;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -258,9 +259,10 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
             String telefono = args.getString("telefono");
             String email = args.getString("email");
             Horario rangoHorario = (Horario) args.getSerializable("rangoHorario");
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             String direccion = obtenerDireccion(ubicacion.latitude, ubicacion.longitude);
-            Club club = new Club(nombreClub, direccion, ubicacion, email, telefono, rangoHorario);
+            UUID uuid = UUID.randomUUID();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            Club club = new Club(uuid, nombreClub, direccion, ubicacion, email, telefono, rangoHorario);
             DataBase.getInstancia().insertClub(user, club);
         }
     }
