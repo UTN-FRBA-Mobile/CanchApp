@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -264,7 +265,16 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             Club club = new Club(uuid, nombreClub, direccion, ubicacion, email, telefono, rangoHorario);
             DataBase.getInstancia().insertClub(user, club);
+            changeItemMenuClub(true);
         }
+    }
+
+    private void changeItemMenuClub(boolean mostrar) {
+        NavigationView navigationView = activity.findViewById(R.id.nav_view);
+        navigationView.getMenu().findItem(R.id.navMisAlquileres).setVisible(mostrar);
+        navigationView.getMenu().findItem(R.id.navMisCanchas).setVisible(mostrar);
+        navigationView.getMenu().findItem(R.id.navMiClub).setVisible(mostrar);
+        navigationView.getMenu().findItem(R.id.navRegistrarClub).setVisible(!mostrar);
     }
 
 }

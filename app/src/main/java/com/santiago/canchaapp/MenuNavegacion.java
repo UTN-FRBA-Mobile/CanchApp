@@ -171,6 +171,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
             }
 
             private void changeItemMenuClub(boolean mostrar) {
+
                 navigationView.getMenu().findItem(R.id.navMisAlquileres).setVisible(mostrar);
                 navigationView.getMenu().findItem(R.id.navMisCanchas).setVisible(mostrar);
                 navigationView.getMenu().findItem(R.id.navMiClub).setVisible(mostrar);
@@ -183,7 +184,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
             }
         };
         DatabaseReference referenceUser = DataBase.getInstancia().getReferenceIdClubUser(user.getUid());
-        referenceUser.addValueEventListener(valueEventListener);
+        referenceUser.addListenerForSingleValueEvent(valueEventListener);
     }
 
     private void setUserData(FirebaseUser user) {
