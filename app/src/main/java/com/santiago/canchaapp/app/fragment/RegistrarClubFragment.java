@@ -15,11 +15,13 @@ import android.widget.TextView;
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 import com.santiago.canchaapp.R;
+import com.santiago.canchaapp.dominio.Horario;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.santiago.canchaapp.app.otros.FragmentTags.MAP_CLUB;
+import static java.lang.Integer.parseInt;
 
 public class RegistrarClubFragment extends Fragment{
 
@@ -80,11 +82,21 @@ public class RegistrarClubFragment extends Fragment{
     }
 
     private void abrirFragmentSiguiente() {
+        addParameters();
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_frame, mapClubFragment, MAP_CLUB.toString())
                 .addToBackStack(null)
                 .commit();
+    }
+
+    private void addParameters() {
+        Bundle args = new Bundle();
+        args.putString("nombreClub", nombre());
+        args.putString("telefono", telefono());
+        args.putString("email", email());
+        args.putSerializable("rangoHorario", new Horario(valorMinimo(), valorMaximo()));
+        mapClubFragment.setArguments(args);
     }
 
     // Utils
@@ -100,5 +112,9 @@ public class RegistrarClubFragment extends Fragment{
     private String email() {
         return txtEmail.getText().toString();
     }
+
+    private Integer valorMinimo() {return parseInt(valorMinimo.getText().toString());}
+
+    private Integer valorMaximo() {return parseInt(valorMinimo.getText().toString());}
 
 }

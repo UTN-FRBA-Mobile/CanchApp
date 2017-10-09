@@ -32,5 +32,8 @@ public class DataBase {
         return mDatabase.child(keyUsuarios).child(uId);
     }
 
+    public void insertClub(FirebaseUser user, Club club){
+        mDatabase.child(keyUsuarios).child(user.getUid()).child("club").setValue(club);
+    }
 
 }

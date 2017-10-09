@@ -30,7 +30,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.santiago.canchaapp.R;
+import com.santiago.canchaapp.dominio.Club;
+import com.santiago.canchaapp.dominio.DataBase;
+import com.santiago.canchaapp.dominio.Horario;
 
 import java.io.IOException;
 import java.util.List;
@@ -238,6 +243,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void abrirFragmentSiguiente() {
+        insertClub();
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_frame, ConfirmarClub.nuevaInstancia(), REGISTRAR_CLUB.toString())
@@ -245,5 +251,18 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
                 .commit();
     }
 
+    private void insertClub() {
+        Bundle args = getArguments();
+        if (args != null) {
+            String nombreClub = args.getString("nombreClub");
+            String telefono = args.getString("telefono");
+            String email = args.getString("email");
+            Horario rangoHorario = (Horario) args.getSerializable("rangoHorario");
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String direccion = obtenerDireccion(ubicacion.latitude, ubicacion.longitude);
+            Club club = new Club(nombreClub, direccion, ubicacion, email, telefono, rangoHorario);
+            DataBase.getInstancia().insertClub(user, club);
+        }
+    }
 
 }
