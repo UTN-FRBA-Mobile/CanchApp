@@ -24,10 +24,15 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.santiago.canchaapp.app.fragment.CanchasFragment;
 import com.santiago.canchaapp.app.fragment.RegistrarClubFragment;
 import com.santiago.canchaapp.app.fragment.ReservasFragment;
 import com.santiago.canchaapp.app.otros.FragmentTags;
+import com.santiago.canchaapp.dominio.DataBase;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -50,6 +55,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
     private FirebaseAuth firebaseAuth;
     private GoogleApiClient googleApiClient;
     public ActionBarDrawerToggle toggle;
+    private FirebaseUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,7 +143,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
 
     protected void onStart() {
         super.onStart();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        user = firebaseAuth.getCurrentUser();
         setUserData(user);
         changeVisibleMenu();
     }
@@ -147,9 +153,37 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
         Boolean mostrarSeccionClub = parametros.getBoolean("mostrarSeccionClub");
         navigationView.getMenu().findItem(R.id.menuComplejo).setVisible(mostrarSeccionClub);
         if(mostrarSeccionClub)
-            abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB);
+            getInfoClub();
         else
             abrirFragment(ReservasFragment.nuevaInstanciaParaReservas(), MIS_RESERVAS);
+    }
+
+    private void getInfoClub() {
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Boolean tieneClub = dataSnapshot.getValue() != null;
+                changeItemMenuClub(tieneClub);
+                if(!tieneClub)
+                    abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB);
+                else
+                    abrirFragment(CanchasFragment.nuevaInstancia(), MIS_CANCHAS);
+            }
+
+            private void changeItemMenuClub(boolean mostrar) {
+                navigationView.getMenu().findItem(R.id.navMisAlquileres).setVisible(mostrar);
+                navigationView.getMenu().findItem(R.id.navMisCanchas).setVisible(mostrar);
+                navigationView.getMenu().findItem(R.id.navMiClub).setVisible(mostrar);
+                navigationView.getMenu().findItem(R.id.navRegistrarClub).setVisible(!mostrar);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(MenuNavegacion.this, R.string.txtErrorLogin, Toast.LENGTH_LONG).show();
+            }
+        };
+        DatabaseReference referenceUser = DataBase.getInstancia().getReferenceIdClubUser(user.getUid());
+        referenceUser.addValueEventListener(valueEventListener);
     }
 
     private void setUserData(FirebaseUser user) {

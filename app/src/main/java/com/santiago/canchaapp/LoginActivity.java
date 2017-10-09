@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() != null)
-                    goMainScreen(Boolean.valueOf(dataSnapshot.child("tieneClub").getValue().toString()));
+                    goMainScreen(Boolean.valueOf(dataSnapshot.child("esDuenio").getValue().toString()));
                 else
                     showDialog();
             }

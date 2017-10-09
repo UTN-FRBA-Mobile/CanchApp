@@ -24,13 +24,17 @@ public class DataBase {
         return instancia;
     }
 
-    public void insertUser(FirebaseUser user, boolean tieneClub){
-        Usuario usuario = new Usuario(user.getUid(), tieneClub, user.getDisplayName(), user.getEmail());
+    public void insertUser(FirebaseUser user, boolean esDuenio){
+        Usuario usuario = new Usuario(user.getUid(), esDuenio, user.getDisplayName(), user.getEmail());
         mDatabase.child(keyUsuarios).child(user.getUid()).setValue(usuario);
     }
 
     public DatabaseReference getReferenceUser(String uId){
         return mDatabase.child(keyUsuarios).child(uId);
+    }
+
+    public DatabaseReference getReferenceIdClubUser(String uId){
+        return mDatabase.child(keyUsuarios).child(uId).child("idClub");
     }
 
     public void insertClub(FirebaseUser user, Club club){
