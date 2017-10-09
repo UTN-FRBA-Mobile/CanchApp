@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:id="@+id/MyLinearLayout"
     android:paddingLeft="@dimen/padding_sides"
-    android:paddingRight="@dimen/padding_sides">
+    android:paddingRight="@dimen/padding_sides"
+    tools:context="com.santiago.canchaapp.app.fragment.CargarFotosCanchaFragment">
 
     <TextView
         android:id="@+id/txtCargarFotosCancha"
@@ -33,7 +34,7 @@
             android:id="@+id/btnOpciones01"
             android:layout_width="115dp"
             android:layout_height="105dp"
-            android:background="@drawable/cancha_sin_foto"
+            android:background="@drawable/agregar"
             android:contentDescription="@string/txtDescripcionBtnCargaFotos"/>
 
         <ImageButton

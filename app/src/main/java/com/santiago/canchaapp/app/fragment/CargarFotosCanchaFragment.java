@@ -39,8 +39,6 @@ import butterknife.ButterKnife;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static com.santiago.canchaapp.app.otros.FragmentTags.CARGAR_FOTOS_CANCHA;
-import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_CANCHAS;
 import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHA;
 
 public class CargarFotosCanchaFragment extends Fragment {
@@ -70,7 +68,7 @@ public class CargarFotosCanchaFragment extends Fragment {
 
     ImageView imageView1, imageView2, imageView3, imageView4, imageView5, imageView6, imageView7;*/
 
-    @BindView(R.id.btnComenzar)
+    @BindView(R.id.btnListo)
     public Button listo;
 
     public static CargarFotosCanchaFragment nuevaInstancia() {
@@ -86,7 +84,7 @@ public class CargarFotosCanchaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_confirmar_club, container, false);
+        View view = inflater.inflate(R.layout.fragment_cargar_fotos_de_cancha, container, false);
         ButterKnife.bind(this, view);
 
         listo.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +102,7 @@ public class CargarFotosCanchaFragment extends Fragment {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       setContentView(R.layout.fragment_cargar_fotos_cancha2);
+       setContentView(R.layout.fragment_cargar_fotos_cancha);
 
         setImage1 = (ImageView) findViewById(R.id.btnOpciones01);
         setImage2 = (ImageView) findViewById(R.id.btnOpciones02);
@@ -387,7 +385,7 @@ public class CargarFotosCanchaFragment extends Fragment {
     private void abrirFragmentSiguiente() {
         getFragmentManager()
             .beginTransaction()
-            .replace(R.id.content_frame, ConfirmarClub.nuevaInstancia(), REGISTRAR_CANCHA.toString())
+            .replace(R.id.content_frame, ConfirmarCancha.nuevaInstancia(), REGISTRAR_CANCHA.toString())
             .addToBackStack(null)
             .commit();
     }
