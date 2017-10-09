@@ -387,7 +387,7 @@ public class CargarFotosCanchaFragment extends Fragment {
     private void abrirFragmentSiguiente() {
         getFragmentManager()
             .beginTransaction()
-            .replace(R.id.content_frame, CanchasFragment.nuevaInstancia(), MIS_CANCHAS.toString())
+            .replace(R.id.content_frame, CargarFotosCanchaFragment.nuevaInstancia(), CARGAR_FOTOS_CANCHA.toString())
             .addToBackStack(null)
             .commit();
     }
