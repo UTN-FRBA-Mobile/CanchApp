@@ -70,7 +70,7 @@ public class CargarFotosCanchaFragment extends Fragment {
 
     ImageView imageView1, imageView2, imageView3, imageView4, imageView5, imageView6, imageView7;*/
 
-    @BindView(R.id.btnListo)
+    @BindView(R.id.btnComenzar)
     public Button listo;
 
     public static CargarFotosCanchaFragment nuevaInstancia() {
@@ -86,7 +86,7 @@ public class CargarFotosCanchaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_cargar_fotos_cancha, container, false);
+        View view = inflater.inflate(R.layout.fragment_confirmar_club, container, false);
         ButterKnife.bind(this, view);
 
         listo.setOnClickListener(new View.OnClickListener() {
@@ -387,7 +387,7 @@ public class CargarFotosCanchaFragment extends Fragment {
     private void abrirFragmentSiguiente() {
         getFragmentManager()
             .beginTransaction()
-            .replace(R.id.content_frame, CargarFotosCanchaFragment.nuevaInstancia(), CARGAR_FOTOS_CANCHA.toString())
+            .replace(R.id.content_frame, ConfirmarClub.nuevaInstancia(), REGISTRAR_CANCHA.toString())
             .addToBackStack(null)
             .commit();
     }

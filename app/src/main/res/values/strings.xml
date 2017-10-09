@@ -32,6 +32,7 @@
     <string name="txtTituloPermisosOk">Permisos aceptados</string>
     <string name="txtAbortarPermisos">Cancelar</string>
     <string name="txtConfirmacionGuardarClub">Tu Club ha sido guardado correctamente.</string>
+    <string name="txtConfirmacionGuardarCancha">Tu Cancha ha sido guardada correctamente.</string>
     <string name="txtAclaracionTecho">Confirmar que la cancha tiene techo.</string>
     <string name="txtSubirFotosCancha">Subi fotos de tu cancha:</string>
     <string name="txtDescripcionBtnCargaFotos">Para mostrar opciones y luego imagen.</string>

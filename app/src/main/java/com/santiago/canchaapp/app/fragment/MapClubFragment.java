@@ -44,7 +44,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
 import static android.widget.Toast.LENGTH_SHORT;
 import static com.google.android.gms.location.places.AutocompleteFilter.TYPE_FILTER_ADDRESS;
-import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_CANCHAS;
+import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CLUB;
 import static com.santiago.canchaapp.app.otros.TextUtils.textoOVacio;
 
 public class MapClubFragment extends Fragment implements OnMapReadyCallback {
@@ -240,7 +240,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     private void abrirFragmentSiguiente() {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_frame, CanchasFragment.nuevaInstancia(), MIS_CANCHAS.toString())
+                .replace(R.id.content_frame, ConfirmarClub.nuevaInstancia(), REGISTRAR_CLUB.toString())
                 .addToBackStack(null)
                 .commit();
     }

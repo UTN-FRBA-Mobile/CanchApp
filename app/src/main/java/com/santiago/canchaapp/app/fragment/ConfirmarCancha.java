@@ -10,32 +10,25 @@ import android.widget.Button;
 
 import com.santiago.canchaapp.R;
 
-import java.io.Serializable;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.santiago.canchaapp.app.otros.FragmentTags.CARGAR_FOTOS_CANCHA;
-import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHA;
+import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_CANCHAS;
 
-public class AgregarCanchaFragment extends Fragment {
+public class ConfirmarCancha extends Fragment {
 
     @BindView(R.id.btnContinuar)
     public Button continuar;
 
-    public static AgregarCanchaFragment nuevaInstancia() {
-        /* Por si hay que agregar el link del club.
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_CANCHAS, (Serializable) datosDeCanchas());
-        fragment.setArguments(args);*/
-
-        return new AgregarCanchaFragment();
+    public static ConfirmarCancha nuevaInstancia() {
+        ConfirmarCancha fragment = new ConfirmarCancha();
+        return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_agregar_cancha, container, false);
+        View view = inflater.inflate(R.layout.fragment_confirmar_cancha, container, false);
         ButterKnife.bind(this, view);
 
         continuar.setOnClickListener(new View.OnClickListener() {
@@ -45,7 +38,7 @@ public class AgregarCanchaFragment extends Fragment {
             }
         });
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Agregar cancha");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Confirmar registro de cancha");
 
         return view;
     }
@@ -53,9 +46,9 @@ public class AgregarCanchaFragment extends Fragment {
     private void abrirFragmentSiguiente() {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_frame, ConfirmarCancha.nuevaInstancia(), REGISTRAR_CANCHA.toString())
+                .replace(R.id.content_frame, CanchasFragment.nuevaInstancia(), MIS_CANCHAS.toString())
                 .addToBackStack(null)
                 .commit();
     }
-
 }
+
