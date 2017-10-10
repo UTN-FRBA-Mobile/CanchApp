@@ -8,6 +8,7 @@
     android:paddingRight="@dimen/padding_sides"
     android:paddingTop="10dp"
     android:background="@color/colorBlanco"
+    android:clickable="true"
     tools:context="com.santiago.canchaapp.app.fragment.AgregarCanchaFragment">
 
         <EditText

@@ -15,6 +15,7 @@ import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.CanchasAdapter;
 import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.servicios.Servidor;
+
 import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHA;
 
 import java.io.Serializable;
@@ -74,7 +75,7 @@ public class CanchasFragment extends Fragment {
     private void abrirFragmentSiguiente() {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_frame, AgregarCanchaFragment.nuevaInstancia(), REGISTRAR_CANCHA.toString())
+                .replace(R.id.club_layout, AgregarCanchaFragment.nuevaInstancia(), REGISTRAR_CANCHA.toString())
                 .addToBackStack(null)
                 .commit();
     }

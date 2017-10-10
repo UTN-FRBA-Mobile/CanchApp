@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/padding_sides"
     android:paddingRight="@dimen/padding_sides"
-    android:paddingTop="@dimen/padding_top_center">
+    android:paddingTop="@dimen/padding_top_center"
+    android:background="@color/colorBlanco"
+    android:clickable="true">
 
     <ImageView
         android:id="@+id/imageViewTildeClub"

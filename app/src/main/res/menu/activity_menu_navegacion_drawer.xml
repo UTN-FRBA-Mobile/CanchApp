@@ -24,10 +24,6 @@
                         android:icon="@drawable/ic_mis_alquileres"
                         android:title="@string/txtMisAlquileres" />
                     <item
-                        android:id="@+id/navMisCanchas"
-                        android:icon="@drawable/ic_mis_canchas"
-                        android:title="@string/txtMisCanchas" />
-                    <item
                         android:id="@+id/navMiClub"
                         android:icon="@drawable/ic_mi_club"
                         android:title="@string/txtMiClub" />

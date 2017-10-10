@@ -4,9 +4,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/MyLinearLayout"
     android:paddingLeft="@dimen/padding_sides"
     android:paddingRight="@dimen/padding_sides"
+    android:clickable="true"
     tools:context="com.santiago.canchaapp.app.fragment.CargarFotosCanchaFragment">
 
     <TextView

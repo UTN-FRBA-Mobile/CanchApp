@@ -385,7 +385,7 @@ public class CargarFotosCanchaFragment extends Fragment {
     private void abrirFragmentSiguiente() {
         getFragmentManager()
             .beginTransaction()
-            .replace(R.id.content_frame, ConfirmarCancha.nuevaInstancia(), REGISTRAR_CANCHA.toString())
+            .replace(R.id.club_layout, ConfirmarCancha.nuevaInstancia(), REGISTRAR_CANCHA.toString())
             .addToBackStack(null)
             .commit();
     }

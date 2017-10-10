@@ -3,7 +3,9 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/padding_sides"
-    android:paddingRight="@dimen/padding_sides">
+    android:paddingRight="@dimen/padding_sides"
+    android:background="@color/colorBlanco"
+    android:clickable="true">
 
     <TextView
         android:id="@+id/txtCargarFotosCancha"

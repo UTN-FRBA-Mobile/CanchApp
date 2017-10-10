@@ -13,7 +13,7 @@ import com.santiago.canchaapp.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_CANCHAS;
+import static com.santiago.canchaapp.app.otros.FragmentTags.MI_CLUB;
 
 public class ConfirmarClub extends Fragment{
 
@@ -46,7 +46,7 @@ public class ConfirmarClub extends Fragment{
     private void abrirFragmentSiguiente() {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_frame, CanchasFragment.nuevaInstancia(), MIS_CANCHAS.toString())
+                .replace(R.id.content_frame, ClubFragment.nuevaInstanciaParaMiClub(), MI_CLUB.toString())
                 .addToBackStack(null)
                 .commit();
     }

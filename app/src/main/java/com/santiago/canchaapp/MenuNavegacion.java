@@ -35,7 +35,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_ALQUILERES;
-import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_CANCHAS;
 import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_RESERVAS;
 import static com.santiago.canchaapp.app.otros.FragmentTags.MI_CLUB;
 import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CLUB;
@@ -98,8 +97,6 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
                 abrirFragment(ReservasFragment.nuevaInstanciaParaReservas(), MIS_RESERVAS); break;
             case R.id.navMisAlquileres:
                 abrirFragment(ReservasFragment.nuevaInstanciaParaAlquileres(), MIS_ALQUILERES); break;
-            case R.id.navMisCanchas:
-                abrirFragment(CanchasFragment.nuevaInstancia(), MIS_CANCHAS); break;
             case R.id.navMiClub:
                 abrirFragment(ClubFragment.nuevaInstanciaParaMiClub(), MI_CLUB); break;
         }

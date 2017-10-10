@@ -14,6 +14,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_CANCHAS;
+import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_RESERVAS;
+import static com.santiago.canchaapp.app.otros.FragmentTags.MI_CLUB;
 
 public class ConfirmarCancha extends Fragment {
 
@@ -44,11 +46,9 @@ public class ConfirmarCancha extends Fragment {
     }
 
     private void abrirFragmentSiguiente() {
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.content_frame, CanchasFragment.nuevaInstancia(), MIS_CANCHAS.toString())
-                .addToBackStack(null)
-                .commit();
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Club");
     }
 }
 

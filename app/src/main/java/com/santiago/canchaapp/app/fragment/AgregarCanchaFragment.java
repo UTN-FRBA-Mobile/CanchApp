@@ -10,13 +10,10 @@ import android.widget.Button;
 
 import com.santiago.canchaapp.R;
 
-import java.io.Serializable;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.santiago.canchaapp.app.otros.FragmentTags.CARGAR_FOTOS_CANCHA;
-import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHA;
 
 public class AgregarCanchaFragment extends Fragment {
 
@@ -53,8 +50,7 @@ public class AgregarCanchaFragment extends Fragment {
     private void abrirFragmentSiguiente() {
         getFragmentManager()
                 .beginTransaction()
-                //.replace(R.id.content_frame, ConfirmarCancha.nuevaInstancia(), REGISTRAR_CANCHA.toString())
-                .replace(R.id.content_frame, CargarFotosCanchaFragment.nuevaInstancia(), CARGAR_FOTOS_CANCHA.toString())
+                .replace(R.id.club_layout, CargarFotosCanchaFragment.nuevaInstancia(), CARGAR_FOTOS_CANCHA.toString())
                 .addToBackStack(null)
                 .commit();
     }
