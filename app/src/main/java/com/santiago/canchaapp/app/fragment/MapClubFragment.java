@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -30,11 +31,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.santiago.canchaapp.R;
+import com.santiago.canchaapp.dominio.Club;
+import com.santiago.canchaapp.dominio.DataBase;
+import com.santiago.canchaapp.dominio.Horario;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -238,6 +245,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void abrirFragmentSiguiente() {
+        insertClub();
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_frame, ConfirmarClub.nuevaInstancia(), REGISTRAR_CLUB.toString())
@@ -245,5 +253,28 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
                 .commit();
     }
 
+    private void insertClub() {
+        Bundle args = getArguments();
+        if (args != null) {
+            String nombreClub = args.getString("nombreClub");
+            String telefono = args.getString("telefono");
+            String email = args.getString("email");
+            Horario rangoHorario = (Horario) args.getSerializable("rangoHorario");
+            String direccion = obtenerDireccion(ubicacion.latitude, ubicacion.longitude);
+            UUID uuid = UUID.randomUUID();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            Club club = new Club(uuid, nombreClub, direccion, ubicacion, email, telefono, rangoHorario);
+            DataBase.getInstancia().insertClub(user, club);
+            changeItemMenuClub(true);
+        }
+    }
+
+    private void changeItemMenuClub(boolean mostrar) {
+        NavigationView navigationView = activity.findViewById(R.id.nav_view);
+        navigationView.getMenu().findItem(R.id.navMisAlquileres).setVisible(mostrar);
+        navigationView.getMenu().findItem(R.id.navMisCanchas).setVisible(mostrar);
+        navigationView.getMenu().findItem(R.id.navMiClub).setVisible(mostrar);
+        navigationView.getMenu().findItem(R.id.navRegistrarClub).setVisible(!mostrar);
+    }
 
 }
