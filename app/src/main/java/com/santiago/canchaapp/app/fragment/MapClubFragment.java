@@ -272,7 +272,6 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     private void changeItemMenuClub(boolean mostrar) {
         NavigationView navigationView = activity.findViewById(R.id.nav_view);
         navigationView.getMenu().findItem(R.id.navMisAlquileres).setVisible(mostrar);
-        navigationView.getMenu().findItem(R.id.navMisCanchas).setVisible(mostrar);
         navigationView.getMenu().findItem(R.id.navMiClub).setVisible(mostrar);
         navigationView.getMenu().findItem(R.id.navRegistrarClub).setVisible(!mostrar);
     }

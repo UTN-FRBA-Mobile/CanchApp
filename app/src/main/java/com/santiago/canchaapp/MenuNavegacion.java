@@ -168,13 +168,11 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
                 if(!tieneClub)
                     abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB);
                 else
-                    abrirFragment(CanchasFragment.nuevaInstancia(), MIS_CANCHAS);
+                    abrirFragment(ClubFragment.nuevaInstanciaParaMiClub(), MI_CLUB);
             }
 
             private void changeItemMenuClub(boolean mostrar) {
-
                 navigationView.getMenu().findItem(R.id.navMisAlquileres).setVisible(mostrar);
-                navigationView.getMenu().findItem(R.id.navMisCanchas).setVisible(mostrar);
                 navigationView.getMenu().findItem(R.id.navMiClub).setVisible(mostrar);
                 navigationView.getMenu().findItem(R.id.navRegistrarClub).setVisible(!mostrar);
             }
