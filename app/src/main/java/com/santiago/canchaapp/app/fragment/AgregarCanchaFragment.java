@@ -1,6 +1,7 @@
 package com.santiago.canchaapp.app.fragment;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -17,8 +18,8 @@ import static com.santiago.canchaapp.app.otros.FragmentTags.CARGAR_FOTOS_CANCHA;
 
 public class AgregarCanchaFragment extends Fragment {
 
-    @BindView(R.id.btnContinuar)
-    public Button continuar;
+    @BindView(R.id.floatingbtnContinuar)
+    public FloatingActionButton continuar;
 
     public static AgregarCanchaFragment nuevaInstancia() {
         /* Por si hay que agregar el link del club.

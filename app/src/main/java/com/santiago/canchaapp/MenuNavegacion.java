@@ -41,6 +41,7 @@ import butterknife.ButterKnife;
 
 import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_ALQUILERES;
 import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_RESERVAS;
+import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_CANCHAS;
 import static com.santiago.canchaapp.app.otros.FragmentTags.MI_CLUB;
 import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CLUB;
 

@@ -72,9 +72,9 @@ public class LoginActivity extends AppCompatActivity
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() != null)
+                /*if(dataSnapshot.getValue() != null)
                     goMainScreen(Boolean.valueOf(dataSnapshot.child("esDuenio").getValue().toString()));
-                else
+                else*/
                     showDialog();
             }
             @Override
