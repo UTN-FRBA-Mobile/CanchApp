@@ -1,11 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/padding_sides"
-    android:paddingRight="@dimen/padding_sides"
-    android:background="@color/colorBlanco"
-    android:clickable="true">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBlanco"
+        tools:context="com.santiago.canchaapp.app.fragment.CargarFotosCanchaFragment">
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/fBtnMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            app:menu_fab_size="normal"
+            app:menu_showShadow="true"
+            app:menu_shadowColor="#66cfcfcf"
+            app:menu_shadowRadius="0.3dp"
+            app:menu_shadowXOffset="4dp"
+            app:menu_shadowYOffset="4dp"
+            app:menu_colorNormal="@color/colorAzul"
+            app:menu_colorPressed="@color/colorAzulOscuro"
+            app:menu_colorRipple="#99FFFFFF"
+            app:menu_animationDelayPerItem="50"
+            app:menu_icon="@drawable/fab_add"
+            app:menu_buttonSpacing="0dp"
+            app:menu_labels_margin="0dp"
+            app:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+            app:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+            app:menu_labels_paddingTop="4dp"
+            app:menu_labels_paddingRight="8dp"
+            app:menu_labels_paddingBottom="4dp"
+            app:menu_labels_paddingLeft="8dp"
+            app:menu_labels_padding="8dp"
+            app:menu_labels_textColor="@color/colorText"
+            app:menu_labels_textSize="14sp"
+            app:menu_labels_colorNormal="@android:color/transparent"
+            app:menu_labels_cornerRadius="3dp"
+            app:menu_labels_colorRipple="#66FFFFFF"
+            app:menu_labels_showShadow="true"
+            app:menu_labels_singleLine="false"
+            app:menu_labels_ellipsize="none"
+            app:menu_labels_maxLines="-1"
+            app:menu_labels_position="left"
+            app:menu_openDirection="up"
+            app:menu_backgroundColor="@android:color/transparent"
+            app:menu_fab_hide_animation="@anim/hide_to_bottom"
+            app:menu_fab_show_animation="@anim/show_from_bottom">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fBtnTomarFoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fab_add"
+                app:fab_size="mini"
+                app:fab_colorNormal="@color/colorAzulClaro"
+                app:fab_colorPressed="@color/colorAzul"
+                app:fab_label="Tomar foto de cámara" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fBtnSeleccionarImagen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fab_add"
+                app:fab_size="mini"
+                app:fab_colorNormal="@color/colorAzulClaro"
+                app:fab_colorPressed="@color/colorAzul"
+                app:fab_label="Seleccionar de la galeria" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fBtnGuardar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fab_next"
+                app:fab_size="mini"
+                app:fab_colorNormal="@color/colorAzulClaro"
+                app:fab_colorPressed="@color/colorAzul"
+                app:fab_label="Guardar" />
+
+        </com.github.clans.fab.FloatingActionMenu>
+    </RelativeLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/padding_sides"
+        android:paddingRight="@dimen/padding_sides"
+        android:background="@color/colorBlanco"
+        android:clickable="true">
 
     <TextView
         android:id="@+id/txtCargarFotosCancha"
@@ -18,12 +110,6 @@
         android:textColor="@color/colorText"
         android:text="@string/txtSubirFotosCancha"/>
 
-    <Button
-        android:id="@+id/btnListo"
-        style="@style/btnListo"
-        android:text="@string/btnListo"
-        android:textAlignment="center"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+    </LinearLayout>
 
-</LinearLayout>
+</FrameLayout>

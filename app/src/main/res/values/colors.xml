@@ -6,7 +6,9 @@
     <color name="colorHint">#1A000000</color>
     <color name="colorText">#000000</color>
     <color name="colorBlanco">#FFFFFF</color>
+    <color name="colorAzulClaro">#6678d7</color>
     <color name="colorAzul">#4255c1</color>
+    <color name="colorAzulOscuro">#273583</color>
     <color name="colorNegro">#000000</color>
     <color name="colorRojo">#be1919</color>
     <color name="colorSeparador">#c0c0c0</color>
