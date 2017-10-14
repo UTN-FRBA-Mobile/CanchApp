@@ -43,6 +43,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHA;
 import com.github.clans.fab.FloatingActionMenu;
 import android.content.Context;
+import android.os.CountDownTimer;
 
 public class CargarFotosCanchaFragment extends Fragment {
 
@@ -62,10 +63,10 @@ public class CargarFotosCanchaFragment extends Fragment {
     private final int SELECT_PICTURE_TRES = 500;
     private final int SELECT_PICTURE_CUATRO = 600;
     private final int SELECT_PICTURE_CINCO = 700;
-    private final int SELECT_PICTURE_SEIS = 800;
+    private final int SELECT_PICTURE_SEIS = 800;*/
 
     private ImageView setImage1, setImage2, setImage3, setImage4, setImage5, setImage6;
-    private ImageButton optionButton1, optionButton2, optionButton3, optionButton4, optionButton5, optionButton6;*/
+    //private ImageButton optionButton1, optionButton2, optionButton3, optionButton4, optionButton5, optionButton6;
     private LinearLayout mRlView;
 
     private String mPath;
@@ -79,13 +80,11 @@ public class CargarFotosCanchaFragment extends Fragment {
     public FloatingActionButton listo;*/
 
     public static CargarFotosCanchaFragment nuevaInstancia() {
-        CargarFotosCanchaFragment fragment = new CargarFotosCanchaFragment();
-
-        /*Bundle args = new Bundle();
+        /*CargarFotosCanchaFragment fragment = new CargarFotosCanchaFragment();
+        Bundle args = new Bundle();
         args.putSerializable(ARG_CANCHAS, (Serializable) datosDeCanchas());
         fragment.setArguments(args);*/
-
-        return fragment;
+        return new CargarFotosCanchaFragment();
     }
 
     @Override
@@ -94,14 +93,13 @@ public class CargarFotosCanchaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cargar_fotos_de_cancha, container, false);
         ButterKnife.bind(this, view);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Cargar fotos de cancha");
-
         actionMenu = (FloatingActionMenu) view.findViewById(R.id.fBtnMenu);
         actionMenu.setClosedOnTouchOutside(false);
 
         fbutton1 = actionMenu.findViewById(R.id.fBtnTomarFoto);
         fbutton2 = actionMenu.findViewById(R.id.fBtnSeleccionarImagen);
         fbutton3 = actionMenu.findViewById(R.id.fBtnGuardar);
+        setImage1 = (ImageView) view.findViewById(R.id.ImageView01);
 
         if(mayRequestStoragePermission()){
             fbutton1.setEnabled(true);
@@ -114,16 +112,16 @@ public class CargarFotosCanchaFragment extends Fragment {
         fbutton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openCamera(PHOTO_CODE);
+                //openCamera(PHOTO_CODE);
             }
         });
 
         fbutton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
-                startActivityForResult(intent.createChooser(intent, "Por favor, seleccioná app de imagen"), SELECT_PICTURE);*/
+                startActivityForResult(intent.createChooser(intent, "Por favor, seleccioná app de imagen"), SELECT_PICTURE);
             }
         });
 
@@ -134,6 +132,8 @@ public class CargarFotosCanchaFragment extends Fragment {
                 abrirFragmentSiguiente();
             }
         });
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Cargar fotos de cancha");
 
         return view;
     }
@@ -203,42 +203,53 @@ public class CargarFotosCanchaFragment extends Fragment {
 
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
-            //startActivityForResult(intent, opcionCamera);
+            startActivityForResult(intent, opcionCamera);
             setLocationImage(mPath);
-            //setImageButton(mPath, setImage1);
+            setImageButton(mPath, setImage1);
         }
     }
 
-    /*@Override
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("file_path", mPath);
     }
 
-    @Override
+    //@Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+        //super.onRestoreInstanceState(savedInstanceState);
 
         mPath = savedInstanceState.getString("file_path");
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        /*Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.dualPane);
+          fragment.onActivityResult(requestCode, resultCode, data);*/
 
-        if(resultCode == RESULT_OK){
+        //onActivityResult(requestCode, resultCode, data);
+        //getActivity().onActivityReenter(resultCode, data);
+
+        if(resultCode == Activity.RESULT_OK){
             switch (requestCode){
                 case PHOTO_CODE:
-                    //setLocationImage(mPath);
-                    //setImageButton(mPath, setImage1);
+                    setLocationImage(mPath);
+                    setImageButton(mPath, setImage1);
                     break;
                 case SELECT_PICTURE:
-                    //Uri path1 = data.getData();
-                    //setImage1.setImageURI(path1);
-                    break;
+                    Uri path1 = data.getData();
+                    setImage1.setImageURI(path1);
+                    //break;
             }
         }
-    }*/
+        try {
+            //set time in mili
+            Thread.sleep(1000);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     private void setLocationImage(String mPath) {
         MediaScannerConnection.scanFile(getActivity().getApplicationContext(),

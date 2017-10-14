@@ -1,5 +1,6 @@
 package com.santiago.canchaapp.app.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -39,7 +40,9 @@ public class AgregarCanchaFragment extends Fragment {
         continuar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //if (validarCampos(view.getContext())) {
                 abrirFragmentSiguiente();
+                //}
             }
         });
 
