@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,9 +54,13 @@ public class AgregarCanchaFragment extends Fragment {
     }
 
     private void abrirFragmentSiguiente() {
+
+        Fragment cargarFotosFragment = CargarFotosCanchaFragment.nuevaInstancia();
+        cargarFotosFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.club_layout, CargarFotosCanchaFragment.nuevaInstancia(), CARGAR_FOTOS_CANCHA.toString())
+                .replace(R.id.club_layout, cargarFotosFragment, CARGAR_FOTOS_CANCHA.toString())
                 .addToBackStack(null)
                 .commit();
     }

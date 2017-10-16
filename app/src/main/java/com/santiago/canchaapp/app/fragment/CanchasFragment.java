@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,9 +75,13 @@ public class CanchasFragment extends Fragment {
     }
 
     private void abrirFragmentSiguiente() {
+
+        Fragment agregarCanchaFragment = AgregarCanchaFragment.nuevaInstancia();
+        agregarCanchaFragment.setExitTransition(new Slide(Gravity.LEFT));
+
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.club_layout, AgregarCanchaFragment.nuevaInstancia(), REGISTRAR_CANCHA.toString())
+                .replace(R.id.club_layout, agregarCanchaFragment, REGISTRAR_CANCHA.toString())
                 .addToBackStack(null)
                 .commit();
     }
