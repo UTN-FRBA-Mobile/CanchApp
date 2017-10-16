@@ -138,7 +138,8 @@ public class Servidor {
     }
 
     public Club getClub() {
-        return new Club("Barcelona", "Barcelona 2333", new Horario(9, 22));
+        return new Club(null, "Barcelona", "Carrer d'Aristides Maillol, 12, 08028 Barcelona, Spain",
+                null, "oab@fcbarcelona.cat", "+34 934963600", new Horario(9, 22));
     }
 
     private List<Reserva> getReservasCanchaDia(int dia) {
