@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.page.BuscarCanchasPageAdapter;
-import com.santiago.canchaapp.app.adapter.page.ClubPageAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +46,11 @@ public class BuscarCanchasFragment extends Fragment{
     }
 
     public static Fragment nuevaInstancia() {
-        return new BuscarCanchasFragment();
+        BuscarCanchasFragment fragment = new BuscarCanchasFragment();
+
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+
+        return fragment;
     }
 }

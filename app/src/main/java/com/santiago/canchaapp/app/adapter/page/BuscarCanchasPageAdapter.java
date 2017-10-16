@@ -19,7 +19,7 @@ public class BuscarCanchasPageAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0: return BuscarCanchasListaFragment.nuevaInstancia(); //BuscarCanchasMapaFragment.nuevaInstancia();
+            case 0: return new Fragment(); //BuscarCanchasMapaFragment.nuevaInstancia();
             case 1: return BuscarCanchasListaFragment.nuevaInstancia();
         }
         throw new RuntimeException("Tab de Buscar Canchas inesperado");
