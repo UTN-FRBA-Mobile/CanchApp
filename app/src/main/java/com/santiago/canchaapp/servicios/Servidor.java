@@ -139,7 +139,7 @@ public class Servidor {
 
     public Club getClub() {
         return new Club(null, "Barcelona", "Carrer d'Aristides Maillol, 12, 08028 Barcelona, Spain",
-                null, "oab@fcbarcelona.cat", "+34 934963600", new Horario(9, 22));
+                null, "oab@fcbarcelona.cat", "+34 934963600", new Horario(9, 22), null);
     }
 
     private List<Reserva> getReservasCanchaDia(int dia) {
@@ -197,4 +197,32 @@ public class Servidor {
         return null;
     }
 
+    public List<Club> getClubes() {
+        return asList(
+            new Club(null, "Barcelona", "Carrer d'Aristides Maillol, 12, 08028 Barcelona, Spain",
+                    null, "oab@fcbarcelona.cat", "+34 934963600", new Horario(9, 22),
+                    asList(new Cancha("Cancha Central", FUTBOL7, PASTO, false,
+                                    singletonList("https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/2014._Camp_Nou._M%C3%A9s_que_un_club._Barcelona_B40.jpg/1200px-2014._Camp_Nou._M%C3%A9s_que_un_club._Barcelona_B40.jpg")),
+                            new Cancha("Cancha Inclinada", FUTBOL7, PASTO, false,
+                                    singletonList("http://oear.cippec.org/wp-content/uploads/2015/02/cancha7.jpg"))
+                            )
+            ),
+            new Club(null, "Real Madrid", "Av. de Concha Espina, 1, 28036 Madrid, Spain",
+                    null, "oas@realmadrid.com", "+34 913984300", new Horario(13, 20),
+                    asList(new Cancha("Santiago Bernabeu", FUTBOL5, PASTO, false,
+                                    singletonList("https://www.esmadrid.com/sites/default/files/styles/content_type_full/public/recursosturisticos/infoturistica/BernabeuEstadio_1412599011.407.jpg?itok=9J7z_5Xl")),
+                            new Cancha("Estadio suplente", FUTBOL7, PASTO, false,
+                                    singletonList("https://norcasiacaldas.files.wordpress.com/2011/06/cancha-alterna-de-barro-2.jpg?w=800"))
+                            )
+            ),
+            new Club(null, "Chelsea", "Fulham Rd, Fulham, London SW6 1HS, UK",
+                    null, "contact@chelsea.com", "00 44 20 7835 6000", new Horario(9, 17),
+                    asList(new Cancha("Stamford Bridge", FUTBOL7, PASTO, false,
+                                    singletonList("http://www.chelseafc.com/content/cfc/en/homepage/the-club/stadium-tours-and-museum/educational-visits/_jcr_content.autoteaser.jpeg")),
+                            new Cancha("Cancha Desproporcionada", FUTBOL7, PASTO, false,
+                                    singletonList("https://pbs.twimg.com/media/Ct3VBvfXgAAxudR.jpg"))
+                            )
+            )
+        );
+    }
 }

@@ -270,7 +270,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
             String direccion = obtenerDireccion(ubicacion.latitude, ubicacion.longitude);
             UUID uuid = UUID.randomUUID();
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            Club club = new Club(uuid, nombreClub, direccion, ubicacion, email, telefono, rangoHorario);
+            Club club = new Club(uuid, nombreClub, direccion, ubicacion, email, telefono, rangoHorario, null);
             DataBase.getInstancia().insertClub(user, club);
             changeItemMenuClub(true);
         }
