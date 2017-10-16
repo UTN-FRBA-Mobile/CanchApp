@@ -111,16 +111,6 @@ public class DatosClubFragment extends Fragment {
                         " a " + club.getRangoHorario().getHasta() + "hs.");
     }
 
- //   public View onSizeChanged(LayoutInflater inflater, ViewGroup container,
- //                            Bundle savedInstanceState) {
- //       View rootView = inflater.inflate(R.layout.fragment_datos_club, container, false);
- //       ButterKnife.bind(this, rootView);
-
-        //cargarVista(inflater, rootView, club());
-
-    //    return rootView;
-   // }
-
     private Club club() {
         return (Club) getArguments().getSerializable(ARG_CLUB);
     }

@@ -14,7 +14,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -246,9 +249,13 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
 
     private void abrirFragmentSiguiente() {
         insertClub();
+
+        Fragment confirmarClub = ConfirmarClub.nuevaInstancia();
+        confirmarClub.setEnterTransition(new Slide(Gravity.RIGHT));
+
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_frame, ConfirmarClub.nuevaInstancia(), REGISTRAR_CLUB.toString())
+                .replace(R.id.content_frame, confirmarClub, REGISTRAR_CLUB.toString())
                 .addToBackStack(null)
                 .commit();
     }

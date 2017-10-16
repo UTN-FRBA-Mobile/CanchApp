@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,6 +86,10 @@ public class RegistrarClubFragment extends Fragment{
     private void abrirFragmentSiguiente() {
         Bundle args = getParameters();
         mapClubFragment.setArguments(args);
+
+        mapClubFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+        mapClubFragment.setExitTransition(new Slide(Gravity.LEFT));
+
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_frame, mapClubFragment, MAP_CLUB.toString())
