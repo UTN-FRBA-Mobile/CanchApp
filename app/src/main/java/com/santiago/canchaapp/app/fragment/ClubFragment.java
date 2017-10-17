@@ -27,12 +27,13 @@ public class ClubFragment extends Fragment {
 
     private ClubPageAdapter adapter;
 
+    //Creo que este no lo usamos más, lo dejo por retrocompatibilidad (?).
     private static String ARG_MICLUB = "MiClub";
 
     private static String ARG_CLUB = "club";
 
     public static ClubFragment nuevaInstanciaParaMiClub() {
-        //En vez de devolver este falso club aquí debería cargar el real de Firebase.
+        //TODO En vez de devolver este falso club aquí debería cargar el real de Firebase.
         return nuevaInstancia(true, Servidor.instancia().miClub());
     }
 

@@ -85,13 +85,16 @@ public class DatosClubFragment extends Fragment {
 
                 // Setea mapita estático
                 String urlMapa =
-                        "https://maps.googleapis.com/maps/api/staticmap?center=" +
-                                club().getDireccion().replace(" ", "+") +
-                                "&zoom=16&size=" +
+                        "https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=" +
                                 (int) finalWidth + "x" + (int) finalHeight +
+                                "&markers=color:red|" +
+                                club().getDireccion().replace(" ", "+") +
                                 "&key=AIzaSyBfbfsDgjD9_U8j1PpzRlkHtqnlDwD1cGI";
 
-                Picasso.with(rootView.getContext()).load(urlMapa).fit().into(imagenMapa);
+                Picasso.with(rootView.getContext())
+                        .load(urlMapa)
+                        .placeholder(R.drawable.mapa_placeholder)
+                        .fit().into(imagenMapa);
 
                 return false;
             }

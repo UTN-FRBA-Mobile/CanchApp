@@ -15,6 +15,7 @@ import static com.santiago.canchaapp.dominio.EstadoReserva.APROBADA;
 import static com.santiago.canchaapp.dominio.EstadoReserva.CANCELADA;
 import static com.santiago.canchaapp.dominio.EstadoReserva.PENDIENTE;
 import static com.santiago.canchaapp.dominio.Horario.horaDesde;
+import static com.santiago.canchaapp.dominio.TipoCancha.BASQUET;
 import static com.santiago.canchaapp.dominio.TipoCancha.FUTBOL5;
 import static com.santiago.canchaapp.dominio.TipoCancha.FUTBOL7;
 import static com.santiago.canchaapp.dominio.TipoCancha.TENIS;
@@ -139,7 +140,12 @@ public class Servidor {
 
     public Club getClub() {
         return new Club(null, "Barcelona", "Carrer d'Aristides Maillol, 12, 08028 Barcelona, Spain",
-                null, "oab@fcbarcelona.cat", "+34 934963600", new Horario(9, 22), null);
+                null, "oab@fcbarcelona.cat", "+34 934963600", new Horario(9, 22),
+                asList(new Cancha("Cancha Central", FUTBOL7, PASTO, false,
+                                singletonList("https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/2014._Camp_Nou._M%C3%A9s_que_un_club._Barcelona_B40.jpg/1200px-2014._Camp_Nou._M%C3%A9s_que_un_club._Barcelona_B40.jpg")),
+                        new Cancha("Cancha Inclinada", FUTBOL7, PASTO, false,
+                                singletonList("http://oear.cippec.org/wp-content/uploads/2015/02/cancha7.jpg"))
+                ));
     }
 
     private List<Reserva> getReservasCanchaDia(int dia) {
@@ -212,7 +218,11 @@ public class Servidor {
                     asList(new Cancha("Santiago Bernabeu", FUTBOL5, PASTO, false,
                                     singletonList("https://www.esmadrid.com/sites/default/files/styles/content_type_full/public/recursosturisticos/infoturistica/BernabeuEstadio_1412599011.407.jpg?itok=9J7z_5Xl")),
                             new Cancha("Estadio suplente", FUTBOL7, PASTO, false,
-                                    singletonList("https://norcasiacaldas.files.wordpress.com/2011/06/cancha-alterna-de-barro-2.jpg?w=800"))
+                                    singletonList("https://norcasiacaldas.files.wordpress.com/2011/06/cancha-alterna-de-barro-2.jpg?w=800")),
+                            new Cancha("Cancha de basquet flashera", BASQUET, BALDOSA, false,
+                                    singletonList("http://www.sopitas.com/wp-content/uploads/2014/08/nikes-house-of-mamba-led-basketball-court-2-e1408304807172.jpg")),
+                            new Cancha("Mario Tennis 64", TENIS, PASTO, false,
+                                    singletonList("http://wiimedia.ign.com/wii/image/article/110/1103094/MarioTennisInline0_1277934772.jpg"))
                             )
             ),
             new Club(null, "Chelsea", "Stamford Bridge, Fulham Road, London, SW6 1HS",
@@ -220,7 +230,9 @@ public class Servidor {
                     asList(new Cancha("Stamford Bridge", FUTBOL7, PASTO, false,
                                     singletonList("http://www.chelseafc.com/content/cfc/en/homepage/the-club/stadium-tours-and-museum/educational-visits/_jcr_content.autoteaser.jpeg")),
                             new Cancha("Cancha Desproporcionada", FUTBOL7, PASTO, false,
-                                    singletonList("https://pbs.twimg.com/media/Ct3VBvfXgAAxudR.jpg"))
+                                    singletonList("https://pbs.twimg.com/media/Ct3VBvfXgAAxudR.jpg")),
+                            new Cancha ("Cancha Inundada", FUTBOL5, PASTO, false,
+                                    singletonList("http://images.performgroup.com/di/library/Goal_Argentina/dd/4/cancha-lanus-inundada-fortaleza_12dq5dpkb9gds13clt73f8nq9y.jpg?t=1561520289&w=620&h=430"))
                             )
             )
         );
@@ -228,6 +240,6 @@ public class Servidor {
 
     public Club miClub() {
         return new Club(null, "Nuestro Club", "Medrano 955, Capital Federal",
-                null, "mail@canchapp.com", "03 03 456", new Horario(9, 22), null);
+                null, "mail@canchapp.com", "03 03 456", new Horario(9, 22), canchas);
     }
 }

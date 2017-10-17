@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.CanchasAdapter;
 import com.santiago.canchaapp.dominio.Cancha;
+import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.servicios.Servidor;
 
 import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHA;
@@ -40,11 +41,11 @@ public class CanchasFragment extends Fragment {
 
     private CanchasAdapter adapter;
 
-    public static CanchasFragment nuevaInstancia() {
+    public static CanchasFragment nuevaInstancia(Club unClub) {
         CanchasFragment fragment = new CanchasFragment();
 
         Bundle args = new Bundle();
-        args.putSerializable(ARG_CANCHAS, (Serializable) datosDeCanchas());
+        args.putSerializable(ARG_CANCHAS, (Serializable) unClub.getCanchas());
         fragment.setArguments(args);
 
         return fragment;
