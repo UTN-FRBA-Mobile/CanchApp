@@ -54,7 +54,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
 import static android.widget.Toast.LENGTH_SHORT;
 import static com.google.android.gms.location.places.AutocompleteFilter.TYPE_FILTER_ADDRESS;
-import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CLUB;
+import static com.santiago.canchaapp.app.otros.FragmentTags.MI_CLUB;
 import static com.santiago.canchaapp.app.otros.TextUtils.textoOVacio;
 
 public class MapClubFragment extends Fragment implements OnMapReadyCallback {
@@ -87,6 +87,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View view) { //quito las validaciones por ahora
             //if (locationLatLng != null)
+                clickGuardar();
                 abrirFragmentSiguiente();
             //else
             //    Toast.makeText(activity.getApplicationContext(), R.string.txtSeleccionarClub, Toast.LENGTH_SHORT).show();
@@ -247,15 +248,19 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    public void clickGuardar(){
+        Toast.makeText(getActivity().getApplicationContext(),"Tu Club ha sido guardado correctamente.", Toast.LENGTH_LONG).show();
+    }
+
     private void abrirFragmentSiguiente() {
         insertClub();
 
-        Fragment confirmarClub = ConfirmarClub.nuevaInstancia();
-        confirmarClub.setEnterTransition(new Slide(Gravity.RIGHT));
+        Fragment miClub = ClubFragment.nuevaInstanciaParaMiClub();
+        miClub.setEnterTransition(new Slide(Gravity.RIGHT));
 
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_frame, confirmarClub, REGISTRAR_CLUB.toString())
+                .replace(R.id.content_frame, miClub, MI_CLUB.toString())
                 .addToBackStack(null)
                 .commit();
     }
