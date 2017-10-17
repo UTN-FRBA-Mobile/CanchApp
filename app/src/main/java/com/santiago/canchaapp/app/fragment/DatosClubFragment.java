@@ -44,11 +44,11 @@ public class DatosClubFragment extends Fragment {
 
     private static String ARG_CLUB = "club";
 
-    public static DatosClubFragment nuevaInstancia() {
+    public static DatosClubFragment nuevaInstancia(Club club) {
         DatosClubFragment fragment = new DatosClubFragment();
 
         Bundle args = new Bundle();
-        args.putSerializable(ARG_CLUB, Servidor.instancia().getClub());
+        args.putSerializable(ARG_CLUB, club);
         fragment.setArguments(args);
 
         return fragment;

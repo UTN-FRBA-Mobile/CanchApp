@@ -48,12 +48,12 @@ public class ClubesAdapter extends RecyclerView.Adapter<ClubViewHolder> implemen
     }
 
     @Override
-    public void onClick(View v, int posicion) {
+    public void onClick(View v, final int posicion) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_frame, ClubFragment.nuevaInstanciaParaOtroClub(), CLUB.toString())
+                        .replace(R.id.content_frame, ClubFragment.nuevaInstanciaParaOtroClub(clubes.get(posicion)), CLUB.toString())
                         .addToBackStack(null)
                         .commit();
             }

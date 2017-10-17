@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.page.ClubPageAdapter;
+import com.santiago.canchaapp.dominio.Club;
+import com.santiago.canchaapp.servicios.Servidor;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,19 +29,23 @@ public class ClubFragment extends Fragment {
 
     private static String ARG_MICLUB = "MiClub";
 
+    private static String ARG_CLUB = "club";
+
     public static ClubFragment nuevaInstanciaParaMiClub() {
-        return nuevaInstancia(true);
+        //En vez de devolver este falso club aquí debería cargar el real de Firebase.
+        return nuevaInstancia(true, Servidor.instancia().miClub());
     }
 
-    public static ClubFragment nuevaInstanciaParaOtroClub() {
-        return nuevaInstancia(false);
+    public static ClubFragment nuevaInstanciaParaOtroClub(Club club) {
+        return nuevaInstancia(false, club);
     }
 
-    public static ClubFragment nuevaInstancia(Boolean miClub) {
+    public static ClubFragment nuevaInstancia(Boolean miClub, Club unClub) {
         ClubFragment fragment = new ClubFragment();
 
         Bundle args = new Bundle();
         args.putBoolean(ARG_MICLUB, miClub);
+        args.putSerializable(ARG_CLUB, unClub);
 
         fragment.setArguments(args);
 
@@ -57,7 +63,7 @@ public class ClubFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         //Tabs club
-        adapter = new ClubPageAdapter(getChildFragmentManager(), getArguments().getBoolean(ARG_MICLUB));
+        adapter = new ClubPageAdapter(getChildFragmentManager(), getArguments().getBoolean(ARG_MICLUB), getArguments().getSerializable(ARG_CLUB));
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
 

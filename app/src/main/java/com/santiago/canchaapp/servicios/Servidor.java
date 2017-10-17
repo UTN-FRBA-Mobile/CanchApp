@@ -215,7 +215,7 @@ public class Servidor {
                                     singletonList("https://norcasiacaldas.files.wordpress.com/2011/06/cancha-alterna-de-barro-2.jpg?w=800"))
                             )
             ),
-            new Club(null, "Chelsea", "Fulham Rd, Fulham, London SW6 1HS, UK",
+            new Club(null, "Chelsea", "Stamford Bridge, Fulham Road, London, SW6 1HS",
                     null, "contact@chelsea.com", "00 44 20 7835 6000", new Horario(9, 17),
                     asList(new Cancha("Stamford Bridge", FUTBOL7, PASTO, false,
                                     singletonList("http://www.chelseafc.com/content/cfc/en/homepage/the-club/stadium-tours-and-museum/educational-visits/_jcr_content.autoteaser.jpeg")),
@@ -224,5 +224,10 @@ public class Servidor {
                             )
             )
         );
+    }
+
+    public Club miClub() {
+        return new Club(null, "Nuestro Club", "Medrano 955, Capital Federal",
+                null, "mail@canchapp.com", "03 03 456", new Horario(9, 22), null);
     }
 }
