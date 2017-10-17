@@ -316,6 +316,6 @@ public class CargarFotosCanchaFragment extends Fragment {
     private void abrirFragmentSiguiente() {
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Club");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Datos del Club");
     }
 }

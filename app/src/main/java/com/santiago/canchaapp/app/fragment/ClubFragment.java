@@ -68,7 +68,7 @@ public class ClubFragment extends Fragment {
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Club");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Datos del Club");
 
         return view;
     }
