@@ -95,7 +95,7 @@ public class ListaReservasFragment extends Fragment {
         TipoReservas tipo = tipoReservas();
         if (alquileres && tipo == PENDIENTES) {
             return TODAS;
-        } else if (tipo == APROBADAS || (tipo == PENDIENTES && !sonAlquileres())) {
+        } else if ((tipo == PENDIENTES || tipo == APROBADAS) && !alquileres) {
             return SOLO_CANCELAR;
         }
         return NINGUNA;
