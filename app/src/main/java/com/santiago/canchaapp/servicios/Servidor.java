@@ -95,7 +95,9 @@ public class Servidor {
                 new Cancha("Cancha chica 3", FUTBOL5, BALDOSA, true, new ArrayList<String>()),
                 new Cancha("Cancha chica 4", FUTBOL5, BALDOSA, true, singletonList("http://www.pasionfutsal.com.ar/imagenes/noticias/almafuerte%20cancha.jpg")),
                 new Cancha("Cancha tenis 1", TENIS, POLVO_LADRILLO, false, new ArrayList<String>()),
-                new Cancha("Cancha tenis 2", TENIS, POLVO_LADRILLO, false, singletonList("https://ar.all.biz/img/ar/catalog/11918.jpeg"))
+                new Cancha("Cancha tenis 2", TENIS, POLVO_LADRILLO, false, asList("https://www.blaugranas.com/media/galeria/25/8/7/8/3/n_f_c_barcelona_camp_nou-2253878.jpg",
+                                                                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Campnou_1.jpg/1125px-Campnou_1.jpg",
+                                                                                    "http://www.abc.es/Media/201201/24/estadio-barcelona--644x362.jpg"))
         );
 
     public List<Reserva> getReservasPendientes() {
@@ -124,18 +126,6 @@ public class Servidor {
 
     public List<Cancha> getCanchas() {
         return canchas;
-    }
-
-    public Cancha getCancha() {
-        return new Cancha("Camp Nou", FUTBOL7, PASTO, false,
-                asList(
-                        "https://www.blaugranas.com/media/galeria/25/8/7/8/3/n_f_c_barcelona_camp_nou-2253878.jpg",
-                        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Campnou_1.jpg/1125px-Campnou_1.jpg",
-                        "http://www.abc.es/Media/201201/24/estadio-barcelona--644x362.jpg",
-                        "http://bolavip.cdnfsn.com/imagenes/670x400/1433363993_barcelona-mes-que-un-club.png",
-                        "http://bolavip.cdnfsn.com/imagenes/670x400/1433363993_barcelona-mes-que-un-club.png",
-                        "http://www.lapagina.com.sv/userfiles/image/Mosaico.jpg"
-                ));
     }
 
     public Club getClub() {

@@ -11,11 +11,14 @@ import android.view.ViewGroup;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.page.CanchaPageAdapter;
+import com.santiago.canchaapp.dominio.Cancha;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CanchaFragment extends Fragment {
+
+    private static String ARG_CANCHA = "cancha";
 
     @BindView(R.id.container_cancha)
     public ViewPager viewPager;
@@ -25,8 +28,14 @@ public class CanchaFragment extends Fragment {
 
     private CanchaPageAdapter adapter;
 
-    public static CanchaFragment nuevaInstancia() {
-        return new CanchaFragment();
+    public static CanchaFragment nuevaInstancia(Cancha cancha) {
+        CanchaFragment fragment = new CanchaFragment();
+
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CANCHA, cancha);
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
@@ -39,13 +48,17 @@ public class CanchaFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         // Tabs canchas
-        adapter = new CanchaPageAdapter(getChildFragmentManager());
+        adapter = new CanchaPageAdapter(getChildFragmentManager(), cancha());
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Datos de Cancha");
 
         return view;
+    }
+
+    private Cancha cancha() {
+        return (Cancha) getArguments().getSerializable(ARG_CANCHA);
     }
 
 }

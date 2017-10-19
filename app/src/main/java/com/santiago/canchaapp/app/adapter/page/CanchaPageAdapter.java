@@ -6,18 +6,22 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.santiago.canchaapp.app.fragment.DatosCanchaFragment;
 import com.santiago.canchaapp.app.fragment.HorariosCanchaFragment;
+import com.santiago.canchaapp.dominio.Cancha;
 
 public class CanchaPageAdapter extends FragmentPagerAdapter {
 
-    public CanchaPageAdapter(FragmentManager fm) {
+    private Cancha cancha;
+
+    public CanchaPageAdapter(FragmentManager fm, Cancha cancha) {
         super(fm);
+        this.cancha = cancha;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0: return DatosCanchaFragment.nuevaInstancia();
-            case 1: return HorariosCanchaFragment.nuevaInstancia();
+            case 0: return DatosCanchaFragment.nuevaInstancia(cancha);
+            case 1: return HorariosCanchaFragment.nuevaInstancia(cancha);
         }
         throw new RuntimeException("Tab de Cancha inesperado");
     }

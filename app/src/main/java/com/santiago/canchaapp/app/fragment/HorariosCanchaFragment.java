@@ -9,19 +9,28 @@ import android.view.ViewGroup;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.page.HorariosPageAdapter;
+import com.santiago.canchaapp.dominio.Cancha;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HorariosCanchaFragment extends Fragment {
 
+    private static String ARG_CANCHA = "cancha";
+
     @BindView(R.id.container_horarios)
     public ViewPager viewPager;
 
     private HorariosPageAdapter adapter;
 
-    public static HorariosCanchaFragment nuevaInstancia() {
-        return new HorariosCanchaFragment();
+    public static HorariosCanchaFragment nuevaInstancia(Cancha cancha) {
+        HorariosCanchaFragment fragment = new HorariosCanchaFragment();
+
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CANCHA, cancha);
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override

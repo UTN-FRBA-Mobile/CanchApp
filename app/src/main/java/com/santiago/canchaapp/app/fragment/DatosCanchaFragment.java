@@ -41,11 +41,11 @@ public class DatosCanchaFragment extends Fragment {
     @BindView(R.id.fotos)
     public LinearLayout fotos;
 
-    public static DatosCanchaFragment nuevaInstancia() {
+    public static DatosCanchaFragment nuevaInstancia(Cancha cancha) {
         DatosCanchaFragment fragment = new DatosCanchaFragment();
 
         Bundle args = new Bundle();
-        args.putSerializable(ARG_CANCHA, Servidor.instancia().getCancha());
+        args.putSerializable(ARG_CANCHA, cancha);
         fragment.setArguments(args);
 
         return fragment;
@@ -71,8 +71,17 @@ public class DatosCanchaFragment extends Fragment {
             textoExtra.setVisibility(GONE);
         }
 
-        // Setea imagen principal
-        Picasso.with(view.getContext()).load(cancha.getFotoPrincipalUrl()).fit().centerCrop().into(fotoPrincipal);
+        // Setea imagen
+        if (cancha.tieneFotos()) {
+            Picasso.with(view.getContext())
+                    .load(cancha.getFotoPrincipalUrl())
+                    .placeholder(R.drawable.cancha_sin_foto)
+                    .fit().centerCrop().into(fotoPrincipal);
+        } else {
+            Picasso.with(view.getContext())
+                    .load(R.drawable.cancha_sin_foto)
+                    .fit().centerCrop().into(fotoPrincipal);
+        }
 
         // Setea resto de las imagenes
         for (String foto : cancha.getFotosUrls()) {
