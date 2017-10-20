@@ -39,10 +39,14 @@ public class HorariosCanchaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_horarios_cancha, container, false);
         ButterKnife.bind(this, view);
 
-        adapter = new HorariosPageAdapter(getChildFragmentManager());
+        adapter = new HorariosPageAdapter(getChildFragmentManager(), cancha());
         viewPager.setAdapter(adapter);
 
         return view;
+    }
+
+    private Cancha cancha() {
+        return (Cancha) getArguments().getSerializable(ARG_CANCHA);
     }
 
 }

@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.santiago.canchaapp.app.fragment.ListaHorariosFragment;
+import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.dominio.Horario;
 
 import static com.santiago.canchaapp.app.otros.DateUtils.hoyMasDias;
@@ -15,13 +16,15 @@ public class HorariosPageAdapter extends FragmentPagerAdapter {
 
     private Horario horarioCancha;
 
-    public HorariosPageAdapter(FragmentManager fm) {
+    private Cancha cancha;
+
+    public HorariosPageAdapter(FragmentManager fm, Cancha cancha) {
         super(fm);
     }
 
     @Override
     public Fragment getItem(int position) {
-        return ListaHorariosFragment.nuevaInstancia(hoyMasDias(position), position);
+        return ListaHorariosFragment.nuevaInstancia(cancha, hoyMasDias(position), position);
     }
 
     @Override

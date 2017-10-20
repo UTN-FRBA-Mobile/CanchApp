@@ -4,10 +4,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-/**
- * Created by sleira on 6/10/17.
- */
-
 public class DataBase {
 
     private static DataBase instancia = null;

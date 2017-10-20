@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import static com.santiago.canchaapp.dominio.EstadoReserva.APROBADA;
 import static com.santiago.canchaapp.dominio.EstadoReserva.CANCELADA;
@@ -86,18 +87,18 @@ public class Servidor {
         );
 
     private List<Cancha> canchas = asList(
-                new Cancha("Cancha Central", FUTBOL7, PASTO, false, singletonList("http://cancun.gob.mx/obras/files/2013/12/BkZxtXKCUAAAuxe-599x280.jpg")),
-                new Cancha("Cancha 1", FUTBOL7, PASTO, false, singletonList("http://pastossintetico.com/img/images/cancha-futbol7-pastosintetico-toluca4.jpg")),
-                new Cancha("Cancha 2", FUTBOL7, PASTO, false, singletonList("https://www.mexicanbusinessweb.mx/wp-content/uploads/2014/09/pastosintetico-lacanchita-futbol7-5.jpg")),
-                new Cancha("Cancha chica central", FUTBOL5, BALDOSA, true, singletonList("http://www.hoysejuega.com/uploads/Modules/ImagenesComplejos/800_600_captura-de-pantalla-2012-11-29-a-la(s)-15.38.50.png")),
-                new Cancha("Cancha chica 1", FUTBOL5, BALDOSA, true, singletonList("http://www.platensealoancho.com.ar/web/wp-content/uploads/2013/03/gimnasio-futsal-handball-pintura02.jpg")),
-                new Cancha("Cancha chica 2", FUTBOL5, BALDOSA, true, singletonList("http://www.pasionfutsal.com.ar/imagenes/noticias/secla.jpg")),
-                new Cancha("Cancha chica 3", FUTBOL5, BALDOSA, true, new ArrayList<String>()),
-                new Cancha("Cancha chica 4", FUTBOL5, BALDOSA, true, singletonList("http://www.pasionfutsal.com.ar/imagenes/noticias/almafuerte%20cancha.jpg")),
-                new Cancha("Cancha tenis 1", TENIS, POLVO_LADRILLO, false, new ArrayList<String>()),
-                new Cancha("Cancha tenis 2", TENIS, POLVO_LADRILLO, false, asList("https://www.blaugranas.com/media/galeria/25/8/7/8/3/n_f_c_barcelona_camp_nou-2253878.jpg",
+                new Cancha(UUID.randomUUID(), "Cancha Central", FUTBOL7, PASTO, false, singletonList("http://cancun.gob.mx/obras/files/2013/12/BkZxtXKCUAAAuxe-599x280.jpg"), new Horario(10, 22)),
+                new Cancha(UUID.randomUUID(), "Cancha 1", FUTBOL7, PASTO, false, singletonList("http://pastossintetico.com/img/images/cancha-futbol7-pastosintetico-toluca4.jpg"), new Horario(10, 22)),
+                new Cancha(UUID.randomUUID(), "Cancha 2", FUTBOL7, PASTO, false, singletonList("https://www.mexicanbusinessweb.mx/wp-content/uploads/2014/09/pastosintetico-lacanchita-futbol7-5.jpg"), new Horario(10, 22)),
+                new Cancha(UUID.randomUUID(), "Cancha chica central", FUTBOL5, BALDOSA, true, singletonList("http://www.hoysejuega.com/uploads/Modules/ImagenesComplejos/800_600_captura-de-pantalla-2012-11-29-a-la(s)-15.38.50.png"), new Horario(10, 22)),
+                new Cancha(UUID.randomUUID(), "Cancha chica 1", FUTBOL5, BALDOSA, true, singletonList("http://www.platensealoancho.com.ar/web/wp-content/uploads/2013/03/gimnasio-futsal-handball-pintura02.jpg"), new Horario(10, 22)),
+                new Cancha(UUID.randomUUID(), "Cancha chica 2", FUTBOL5, BALDOSA, true, singletonList("http://www.pasionfutsal.com.ar/imagenes/noticias/secla.jpg"), new Horario(10, 22)),
+                new Cancha(UUID.randomUUID(), "Cancha chica 3", FUTBOL5, BALDOSA, true, new ArrayList<String>(), new Horario(10, 22)),
+                new Cancha(UUID.randomUUID(), "Cancha chica 4", FUTBOL5, BALDOSA, true, singletonList("http://www.pasionfutsal.com.ar/imagenes/noticias/almafuerte%20cancha.jpg"), new Horario(10, 22)),
+                new Cancha(UUID.randomUUID(), "Cancha tenis 1", TENIS, POLVO_LADRILLO, false, new ArrayList<String>(), new Horario(10, 22)),
+                new Cancha(UUID.randomUUID(), "Cancha tenis 2", TENIS, POLVO_LADRILLO, false, asList("https://www.blaugranas.com/media/galeria/25/8/7/8/3/n_f_c_barcelona_camp_nou-2253878.jpg",
                                                                                     "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Campnou_1.jpg/1125px-Campnou_1.jpg",
-                                                                                    "http://www.abc.es/Media/201201/24/estadio-barcelona--644x362.jpg"))
+                                                                                    "http://www.abc.es/Media/201201/24/estadio-barcelona--644x362.jpg"), new Horario(10, 22))
         );
 
     public List<Reserva> getReservasPendientes() {
@@ -131,10 +132,10 @@ public class Servidor {
     public Club getClub() {
         return new Club(null, "Barcelona", "Carrer d'Aristides Maillol, 12, 08028 Barcelona, Spain",
                 null, "oab@fcbarcelona.cat", "+34 934963600", new Horario(9, 22),
-                asList(new Cancha("Cancha Central", FUTBOL7, PASTO, false,
-                                singletonList("https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/2014._Camp_Nou._M%C3%A9s_que_un_club._Barcelona_B40.jpg/1200px-2014._Camp_Nou._M%C3%A9s_que_un_club._Barcelona_B40.jpg")),
-                        new Cancha("Cancha Inclinada", FUTBOL7, PASTO, false,
-                                singletonList("http://oear.cippec.org/wp-content/uploads/2015/02/cancha7.jpg"))
+                asList(new Cancha(UUID.randomUUID(), "Cancha Central", FUTBOL7, PASTO, false,
+                                singletonList("https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/2014._Camp_Nou._M%C3%A9s_que_un_club._Barcelona_B40.jpg/1200px-2014._Camp_Nou._M%C3%A9s_que_un_club._Barcelona_B40.jpg"), new Horario(10, 22)),
+                        new Cancha(UUID.randomUUID(), "Cancha Inclinada", FUTBOL7, PASTO, false,
+                                singletonList("http://oear.cippec.org/wp-content/uploads/2015/02/cancha7.jpg"), new Horario(10, 22))
                 ));
     }
 
@@ -197,32 +198,32 @@ public class Servidor {
         return asList(
             new Club(null, "Barcelona", "Carrer d'Aristides Maillol, 12, 08028 Barcelona, Spain",
                     null, "oab@fcbarcelona.cat", "+34 934963600", new Horario(9, 22),
-                    asList(new Cancha("Cancha Central", FUTBOL7, PASTO, false,
-                                    singletonList("https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/2014._Camp_Nou._M%C3%A9s_que_un_club._Barcelona_B40.jpg/1200px-2014._Camp_Nou._M%C3%A9s_que_un_club._Barcelona_B40.jpg")),
-                            new Cancha("Cancha Inclinada", FUTBOL7, PASTO, false,
-                                    singletonList("http://oear.cippec.org/wp-content/uploads/2015/02/cancha7.jpg"))
+                    asList(new Cancha(UUID.randomUUID(), "Cancha Central", FUTBOL7, PASTO, false,
+                                    singletonList("https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/2014._Camp_Nou._M%C3%A9s_que_un_club._Barcelona_B40.jpg/1200px-2014._Camp_Nou._M%C3%A9s_que_un_club._Barcelona_B40.jpg"), new Horario(10, 22)),
+                            new Cancha(UUID.randomUUID(), "Cancha Inclinada", FUTBOL7, PASTO, false,
+                                    singletonList("http://oear.cippec.org/wp-content/uploads/2015/02/cancha7.jpg"), new Horario(10, 22))
                             )
             ),
             new Club(null, "Real Madrid", "Av. de Concha Espina, 1, 28036 Madrid, Spain",
                     null, "oas@realmadrid.com", "+34 913984300", new Horario(13, 20),
-                    asList(new Cancha("Santiago Bernabeu", FUTBOL5, PASTO, false,
-                                    singletonList("https://www.esmadrid.com/sites/default/files/styles/content_type_full/public/recursosturisticos/infoturistica/BernabeuEstadio_1412599011.407.jpg?itok=9J7z_5Xl")),
-                            new Cancha("Estadio suplente", FUTBOL7, PASTO, false,
-                                    singletonList("https://norcasiacaldas.files.wordpress.com/2011/06/cancha-alterna-de-barro-2.jpg?w=800")),
-                            new Cancha("Cancha de basquet flashera", BASQUET, BALDOSA, false,
-                                    singletonList("http://www.sopitas.com/wp-content/uploads/2014/08/nikes-house-of-mamba-led-basketball-court-2-e1408304807172.jpg")),
-                            new Cancha("Mario Tennis 64", TENIS, PASTO, false,
-                                    singletonList("http://wiimedia.ign.com/wii/image/article/110/1103094/MarioTennisInline0_1277934772.jpg"))
+                    asList(new Cancha(UUID.randomUUID(), "Santiago Bernabeu", FUTBOL5, PASTO, false,
+                                    singletonList("https://www.esmadrid.com/sites/default/files/styles/content_type_full/public/recursosturisticos/infoturistica/BernabeuEstadio_1412599011.407.jpg?itok=9J7z_5Xl"), new Horario(10, 22)),
+                            new Cancha(UUID.randomUUID(), "Estadio suplente", FUTBOL7, PASTO, false,
+                                    singletonList("https://norcasiacaldas.files.wordpress.com/2011/06/cancha-alterna-de-barro-2.jpg?w=800"), new Horario(10, 22)),
+                            new Cancha(UUID.randomUUID(), "Cancha de basquet flashera", BASQUET, BALDOSA, false,
+                                    singletonList("http://www.sopitas.com/wp-content/uploads/2014/08/nikes-house-of-mamba-led-basketball-court-2-e1408304807172.jpg"), new Horario(10, 22)),
+                            new Cancha(UUID.randomUUID(), "Mario Tennis 64", TENIS, PASTO, false,
+                                    singletonList("http://wiimedia.ign.com/wii/image/article/110/1103094/MarioTennisInline0_1277934772.jpg"), new Horario(10, 22))
                             )
             ),
             new Club(null, "Chelsea", "Stamford Bridge, Fulham Road, London, SW6 1HS",
                     null, "contact@chelsea.com", "00 44 20 7835 6000", new Horario(9, 17),
-                    asList(new Cancha("Stamford Bridge", FUTBOL7, PASTO, false,
-                                    singletonList("http://www.chelseafc.com/content/cfc/en/homepage/the-club/stadium-tours-and-museum/educational-visits/_jcr_content.autoteaser.jpeg")),
-                            new Cancha("Cancha Desproporcionada", FUTBOL7, PASTO, false,
-                                    singletonList("https://pbs.twimg.com/media/Ct3VBvfXgAAxudR.jpg")),
-                            new Cancha ("Cancha Inundada", FUTBOL5, PASTO, false,
-                                    singletonList("http://images.performgroup.com/di/library/Goal_Argentina/dd/4/cancha-lanus-inundada-fortaleza_12dq5dpkb9gds13clt73f8nq9y.jpg?t=1561520289&w=620&h=430"))
+                    asList(new Cancha(UUID.randomUUID(), "Stamford Bridge", FUTBOL7, PASTO, false,
+                                    singletonList("http://www.chelseafc.com/content/cfc/en/homepage/the-club/stadium-tours-and-museum/educational-visits/_jcr_content.autoteaser.jpeg"), new Horario(10, 22)),
+                            new Cancha(UUID.randomUUID(), "Cancha Desproporcionada", FUTBOL7, PASTO, false,
+                                    singletonList("https://pbs.twimg.com/media/Ct3VBvfXgAAxudR.jpg"), new Horario(10, 22)),
+                            new Cancha (UUID.randomUUID(), "Cancha Inundada", FUTBOL5, PASTO, false,
+                                    singletonList("http://images.performgroup.com/di/library/Goal_Argentina/dd/4/cancha-lanus-inundada-fortaleza_12dq5dpkb9gds13clt73f8nq9y.jpg?t=1561520289&w=620&h=430"), new Horario(10, 22))
                             )
             )
         );

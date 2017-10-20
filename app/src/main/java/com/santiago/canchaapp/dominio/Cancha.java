@@ -3,8 +3,11 @@ package com.santiago.canchaapp.dominio;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Cancha implements Serializable {
+
+    private UUID uuid;
 
     private String nombre;
 
@@ -14,14 +17,22 @@ public class Cancha implements Serializable {
 
     private Boolean techada;
 
+    private Horario horario;
+
     private List<String> fotosUrls = new ArrayList<>();
 
-    public Cancha(String nombre, TipoCancha tipoCancha, TipoSuperficie superficie, Boolean techada, List<String> fotosUrls) {
+    public Cancha(UUID uuid, String nombre, TipoCancha tipoCancha, TipoSuperficie superficie, Boolean techada, List<String> fotosUrls, Horario horario) {
+        this.uuid = uuid;
         this.nombre = nombre;
         this.tipoCancha = tipoCancha;
         this.superficie = superficie;
         this.techada = techada;
         this.fotosUrls = fotosUrls;
+        this.horario = horario;
+    }
+
+    public String getUuid() {
+        return uuid.toString();
     }
 
     public String getNombre() {
@@ -50,6 +61,10 @@ public class Cancha implements Serializable {
 
     public List<String> getFotosUrls() {
         return this.fotosUrls;
+    }
+
+    public Horario getHorario() {
+        return horario;
     }
 
 }

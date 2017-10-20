@@ -41,4 +41,14 @@ public class DateUtils {
         return ((desde < 10) ? "0" : "") + desde + ":00";
     }
 
+    public static Date timestampToDate(Long timestamp) {
+        Calendar cal = calendario();
+        cal.setTimeInMillis(timestamp);
+        return cal.getTime();
+    }
+
+    public static Long dateToTimestamp(Date date) {
+        return date.getTime();
+    }
+
 }

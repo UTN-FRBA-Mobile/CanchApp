@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.HorariosAdapter;
+import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.dominio.SlotReserva;
 import com.santiago.canchaapp.servicios.Servidor;
 
@@ -26,6 +27,8 @@ import static android.view.View.INVISIBLE;
 import static com.santiago.canchaapp.app.otros.DateUtils.textoDia;
 
 public class ListaHorariosFragment extends Fragment {
+
+    private static String ARG_CANCHA = "cancha";
 
     private static String ARG_DIA = "dia";
 
@@ -49,10 +52,11 @@ public class ListaHorariosFragment extends Fragment {
 
     private HorariosAdapter adapter;
 
-    public static ListaHorariosFragment nuevaInstancia(Date dia, int posicionDia) {
+    public static ListaHorariosFragment nuevaInstancia(Cancha cancha, Date dia, int posicionDia) {
         ListaHorariosFragment fragment = new ListaHorariosFragment();
 
         Bundle args = new Bundle();
+        args.putSerializable(ARG_CANCHA, cancha);
         args.putSerializable(ARG_DIA, dia);
         args.putInt(ARG_POSICION_DIA, posicionDia);
         args.putSerializable(ARG_HORARIOS, (Serializable) datosHorarios(posicionDia));
@@ -113,6 +117,10 @@ public class ListaHorariosFragment extends Fragment {
 
     private List<SlotReserva> horarios() {
         return (List<SlotReserva>) getArguments().getSerializable(ARG_HORARIOS);
+    }
+
+    private Cancha getCancha() {
+        return (Cancha) getArguments().getSerializable(ARG_CANCHA);
     }
 
 }
