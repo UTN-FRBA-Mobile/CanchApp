@@ -75,9 +75,6 @@ public class CargarFotosCanchaFragment extends Fragment {
     FloatingActionMenu actionMenu;
     com.github.clans.fab.FloatingActionButton fbutton1, fbutton2, fbutton3;
 
-    /*@BindView(R.id.floatingbtnListo)
-    public FloatingActionButton listo;*/
-
     public static CargarFotosCanchaFragment nuevaInstancia() {
         /*CargarFotosCanchaFragment fragment = new CargarFotosCanchaFragment();
         Bundle args = new Bundle();
@@ -111,7 +108,7 @@ public class CargarFotosCanchaFragment extends Fragment {
         fbutton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //openCamera(PHOTO_CODE);
+                //openCamera();
             }
         });
 
@@ -120,7 +117,7 @@ public class CargarFotosCanchaFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
-                startActivityForResult(intent.createChooser(intent, "Por favor, seleccioná app de imagen"), SELECT_PICTURE);
+                startActivityForResult(intent.createChooser(intent, "Por favor, seleccioná app de imagen:"), SELECT_PICTURE);
             }
         });
 
@@ -184,7 +181,8 @@ public class CargarFotosCanchaFragment extends Fragment {
         builder.show();
     }*/
 
-    private void openCamera(final int opcionCamera) {
+    //private void openCamera(final int opcionCamera) {
+    private void openCamera() {
         File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
         boolean isDirectoryCreated = file.exists();
 
@@ -202,7 +200,7 @@ public class CargarFotosCanchaFragment extends Fragment {
 
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
-            startActivityForResult(intent, opcionCamera);
+            startActivityForResult(intent, PHOTO_CODE);
             setLocationImage(mPath);
             setImageButton(mPath, setImage1);
         }
@@ -234,7 +232,7 @@ public class CargarFotosCanchaFragment extends Fragment {
                 case PHOTO_CODE:
                     setLocationImage(mPath);
                     setImageButton(mPath, setImage1);
-                    break;
+                    //break;
                 case SELECT_PICTURE:
                     Uri path1 = data.getData();
                     setImage1.setImageURI(path1);
@@ -242,7 +240,7 @@ public class CargarFotosCanchaFragment extends Fragment {
             }
         }
         try {
-            //set time in mili
+            //Setear tiempo en milisegundos
             Thread.sleep(1000);
         }catch (Exception e){
             e.printStackTrace();
@@ -278,10 +276,10 @@ public class CargarFotosCanchaFragment extends Fragment {
                 fbutton2.setEnabled(true);
             }
         }else{
-            //showExplanation();
+            showExplanation();
         }
     }
-/*
+
     private void showExplanation() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity().getApplicationContext());
         builder.setTitle("@string/txtTituloPermisos");
@@ -291,8 +289,8 @@ public class CargarFotosCanchaFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent();
                 intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri.fromParts("package", getPackageName(), null);
-                intent.setData(uri);
+                //Uri uri = Uri.fromParts("package", getPackageName(), null);
+                //intent.setData(uri);
                 startActivity(intent);
             }
         });
@@ -300,13 +298,13 @@ public class CargarFotosCanchaFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                finish();
+                //finish();
             }
         });
 
         builder.show();
     }
-*/
+
 
     public void clickSubMenuGuardar(){
         Toast.makeText(getActivity().getApplicationContext(),"Tu Cancha ha sido guardada correctamente.", Toast.LENGTH_LONG).show();
