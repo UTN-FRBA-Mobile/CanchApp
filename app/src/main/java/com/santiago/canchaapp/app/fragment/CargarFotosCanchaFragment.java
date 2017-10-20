@@ -40,7 +40,6 @@ import butterknife.ButterKnife;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHA;
 import com.github.clans.fab.FloatingActionMenu;
 import android.content.Context;
 import android.os.CountDownTimer;
@@ -314,7 +313,7 @@ public class CargarFotosCanchaFragment extends Fragment {
     }
 
     private void abrirFragmentSiguiente() {
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit(); //Baja nivel de fragment
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Datos del Club");
     }
