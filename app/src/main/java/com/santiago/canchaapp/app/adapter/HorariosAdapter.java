@@ -9,6 +9,7 @@ import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
 import com.santiago.canchaapp.app.viewholder.HorarioViewHolder;
 import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.Cancha;
+import com.santiago.canchaapp.dominio.EstadoReserva;
 import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.dominio.Reserva;
 import com.santiago.canchaapp.dominio.SlotHorarioAlquiler;
@@ -18,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import static com.santiago.canchaapp.dominio.EstadoReserva.*;
 import static com.santiago.canchaapp.dominio.Horario.horaDesde;
 
 public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
@@ -64,6 +66,17 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
         return horarios.size();
     }
 
+    // Para prevenir bug de items duplicados al scrollear
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     // Auxiliar
 
     private List<SlotHorarioAlquiler> generarListaDeHorarios(Horario rangoHorario, List<Alquiler> alquileres) {
@@ -84,13 +97,27 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
     }
 
     private void actualizarAlquileres(Alquiler alquilerActualizado) {
-        for (int i = 0; i < alquileres.size(); i++) {
-            if (Objects.equals(alquileres.get(i).getUuid(), alquilerActualizado.getUuid())) {
+        Integer i = indiceDeAlquiler(alquilerActualizado);
+        // Se reservó un horario => se agrega alquiler a la lista
+        if (i == null) {
+            alquileres.add(alquilerActualizado);
+        } else {
+            // Se canceló el alquiler => se saca de la lista
+            if (alquilerActualizado.getEstado() == CANCELADA) {
+                alquileres.remove((int) i);
+            } else { // Se actualizó el alquiler => se reemplaza en la lista
                 alquileres.set(i, alquilerActualizado);
-                return;
             }
         }
-        alquileres.add(alquilerActualizado);
+    }
+
+    private Integer indiceDeAlquiler(Alquiler alquiler) {
+        for (int i = 0; i < alquileres.size(); i++) {
+            if (Objects.equals(alquileres.get(i).getUuid(), alquiler.getUuid())) {
+                return i;
+            }
+        }
+        return null;
     }
 
 }

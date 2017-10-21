@@ -45,10 +45,9 @@ public class DataBase {
         mDatabase.child(keyClubes).child(club.getUuid()).setValue(club);
     }
 
-    // obtiene alquileres en /alquileres/:idClub/:idCancha/:fecha ordenados por hora
+    // obtiene alquileres en /alquileres/:idClub/:idCancha/:fecha
     public Query getReferenceAlquileres(String idClub, String idCancha, Date fecha) {
-        return mDatabase.child(keyAlquileres).child(idClub).child(idCancha)
-                .child(dateToString(fecha)).orderByChild("hora");
+        return mDatabase.child(keyAlquileres).child(idClub).child(idCancha).child(dateToString(fecha));
     }
 
     // inserta alquiler en /alquileres/:idClub/:idCancha/:fecha
