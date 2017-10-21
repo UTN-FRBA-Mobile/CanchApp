@@ -18,6 +18,7 @@ import com.santiago.canchaapp.dominio.Usuario;
 import com.santiago.canchaapp.servicios.Sesion;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 import butterknife.BindView;
@@ -100,7 +101,7 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
                     // Tomar nombre de usuario de la persona
                     Usuario usuario = Sesion.getInstancia().getUsuario();
                     alquiler = new Alquiler(UUID.randomUUID(), fecha, horario, usuario.getUid(), usuario.getNombre(),
-                            cancha.getNombre(), cancha.getTipoCancha(), APROBADA);
+                            cancha.getNombre(), cancha.getTipoCancha(), PENDIENTE);
                 }
                 DataBase.getInstancia().insertAlquiler(
                         cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler);
@@ -118,17 +119,17 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         if (alquiler.getEstado() == PENDIENTE) {
             estadoReserva.setText(view.getResources().getString(R.string.txtHorarioPendienteAprobacion));
             // Sólo el dueño puede aprobar una reserva pendiente
-            // Ambos la pueden cancelar
+            // El usuario la puede cancelar si es propia
             if (esMiCancha) {
                 mostrarBotones(0.5f, botonAprobar, botonCancelar);
-            } else {
+            } else if (esMiReserva(alquiler)) {
                 mostrarBotones(0.5f, botonCancelar);
             }
-
         } else {
             estadoReserva.setText(view.getResources().getString(R.string.txtHorarioReservado));
-            // Un dueño no puede cancelar una reserva ya aprobada
-            if (!esMiCancha) {
+            // Sólo se puede cancelar una reserva aprobada si la estoy viendo como usuario
+            // y es mi propia reserva
+            if (!esMiCancha && esMiReserva(alquiler)) {
                 mostrarBotones(0.5f, botonCancelar);
             }
         }
@@ -140,6 +141,10 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         }
         layoutTextoReserva.setLayoutParams(
                 new LayoutParams(0, WRAP_CONTENT, tamanioLayout));
+    }
+
+    private boolean esMiReserva(Alquiler alquiler) {
+        return Objects.equals(Sesion.getInstancia().getUsuario().getUid(), alquiler.getIdUsuario());
     }
 
 }
