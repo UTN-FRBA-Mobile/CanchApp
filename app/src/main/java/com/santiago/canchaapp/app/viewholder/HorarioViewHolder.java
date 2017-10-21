@@ -113,10 +113,20 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         }
         if (alquiler.getEstado() == PENDIENTE) {
             estadoReserva.setText(view.getResources().getString(R.string.txtHorarioPendienteAprobacion));
-            mostrarBotones(0.5f, botonAprobar, botonCancelar);
+            // Sólo el dueño puede aprobar una reserva pendiente
+            // Ambos la pueden cancelar
+            if (esMiCancha) {
+                mostrarBotones(0.5f, botonAprobar, botonCancelar);
+            } else {
+                mostrarBotones(0.5f, botonCancelar);
+            }
+
         } else {
             estadoReserva.setText(view.getResources().getString(R.string.txtHorarioReservado));
-            mostrarBotones(0.5f, botonCancelar);
+            // Un dueño no puede cancelar una reserva ya aprobada
+            if (!esMiCancha) {
+                mostrarBotones(0.5f, botonCancelar);
+            }
         }
     }
 
