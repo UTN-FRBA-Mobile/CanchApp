@@ -3,6 +3,7 @@ package com.santiago.canchaapp.dominio;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class DataBase {
 
@@ -10,6 +11,7 @@ public class DataBase {
     private static DatabaseReference mDatabase;
     private static String keyUsuarios = "usuarios";
     private static String keyClubes = "clubes";
+    private static String keyAlquileres = "alquileres";
 
     private DataBase() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -36,6 +38,10 @@ public class DataBase {
     public void insertClub(FirebaseUser user, Club club){
         mDatabase.child(keyUsuarios).child(user.getUid()).child("idClub").setValue(club.getUuid());
         mDatabase.child(keyClubes).child(club.getUuid()).setValue(club);
+    }
+
+    public Query getReferenceAlquileres(String idClub, String idCancha, String fecha) {
+        return mDatabase.child(keyAlquileres).child(idClub).child(idCancha).child(fecha).orderByChild("hora");
     }
 
 }

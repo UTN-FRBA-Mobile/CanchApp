@@ -17,18 +17,19 @@ public class Cancha implements Serializable {
 
     private Boolean techada;
 
-    private Horario horario;
+    // Denormalizado para facilitar queries
+    private DatosClub datosClub;
 
     private List<String> fotosUrls = new ArrayList<>();
 
-    public Cancha(UUID uuid, String nombre, TipoCancha tipoCancha, TipoSuperficie superficie, Boolean techada, List<String> fotosUrls, Horario horario) {
+    public Cancha(UUID uuid, String nombre, TipoCancha tipoCancha, TipoSuperficie superficie, Boolean techada, List<String> fotosUrls, UUID idClub, Horario horario) {
         this.uuid = uuid;
         this.nombre = nombre;
         this.tipoCancha = tipoCancha;
         this.superficie = superficie;
         this.techada = techada;
         this.fotosUrls = fotosUrls;
-        this.horario = horario;
+        this.datosClub = new DatosClub(idClub, horario);
     }
 
     public String getUuid() {
@@ -63,8 +64,29 @@ public class Cancha implements Serializable {
         return this.fotosUrls;
     }
 
-    public Horario getHorario() {
-        return horario;
+    public DatosClub getDatosClub() {
+        return datosClub;
+    }
+
+    public class DatosClub implements Serializable {
+
+        private UUID idClub;
+
+        private Horario rangoHorario;
+
+        public DatosClub(UUID idClub, Horario rangoHorario) {
+
+            this.idClub = idClub;
+            this.rangoHorario = rangoHorario;
+        }
+
+        public String getIdClub() {
+            return idClub.toString();
+        }
+
+        public Horario getRangoHorario() {
+            return rangoHorario;
+        }
     }
 
 }

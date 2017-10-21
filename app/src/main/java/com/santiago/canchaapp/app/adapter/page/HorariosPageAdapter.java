@@ -20,6 +20,7 @@ public class HorariosPageAdapter extends FragmentPagerAdapter {
 
     public HorariosPageAdapter(FragmentManager fm, Cancha cancha) {
         super(fm);
+        this.cancha = cancha;
     }
 
     @Override

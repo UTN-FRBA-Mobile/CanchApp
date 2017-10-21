@@ -7,21 +7,30 @@ import android.view.ViewGroup;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
 import com.santiago.canchaapp.app.viewholder.HorarioViewHolder;
-import com.santiago.canchaapp.app.viewholder.ReservaViewHolder;
+import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.dominio.Reserva;
-import com.santiago.canchaapp.dominio.SlotReserva;
+import com.santiago.canchaapp.dominio.SlotHorarioAlquiler;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.santiago.canchaapp.dominio.Horario.horaDesde;
 
 public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
 
-    private List<SlotReserva> horarios;
+    private List<SlotHorarioAlquiler> horarios;
 
     private AccionesSobreReserva accionesSobreReserva;
 
-    public HorariosAdapter(List<SlotReserva> horarios) {
-        this.horarios = horarios;
+    public HorariosAdapter(Horario rangoHorario) {
+        this.horarios = generarListaDeHorarios(rangoHorario, new ArrayList<Alquiler>());
+    }
+
+    public void actualizarLista(Horario rangoHorario, List<Alquiler> alquileres) {
+        horarios.clear();
+        horarios.addAll(generarListaDeHorarios(rangoHorario, alquileres));
+        this.notifyDataSetChanged();
     }
 
     @Override
@@ -39,6 +48,25 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
     @Override
     public int getItemCount() {
         return horarios.size();
+    }
+
+    // Auxiliar
+
+    private List<SlotHorarioAlquiler> generarListaDeHorarios(Horario rangoHorario, List<Alquiler> alquileres) {
+        List<SlotHorarioAlquiler> horarios = new ArrayList<>();
+        for (int h = rangoHorario.getDesde(); h < rangoHorario.getHasta(); h++) {
+            horarios.add(new SlotHorarioAlquiler(horaDesde(h), reservaEnHorario(h, alquileres)));
+        }
+        return horarios;
+    }
+
+    private Alquiler reservaEnHorario(int hora, List<Alquiler> alquilers) {
+        for (Alquiler alquiler: alquilers) {
+            if (alquiler.getHorario().getDesde() == hora) {
+                return alquiler;
+            }
+        }
+        return null;
     }
 
 }

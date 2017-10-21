@@ -2,28 +2,34 @@ package com.santiago.canchaapp.dominio;
 
 import com.santiago.canchaapp.app.otros.DateUtils;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-public class Alquiler {
+import static com.santiago.canchaapp.dominio.Horario.horaDesde;
+
+public class Alquiler implements Serializable {
 
     private UUID uuid;
 
-    private Long fecha;
+    private String fecha;
 
-    private Horario horario;
+    private int hora;
 
+    // Denormalizado para simplificar queries
     private DatosUsuario usuario;
 
     private DatosCancha cancha;
 
     private EstadoReserva estado;
 
-    public Alquiler(UUID uuid, Long fecha, Horario horario,
+    private String motivoCancelacion;
+
+    public Alquiler(UUID uuid, Date fecha, Horario horario,
                     DatosUsuario usuario, DatosCancha cancha, EstadoReserva estado) {
         this.uuid = uuid;
-        this.fecha = fecha;
-        this.horario = horario;
+        this.fecha = DateUtils.dateToString(fecha);
+        this.hora = horario.getDesde();
         this.usuario = usuario;
         this.cancha = cancha;
         this.estado = estado;
@@ -33,12 +39,16 @@ public class Alquiler {
         return uuid;
     }
 
-    public Date getFecha() {
-        return DateUtils.timestampToDate(fecha);
+    public String getFecha() {
+        return fecha;
+    }
+
+    public int getHora() {
+        return hora;
     }
 
     public Horario getHorario() {
-        return horario;
+        return horaDesde(hora);
     }
 
     public DatosUsuario getUsuario() {
@@ -53,7 +63,7 @@ public class Alquiler {
         return estado;
     }
 
-    private class DatosUsuario {
+    public class DatosUsuario implements Serializable {
 
         private UUID uuid;
 
@@ -78,7 +88,7 @@ public class Alquiler {
 
     }
 
-    private class DatosCancha {
+    public class DatosCancha implements Serializable {
 
         private UUID uuid;
 

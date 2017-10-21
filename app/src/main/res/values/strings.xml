@@ -61,4 +61,6 @@
     <string name="txtHorarioLibre">Libre</string>
     <string name="txtHorarioReservado">Reservado</string>
     <string name="txtHorarioPendienteAprobacion">Pendiente</string>
+
+    <string name="txtErrorDescargandoInfo">No se pudo obtener la información</string>
 </resources>

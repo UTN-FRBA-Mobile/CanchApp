@@ -8,16 +8,9 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
-import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
-import com.santiago.canchaapp.app.otros.DateUtils;
-import com.santiago.canchaapp.dominio.EstadoReserva;
-import com.santiago.canchaapp.dominio.Horario;
+import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.Reserva;
-import com.santiago.canchaapp.dominio.SlotReserva;
-
-import org.w3c.dom.Text;
-
-import java.util.Date;
+import com.santiago.canchaapp.dominio.SlotHorarioAlquiler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +18,6 @@ import butterknife.ButterKnife;
 import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.santiago.canchaapp.app.otros.DateUtils.textoHorario;
-import static com.santiago.canchaapp.app.otros.TextUtils.estaVacio;
 import static com.santiago.canchaapp.dominio.EstadoReserva.PENDIENTE;
 
 public class HorarioViewHolder extends RecyclerView.ViewHolder {
@@ -69,12 +61,12 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, v);
     }
 
-    public void cargarDatosEnVista(SlotReserva slotReserva) {
-        horario.setText(textoHorario(slotReserva.getHorario()));
-        if (slotReserva.estaLibre()) {
+    public void cargarDatosEnVista(SlotHorarioAlquiler slotHorarioAlquiler) {
+        horario.setText(textoHorario(slotHorarioAlquiler.getHorario()));
+        if (slotHorarioAlquiler.estaLibre()) {
             cargarHorarioLibre();
         } else {
-            cargarHorarioReservado(slotReserva.getReserva());
+            cargarHorarioReservado(slotHorarioAlquiler.getAlquiler());
         }
     }
 
@@ -82,10 +74,10 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         layoutHorarioLibre.setVisibility(VISIBLE);
     }
 
-    private void cargarHorarioReservado(Reserva reserva) {
+    private void cargarHorarioReservado(Alquiler alquiler) {
         layoutHorarioReservado.setVisibility(VISIBLE);
-        usuarioReserva.setText("por " + reserva.getUsuario());
-        if (reserva.getEstado() == PENDIENTE) {
+        usuarioReserva.setText("por " + alquiler.getUsuario().getNombre());
+        if (alquiler.getEstado() == PENDIENTE) {
             estadoReserva.setText(view.getResources().getString(R.string.txtHorarioPendienteAprobacion));
             mostrarBotones(0.5f, botonAprobar, botonCancelar);
         } else {
