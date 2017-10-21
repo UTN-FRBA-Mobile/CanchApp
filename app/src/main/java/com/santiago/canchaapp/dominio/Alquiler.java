@@ -28,7 +28,7 @@ public class Alquiler implements Serializable {
 
     public Alquiler() { }
 
-    public Alquiler(UUID uuid, Date fecha, Horario horario, UUID idUsuario, String nombreUsuario,
+    public Alquiler(UUID uuid, Date fecha, Horario horario, String idUsuario, String nombreUsuario,
                     String nombreCancha, TipoCancha tipoCancha, EstadoReserva estado) {
         this.uuid = uuid.toString();
         this.fecha = dateToString(fecha);

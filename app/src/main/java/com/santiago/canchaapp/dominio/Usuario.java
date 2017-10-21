@@ -6,19 +6,21 @@ package com.santiago.canchaapp.dominio;
 
 public class Usuario {
 
-    private String uId;
+    private String uid;
     private boolean esDuenio;
     private String nombre;
     private String email;
 
-    public Usuario(String uId, boolean esDuenio, String nombre, String email){
-        this.uId = uId;
+    public Usuario() { }
+
+    public Usuario(String uid, boolean esDuenio, String nombre, String email){
+        this.uid = uid;
         this.esDuenio = esDuenio;
         this.nombre = nombre;
         this.email = email;
     }
 
-    public String getUId(){return uId;}
+    public String getUid(){return uid;}
     public Boolean getEsDuenio(){return esDuenio;}
     public String getNombre(){return nombre;}
     public String getEmail(){return email;}

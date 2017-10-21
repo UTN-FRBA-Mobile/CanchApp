@@ -27,9 +27,10 @@ public class DataBase {
         return instancia;
     }
 
-    public void insertUser(FirebaseUser user, boolean esDuenio){
+    public Usuario insertUser(FirebaseUser user, boolean esDuenio){
         Usuario usuario = new Usuario(user.getUid(), esDuenio, user.getDisplayName(), user.getEmail());
         mDatabase.child(keyUsuarios).child(user.getUid()).setValue(usuario);
+        return usuario;
     }
 
     public DatabaseReference getReferenceUser(String uId){

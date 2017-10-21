@@ -14,6 +14,8 @@ import com.santiago.canchaapp.dominio.DataBase;
 import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.dominio.Reserva;
 import com.santiago.canchaapp.dominio.SlotHorarioAlquiler;
+import com.santiago.canchaapp.dominio.Usuario;
+import com.santiago.canchaapp.servicios.Sesion;
 
 import java.util.Date;
 import java.util.UUID;
@@ -26,6 +28,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.santiago.canchaapp.app.otros.DateUtils.textoHorario;
 import static com.santiago.canchaapp.dominio.EstadoReserva.APROBADA;
 import static com.santiago.canchaapp.dominio.EstadoReserva.PENDIENTE;
+import static java.util.UUID.fromString;
 
 public class HorarioViewHolder extends RecyclerView.ViewHolder {
 
@@ -91,11 +94,12 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
                 Alquiler alquiler;
                 if (esMiCancha) {
                     // Pedir nombre de persona para la cual se reserva
-                    alquiler = new Alquiler(UUID.randomUUID(), fecha, horario, null, "Persona",
+                    alquiler = new Alquiler(UUID.randomUUID(), fecha, horario, null, "<alguien>",
                             cancha.getNombre(), cancha.getTipoCancha(), APROBADA);
                 } else {
                     // Tomar nombre de usuario de la persona
-                    alquiler = new Alquiler(UUID.randomUUID(), fecha, horario, UUID.randomUUID(), "Usuario",
+                    Usuario usuario = Sesion.getInstancia().getUsuario();
+                    alquiler = new Alquiler(UUID.randomUUID(), fecha, horario, usuario.getUid(), usuario.getNombre(),
                             cancha.getNombre(), cancha.getTipoCancha(), APROBADA);
                 }
                 DataBase.getInstancia().insertAlquiler(
