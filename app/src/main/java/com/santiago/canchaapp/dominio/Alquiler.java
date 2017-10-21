@@ -1,41 +1,46 @@
 package com.santiago.canchaapp.dominio;
 
-import com.santiago.canchaapp.app.otros.DateUtils;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-import static com.santiago.canchaapp.dominio.Horario.horaDesde;
+import static com.santiago.canchaapp.app.otros.DateUtils.dateToString;
 
 public class Alquiler implements Serializable {
 
-    private UUID uuid;
+    private String uuid;
 
     private String fecha;
 
     private int hora;
 
-    // Denormalizado para simplificar queries
-    private DatosUsuario usuario;
-
-    private DatosCancha cancha;
-
     private EstadoReserva estado;
 
-    private String motivoCancelacion;
+    // Datos denormalizados para simplificar queries
+    private String idUsuario;
 
-    public Alquiler(UUID uuid, Date fecha, Horario horario,
-                    DatosUsuario usuario, DatosCancha cancha, EstadoReserva estado) {
-        this.uuid = uuid;
-        this.fecha = DateUtils.dateToString(fecha);
+    private String nombreUsuario;
+
+    private String nombreCancha;
+
+    private TipoCancha tipoCancha;
+    //
+
+    public Alquiler() { }
+
+    public Alquiler(UUID uuid, Date fecha, Horario horario, UUID idUsuario, String nombreUsuario,
+                    String nombreCancha, TipoCancha tipoCancha, EstadoReserva estado) {
+        this.uuid = uuid.toString();
+        this.fecha = dateToString(fecha);
         this.hora = horario.getDesde();
-        this.usuario = usuario;
-        this.cancha = cancha;
+        this.idUsuario = idUsuario != null ? idUsuario.toString() : null;
+        this.nombreUsuario = nombreUsuario;
+        this.nombreCancha = nombreCancha;
+        this.tipoCancha = tipoCancha;
         this.estado = estado;
     }
 
-    public UUID getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
@@ -47,67 +52,28 @@ public class Alquiler implements Serializable {
         return hora;
     }
 
-    public Horario getHorario() {
-        return horaDesde(hora);
-    }
-
-    public DatosUsuario getUsuario() {
-        return usuario;
-    }
-
-    public DatosCancha getCancha() {
-        return cancha;
-    }
-
     public EstadoReserva getEstado() {
         return estado;
     }
 
-    public class DatosUsuario implements Serializable {
-
-        private UUID uuid;
-
-        private String nombre;
-
-        public DatosUsuario(UUID uuid, String nombre) {
-            this.uuid = uuid;
-            this.nombre = nombre;
-        }
-
-        public UUID getUuid() {
-            return uuid;
-        }
-
-        public String getNombre() {
-            return nombre;
-        }
-
-        public boolean esUsuarioRegistrado() {
-            return uuid != null;
-        }
-
+    public String getIdUsuario() {
+        return idUsuario;
     }
 
-    public class DatosCancha implements Serializable {
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
 
-        private UUID uuid;
+    public boolean esUsuarioRegistrado() {
+        return uuid != null;
+    }
 
-        private String nombre;
+    public String getNombreCancha() {
+        return nombreCancha;
+    }
 
-        private TipoCancha tipo;
-
-        public DatosCancha(String nombre, TipoCancha tipo) {
-            this.nombre = nombre;
-            this.tipo = tipo;
-        }
-
-        public String getNombre() {
-            return nombre;
-        }
-
-        public TipoCancha getTipo() {
-            return tipo;
-        }
+    public TipoCancha getTipoCancha() {
+        return tipoCancha;
     }
 
 }

@@ -103,7 +103,7 @@ public class ListaHorariosFragment extends Fragment {
         horariosRecyclerView.setLayoutManager(layoutManager);
 
         // Adapter
-        adapter = new HorariosAdapter(cancha.getDatosClub().getRangoHorario());
+        adapter = new HorariosAdapter(cancha, getFecha());
         horariosRecyclerView.setAdapter(adapter);
 
         // Datos
@@ -111,15 +111,11 @@ public class ListaHorariosFragment extends Fragment {
         refDatos.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                List<Alquiler> alquileres = new ArrayList();
-                for (DataSnapshot alquilerSnapshot : dataSnapshot.getChildren()) {
-                    alquileres.add(alquilerSnapshot.getValue(Alquiler.class));
-                }
-                adapter.actualizarLista(cancha.getDatosClub().getRangoHorario(), alquileres);
+                actualizarLista(dataSnapshot);
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                actualizarLista(dataSnapshot);
             }
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
@@ -133,6 +129,12 @@ public class ListaHorariosFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
                 Toast.makeText(getContext(), R.string.txtErrorDescargandoInfo, Toast.LENGTH_LONG).show();
             }
+
+            private void actualizarLista(DataSnapshot snapshotAlquiler) {
+                Alquiler alquiler = snapshotAlquiler.getValue(Alquiler.class);
+                adapter.actualizarLista(cancha.getDatosClub().getRangoHorario(), alquiler);
+            }
+
         });
 
     }
@@ -154,8 +156,8 @@ public class ListaHorariosFragment extends Fragment {
         return (Cancha) getArguments().getSerializable(ARG_CANCHA);
     }
 
-    private String getFecha() {
-        return DateUtils.dateToString((Date) getArguments().getSerializable(ARG_DIA));
+    private Date getFecha() {
+        return (Date) getArguments().getSerializable(ARG_DIA);
     }
 
 }

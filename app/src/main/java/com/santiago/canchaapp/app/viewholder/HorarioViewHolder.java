@@ -9,8 +9,14 @@ import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.dominio.Alquiler;
+import com.santiago.canchaapp.dominio.Cancha;
+import com.santiago.canchaapp.dominio.DataBase;
+import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.dominio.Reserva;
 import com.santiago.canchaapp.dominio.SlotHorarioAlquiler;
+
+import java.util.Date;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,6 +24,7 @@ import butterknife.ButterKnife;
 import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.santiago.canchaapp.app.otros.DateUtils.textoHorario;
+import static com.santiago.canchaapp.dominio.EstadoReserva.APROBADA;
 import static com.santiago.canchaapp.dominio.EstadoReserva.PENDIENTE;
 
 public class HorarioViewHolder extends RecyclerView.ViewHolder {
@@ -55,28 +62,40 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
 
     private View view;
 
-    public HorarioViewHolder(View v) {
+    private Cancha cancha;
+
+    public HorarioViewHolder(View v, Cancha cancha) {
         super(v);
         this.view = v;
+        this.cancha = cancha;
         ButterKnife.bind(this, v);
     }
 
-    public void cargarDatosEnVista(SlotHorarioAlquiler slotHorarioAlquiler) {
+    public void cargarDatosEnVista(SlotHorarioAlquiler slotHorarioAlquiler, Date fecha) {
         horario.setText(textoHorario(slotHorarioAlquiler.getHorario()));
         if (slotHorarioAlquiler.estaLibre()) {
-            cargarHorarioLibre();
+            cargarHorarioLibre(slotHorarioAlquiler.getHorario(), fecha);
         } else {
             cargarHorarioReservado(slotHorarioAlquiler.getAlquiler());
         }
     }
 
-    private void cargarHorarioLibre() {
+    private void cargarHorarioLibre(final Horario horario, final Date fecha) {
         layoutHorarioLibre.setVisibility(VISIBLE);
+        botonReservar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Alquiler alquiler = new Alquiler(UUID.randomUUID(), fecha, horario, null, "Carlitos",
+                        cancha.getNombre(), cancha.getTipoCancha(), APROBADA);
+                DataBase.getInstancia().insertAlquiler(
+                        cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler);
+            }
+        });
     }
 
     private void cargarHorarioReservado(Alquiler alquiler) {
         layoutHorarioReservado.setVisibility(VISIBLE);
-        usuarioReserva.setText("por " + alquiler.getUsuario().getNombre());
+        usuarioReserva.setText("por " + alquiler.getNombreUsuario());
         if (alquiler.getEstado() == PENDIENTE) {
             estadoReserva.setText(view.getResources().getString(R.string.txtHorarioPendienteAprobacion));
             mostrarBotones(0.5f, botonAprobar, botonCancelar);

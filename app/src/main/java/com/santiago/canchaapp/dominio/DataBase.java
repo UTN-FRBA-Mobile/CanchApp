@@ -4,6 +4,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.santiago.canchaapp.app.otros.DateUtils;
+
+import java.util.Date;
+
+import static com.santiago.canchaapp.app.otros.DateUtils.dateToString;
 
 public class DataBase {
 
@@ -40,8 +45,16 @@ public class DataBase {
         mDatabase.child(keyClubes).child(club.getUuid()).setValue(club);
     }
 
-    public Query getReferenceAlquileres(String idClub, String idCancha, String fecha) {
-        return mDatabase.child(keyAlquileres).child(idClub).child(idCancha).child(fecha).orderByChild("hora");
+    // obtiene alquileres en /alquileres/:idClub/:idCancha/:fecha ordenados por hora
+    public Query getReferenceAlquileres(String idClub, String idCancha, Date fecha) {
+        return mDatabase.child(keyAlquileres).child(idClub).child(idCancha)
+                .child(dateToString(fecha)).orderByChild("hora");
+    }
+
+    // inserta alquiler en /alquileres/:idClub/:idCancha/:fecha
+    public void insertAlquiler(String idClub, String idCancha, Date fecha, Alquiler alquiler) {
+        mDatabase.child(keyAlquileres).child(idClub).child(idCancha)
+                .child(dateToString(fecha)).child(alquiler.getUuid()).setValue(alquiler);
     }
 
 }

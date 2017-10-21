@@ -18,7 +18,7 @@ public class DateUtils {
 
     private static DateFormat FORMATO_DIA = new SimpleDateFormat("dd/MM", IDIOMA_ESP);
 
-    private static DateFormat FORMATO_DIA_COMPLETO = new SimpleDateFormat("dd/MM//yyyy", IDIOMA_ESP);
+    private static DateFormat FORMATO_DIA_COMPLETO = new SimpleDateFormat("dd-MM-yyyy", IDIOMA_ESP);
 
     public static Date hoy() {
         return calendario().getTime();
