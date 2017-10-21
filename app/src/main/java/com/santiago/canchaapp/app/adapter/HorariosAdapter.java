@@ -32,10 +32,11 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
 
     private Date fecha;
 
-    private AccionesSobreReserva accionesSobreReserva;
+    private boolean esMiCancha;
 
-    public HorariosAdapter(Cancha cancha, Date fecha) {
+    public HorariosAdapter(Cancha cancha, Date fecha, boolean esMiCancha) {
         this.cancha = cancha;
+        this.esMiCancha = esMiCancha;
         this.fecha = fecha;
         this.alquileres = new ArrayList<>();
         this.horarios = generarListaDeHorarios(cancha.getDatosClub().getRangoHorario(), new ArrayList<Alquiler>());
@@ -52,7 +53,8 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
     public HorarioViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         return new HorarioViewHolder(
                 LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_horario, viewGroup, false),
-                cancha
+                cancha,
+                esMiCancha
         );
     }
 

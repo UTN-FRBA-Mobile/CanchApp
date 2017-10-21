@@ -12,16 +12,19 @@ public class CanchaPageAdapter extends FragmentPagerAdapter {
 
     private Cancha cancha;
 
-    public CanchaPageAdapter(FragmentManager fm, Cancha cancha) {
+    private boolean esMiCancha;
+
+    public CanchaPageAdapter(FragmentManager fm, Cancha cancha, boolean esMiCancha) {
         super(fm);
         this.cancha = cancha;
+        this.esMiCancha = esMiCancha;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0: return DatosCanchaFragment.nuevaInstancia(cancha);
-            case 1: return HorariosCanchaFragment.nuevaInstancia(cancha);
+            case 1: return HorariosCanchaFragment.nuevaInstancia(cancha, esMiCancha);
         }
         throw new RuntimeException("Tab de Cancha inesperado");
     }

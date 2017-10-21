@@ -1,10 +1,8 @@
 package com.santiago.canchaapp.app.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Slide;
@@ -19,17 +17,19 @@ import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.servicios.Servidor;
 
-import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHA;
-
 import java.io.Serializable;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHA;
+
 public class CanchasFragment extends Fragment {
 
     private static String ARG_CANCHAS = "canchas";
+
+    private static String ARG_MI_CLUB = "miCancha";
 
     @BindView(R.id.recycler_view_canchas)
     public RecyclerView canchasRecyclerView;
@@ -41,11 +41,12 @@ public class CanchasFragment extends Fragment {
 
     private CanchasAdapter adapter;
 
-    public static CanchasFragment nuevaInstancia(Club unClub) {
+    public static CanchasFragment nuevaInstancia(Club unClub, boolean esMiClub) {
         CanchasFragment fragment = new CanchasFragment();
 
         Bundle args = new Bundle();
         args.putSerializable(ARG_CANCHAS, (Serializable) unClub.getCanchas());
+        args.putBoolean(ARG_MI_CLUB, esMiClub);
         fragment.setArguments(args);
 
         return fragment;
@@ -62,7 +63,7 @@ public class CanchasFragment extends Fragment {
         canchasRecyclerView.setLayoutManager(layoutManager);
 
         // Adapter
-        adapter = new CanchasAdapter(getContext(), canchas());
+        adapter = new CanchasAdapter(getContext(), canchas(), esMiClub());
         canchasRecyclerView.setAdapter(adapter);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -87,12 +88,12 @@ public class CanchasFragment extends Fragment {
                 .commit();
     }
 
-    private static List<Cancha> datosDeCanchas() {
-        return Servidor.instancia().getCanchas();
-    }
-
     private List<Cancha> canchas() {
         return (List<Cancha>) getArguments().getSerializable(ARG_CANCHAS);
+    }
+
+    private boolean esMiClub() {
+        return getArguments().getBoolean(ARG_MI_CLUB);
     }
 
 }

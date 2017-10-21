@@ -76,4 +76,8 @@ public class Alquiler implements Serializable {
         return tipoCancha;
     }
 
+    public boolean alquiladaPorUsuario() {
+        return idUsuario != null;
+    }
+
 }

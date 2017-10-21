@@ -18,16 +18,19 @@ public class HorariosCanchaFragment extends Fragment {
 
     private static String ARG_CANCHA = "cancha";
 
+    private static String ARG_MI_CANCHA = "miCancha";
+
     @BindView(R.id.container_horarios)
     public ViewPager viewPager;
 
     private HorariosPageAdapter adapter;
 
-    public static HorariosCanchaFragment nuevaInstancia(Cancha cancha) {
+    public static HorariosCanchaFragment nuevaInstancia(Cancha cancha, boolean esMiCancha) {
         HorariosCanchaFragment fragment = new HorariosCanchaFragment();
 
         Bundle args = new Bundle();
         args.putSerializable(ARG_CANCHA, cancha);
+        args.putBoolean(ARG_MI_CANCHA, esMiCancha);
         fragment.setArguments(args);
 
         return fragment;
@@ -39,7 +42,7 @@ public class HorariosCanchaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_horarios_cancha, container, false);
         ButterKnife.bind(this, view);
 
-        adapter = new HorariosPageAdapter(getChildFragmentManager(), cancha());
+        adapter = new HorariosPageAdapter(getChildFragmentManager(), cancha(), esMiCancha());
         viewPager.setAdapter(adapter);
 
         return view;
@@ -47,6 +50,10 @@ public class HorariosCanchaFragment extends Fragment {
 
     private Cancha cancha() {
         return (Cancha) getArguments().getSerializable(ARG_CANCHA);
+    }
+
+    private boolean esMiCancha() {
+        return getArguments().getBoolean(ARG_MI_CANCHA);
     }
 
 }

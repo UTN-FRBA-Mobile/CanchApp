@@ -14,18 +14,19 @@ public class HorariosPageAdapter extends FragmentPagerAdapter {
 
     private static int CANTIDAD_DIAS = 8; // 1 semana (incluyendo el primer y último día parcialmente
 
-    private Horario horarioCancha;
-
     private Cancha cancha;
 
-    public HorariosPageAdapter(FragmentManager fm, Cancha cancha) {
+    private boolean esMiCancha;
+
+    public HorariosPageAdapter(FragmentManager fm, Cancha cancha, boolean esMiCancha) {
         super(fm);
         this.cancha = cancha;
+        this.esMiCancha = esMiCancha;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return ListaHorariosFragment.nuevaInstancia(cancha, hoyMasDias(position), position);
+        return ListaHorariosFragment.nuevaInstancia(cancha, hoyMasDias(position), position, esMiCancha);
     }
 
     @Override

@@ -28,7 +28,7 @@ public class ClubPageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0: return DatosClubFragment.nuevaInstancia(club);
-            case 1: return CanchasFragment.nuevaInstancia(club);
+            case 1: return CanchasFragment.nuevaInstancia(club, esMiClub);
         }
         throw new RuntimeException("Tab de Club inesperado");
     }

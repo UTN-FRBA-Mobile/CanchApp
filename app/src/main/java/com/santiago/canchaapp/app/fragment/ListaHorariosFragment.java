@@ -39,6 +39,8 @@ public class ListaHorariosFragment extends Fragment {
 
     private static String ARG_CANCHA = "cancha";
 
+    private static String ARG_MI_CANCHA = "mi_cancha";
+
     private static String ARG_DIA = "dia";
 
     private static String ARG_POSICION_DIA = "pos_dia";
@@ -61,11 +63,12 @@ public class ListaHorariosFragment extends Fragment {
 
     private Query refDatos;
 
-    public static ListaHorariosFragment nuevaInstancia(Cancha cancha, Date dia, int posicionDia) {
+    public static ListaHorariosFragment nuevaInstancia(Cancha cancha, Date dia, int posicionDia, boolean esMiCancha) {
         ListaHorariosFragment fragment = new ListaHorariosFragment();
 
         Bundle args = new Bundle();
         args.putSerializable(ARG_CANCHA, cancha);
+        args.putBoolean(ARG_MI_CANCHA, esMiCancha);
         args.putSerializable(ARG_DIA, dia);
         args.putInt(ARG_POSICION_DIA, posicionDia);
         fragment.setArguments(args);
@@ -103,7 +106,7 @@ public class ListaHorariosFragment extends Fragment {
         horariosRecyclerView.setLayoutManager(layoutManager);
 
         // Adapter
-        adapter = new HorariosAdapter(cancha, getFecha());
+        adapter = new HorariosAdapter(cancha, getFecha(), esMiCancha());
         horariosRecyclerView.setAdapter(adapter);
 
         // Datos
@@ -154,6 +157,10 @@ public class ListaHorariosFragment extends Fragment {
 
     private Cancha getCancha() {
         return (Cancha) getArguments().getSerializable(ARG_CANCHA);
+    }
+
+    private boolean esMiCancha() {
+        return getArguments().getBoolean(ARG_MI_CANCHA);
     }
 
     private Date getFecha() {

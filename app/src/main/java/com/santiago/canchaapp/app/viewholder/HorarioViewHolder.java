@@ -64,10 +64,13 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
 
     private Cancha cancha;
 
-    public HorarioViewHolder(View v, Cancha cancha) {
+    private boolean esMiCancha;
+
+    public HorarioViewHolder(View v, Cancha cancha, boolean esMiCancha) {
         super(v);
         this.view = v;
         this.cancha = cancha;
+        this.esMiCancha = esMiCancha;
         ButterKnife.bind(this, v);
     }
 
@@ -85,8 +88,16 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         botonReservar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Alquiler alquiler = new Alquiler(UUID.randomUUID(), fecha, horario, null, "Carlitos",
-                        cancha.getNombre(), cancha.getTipoCancha(), APROBADA);
+                Alquiler alquiler;
+                if (esMiCancha) {
+                    // Pedir nombre de persona para la cual se reserva
+                    alquiler = new Alquiler(UUID.randomUUID(), fecha, horario, null, "Persona",
+                            cancha.getNombre(), cancha.getTipoCancha(), APROBADA);
+                } else {
+                    // Tomar nombre de usuario de la persona
+                    alquiler = new Alquiler(UUID.randomUUID(), fecha, horario, UUID.randomUUID(), "Usuario",
+                            cancha.getNombre(), cancha.getTipoCancha(), APROBADA);
+                }
                 DataBase.getInstancia().insertAlquiler(
                         cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler);
             }
@@ -95,7 +106,11 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
 
     private void cargarHorarioReservado(Alquiler alquiler) {
         layoutHorarioReservado.setVisibility(VISIBLE);
-        usuarioReserva.setText("por " + alquiler.getNombreUsuario());
+        if (alquiler.alquiladaPorUsuario()) {
+            usuarioReserva.setText("por " + alquiler.getNombreUsuario());
+        } else {
+            usuarioReserva.setText("para " + alquiler.getNombreUsuario());
+        }
         if (alquiler.getEstado() == PENDIENTE) {
             estadoReserva.setText(view.getResources().getString(R.string.txtHorarioPendienteAprobacion));
             mostrarBotones(0.5f, botonAprobar, botonCancelar);
