@@ -36,6 +36,8 @@ import com.santiago.canchaapp.app.fragment.ReservasFragment;
 import com.santiago.canchaapp.app.otros.FragmentTags;
 import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
+import com.santiago.canchaapp.dominio.Usuario;
+import com.santiago.canchaapp.servicios.Sesion;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -50,7 +52,6 @@ import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CLUB;
 
 
 public class MenuNavegacion extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
-
     @BindView(R.id.nav_view)
     public NavigationView navigationView;
     @BindView(R.id.drawer_layout)
@@ -153,8 +154,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
 
     protected void onStart() {
         super.onStart();
-        user = firebaseAuth.getCurrentUser();
-        setUserData(user);
+        setUserData(firebaseAuth.getCurrentUser());
         changeVisibleMenu();
     }
 
@@ -194,7 +194,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
                 Toast.makeText(MenuNavegacion.this, R.string.txtErrorLogin, Toast.LENGTH_LONG).show();
             }
         };
-        DatabaseReference referenceIdClubUser = DataBase.getInstancia().getReferenceIdClubUser(user.getUid());
+        DatabaseReference referenceIdClubUser = DataBase.getInstancia().getReferenceIdClubUser(Sesion.getInstancia().getUsuario().getUid());
         referenceIdClubUser.addListenerForSingleValueEvent(valueEventListener);
     }
 

@@ -28,7 +28,7 @@ public class DataBase {
 
     public Usuario insertUser(FirebaseUser user, boolean esDuenio){
         Usuario usuario = new Usuario(user.getUid(), esDuenio, user.getDisplayName(), user.getEmail());
-        getReferenceUser(user.getUid()).setValue(usuario);
+        getReferenceUser(usuario.getUid()).setValue(usuario);
         return usuario;
     }
 
@@ -44,8 +44,8 @@ public class DataBase {
         return getReferenceUser(uid).child("idClub");
     }
 
-    public void insertClub(FirebaseUser user, Club club){
-        getReferenceIdClubUser(user.getUid()).setValue(club.getUuid());
+    public void insertClub(Usuario usuario, Club club){
+        getReferenceIdClubUser(usuario.getUid()).setValue(club.getUuid());
         getReferenceClub(club.getUuid()).setValue(club);
     }
 

@@ -14,10 +14,8 @@ import android.view.ViewGroup;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.CanchasAdapter;
 import com.santiago.canchaapp.dominio.Cancha;
-import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.servicios.Servidor;
 
-import java.io.Serializable;
 import java.util.List;
 
 import butterknife.BindView;

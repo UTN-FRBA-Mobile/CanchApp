@@ -40,6 +40,8 @@ import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
 import com.santiago.canchaapp.dominio.Horario;
+import com.santiago.canchaapp.dominio.Usuario;
+import com.santiago.canchaapp.servicios.Sesion;
 
 import java.io.IOException;
 import java.util.List;
@@ -261,9 +263,9 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         Bundle args = getArguments();
         if (args != null) {
             Club club = generateClub(args);
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            Usuario usuario = Sesion.getInstancia().getUsuario();
             try {
-                DataBase.getInstancia().insertClub(user, club);
+                DataBase.getInstancia().insertClub(usuario, club);
                 changeItemMenuClub(true);
                 showToast("Tu Club ha sido guardado correctamente.");
                 abrirFragmentSiguiente(club.getUuid());
