@@ -10,21 +10,19 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.CompoundButton;
 
 import com.santiago.canchaapp.R;
-import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.app.otros.TextUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.santiago.canchaapp.app.otros.FragmentTags.CARGAR_FOTOS_CANCHA;
-import static java.lang.Integer.parseInt;
 
 public class AgregarCanchaFragment extends Fragment {
 
@@ -47,7 +45,6 @@ public class AgregarCanchaFragment extends Fragment {
         Bundle args = new Bundle();
         args.putSerializable(ARG_CANCHAS, (Serializable) datosDeCanchas());
         fragment.setArguments(args);*/
-
         return new AgregarCanchaFragment();
     }
 
@@ -56,6 +53,16 @@ public class AgregarCanchaFragment extends Fragment {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_agregar_cancha, container, false);
         ButterKnife.bind(this, view);
+        switchTechada.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
+                if(switchTechada.isChecked()){
+                    Toast.makeText(getContext(), R.string.txtTechoSwitchOn, Toast.LENGTH_SHORT).show();
+                } else{
+                    Toast.makeText(getContext(), R.string.txtTechoSwitchOff, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         continuar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,9 +79,9 @@ public class AgregarCanchaFragment extends Fragment {
     }
 
     private void abrirFragmentSiguiente() {
-        //Fragment cargarFotosFragment = CargarFotosCanchaFragment.nuevaInstancia();
+        Bundle args = getParameters();
+        unacargarFotosCanchaFragment.setArguments(args);
         unacargarFotosCanchaFragment.setEnterTransition(new Slide(Gravity.RIGHT));
-        unacargarFotosCanchaFragment.setExitTransition(new Slide(Gravity.LEFT));
 
         getFragmentManager()
                 .beginTransaction()
@@ -91,8 +98,17 @@ public class AgregarCanchaFragment extends Fragment {
         return true;
     }
 
-    // Utils
+    private Bundle getParameters() {
+        Bundle args = new Bundle();
+        args.putString("nombreCancha", nombreCancha());
+        args.putString("deporte", deporte());
+        args.putString("telefono", telefono());
+        args.putString("superficie", superficie());
+        args.putBoolean("opcTechada", opcionTechada());
+        return args;
+    }
 
+    // Utils
     public static boolean estaVacio(String texto) {
         return texto == null || texto.replace(" ", "").isEmpty();
     }
@@ -110,5 +126,7 @@ public class AgregarCanchaFragment extends Fragment {
     }
 
     private String superficie() { return txtSuperficie.getText().toString(); }
+
+    private Boolean opcionTechada() { return switchTechada.isChecked();}
 
 }
