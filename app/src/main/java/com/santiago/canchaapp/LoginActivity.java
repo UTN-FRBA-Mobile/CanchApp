@@ -30,6 +30,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.santiago.canchaapp.dominio.DataBase;
+import com.santiago.canchaapp.dominio.Usuario;
+import com.santiago.canchaapp.servicios.Sesion;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,10 +74,14 @@ public class LoginActivity extends AppCompatActivity
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() != null)
-                    goMainScreen(Boolean.valueOf(dataSnapshot.child("esDuenio").getValue().toString()));
-                else
+                if(dataSnapshot.getValue() != null) {
+                    Usuario usuario = dataSnapshot.getValue(Usuario.class);
+                    setearUsuarioEnSesion(usuario);
+                    goMainScreen(usuario.getEsDuenio());
+                }
+                else {
                     showDialog();
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -106,7 +112,8 @@ public class LoginActivity extends AppCompatActivity
 
     @Override
     public void onDialogPositiveClick(Boolean mostrarSeccionClub) {
-        DataBase.getInstancia().insertUser(firebaseAuth.getCurrentUser(), mostrarSeccionClub);
+        Usuario usuario = DataBase.getInstancia().insertUser(firebaseAuth.getCurrentUser(), mostrarSeccionClub);
+        setearUsuarioEnSesion(usuario);
         goMainScreen(mostrarSeccionClub);
     }
 
@@ -216,6 +223,10 @@ public class LoginActivity extends AppCompatActivity
         final Intent intent = new Intent(this, MenuNavegacion.class);
         intent.putExtra("mostrarSeccionClub", mostrarSeccionClub);
         startActivity(intent);
+    }
+
+    private void setearUsuarioEnSesion(Usuario usuario) {
+        Sesion.getInstancia().setDatosUsuario(usuario);
     }
 
     @Override

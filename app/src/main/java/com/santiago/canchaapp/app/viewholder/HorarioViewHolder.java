@@ -8,16 +8,18 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
-import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
-import com.santiago.canchaapp.app.otros.DateUtils;
-import com.santiago.canchaapp.dominio.EstadoReserva;
+import com.santiago.canchaapp.dominio.Alquiler;
+import com.santiago.canchaapp.dominio.Cancha;
+import com.santiago.canchaapp.dominio.DataBase;
 import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.dominio.Reserva;
-import com.santiago.canchaapp.dominio.SlotReserva;
-
-import org.w3c.dom.Text;
+import com.santiago.canchaapp.dominio.SlotHorarioAlquiler;
+import com.santiago.canchaapp.dominio.Usuario;
+import com.santiago.canchaapp.servicios.Sesion;
 
 import java.util.Date;
+import java.util.Objects;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,8 +27,9 @@ import butterknife.ButterKnife;
 import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.santiago.canchaapp.app.otros.DateUtils.textoHorario;
-import static com.santiago.canchaapp.app.otros.TextUtils.estaVacio;
+import static com.santiago.canchaapp.dominio.EstadoReserva.APROBADA;
 import static com.santiago.canchaapp.dominio.EstadoReserva.PENDIENTE;
+import static java.util.UUID.fromString;
 
 public class HorarioViewHolder extends RecyclerView.ViewHolder {
 
@@ -63,34 +66,72 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
 
     private View view;
 
-    public HorarioViewHolder(View v) {
+    private Cancha cancha;
+
+    private boolean esMiCancha;
+
+    public HorarioViewHolder(View v, Cancha cancha, boolean esMiCancha) {
         super(v);
         this.view = v;
+        this.cancha = cancha;
+        this.esMiCancha = esMiCancha;
         ButterKnife.bind(this, v);
     }
 
-    public void cargarDatosEnVista(SlotReserva slotReserva) {
-        horario.setText(textoHorario(slotReserva.getHorario()));
-        if (slotReserva.estaLibre()) {
-            cargarHorarioLibre();
+    public void cargarDatosEnVista(SlotHorarioAlquiler slotHorarioAlquiler, Date fecha) {
+        horario.setText(textoHorario(slotHorarioAlquiler.getHorario()));
+        if (slotHorarioAlquiler.estaLibre()) {
+            cargarHorarioLibre(slotHorarioAlquiler.getHorario(), fecha);
         } else {
-            cargarHorarioReservado(slotReserva.getReserva());
+            cargarHorarioReservado(slotHorarioAlquiler.getAlquiler());
         }
     }
 
-    private void cargarHorarioLibre() {
+    private void cargarHorarioLibre(final Horario horario, final Date fecha) {
         layoutHorarioLibre.setVisibility(VISIBLE);
+        botonReservar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Alquiler alquiler;
+                if (esMiCancha) {
+                    // Pedir nombre de persona para la cual se reserva
+                    alquiler = new Alquiler(UUID.randomUUID(), fecha, horario, null, "<alguien>",
+                            cancha.getNombre(), cancha.getTipoCancha(), APROBADA);
+                } else {
+                    // Tomar nombre de usuario de la persona
+                    Usuario usuario = Sesion.getInstancia().getUsuario();
+                    alquiler = new Alquiler(UUID.randomUUID(), fecha, horario, usuario.getUid(), usuario.getNombre(),
+                            cancha.getNombre(), cancha.getTipoCancha(), PENDIENTE);
+                }
+                DataBase.getInstancia().insertAlquiler(
+                        cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler);
+            }
+        });
     }
 
-    private void cargarHorarioReservado(Reserva reserva) {
+    private void cargarHorarioReservado(Alquiler alquiler) {
         layoutHorarioReservado.setVisibility(VISIBLE);
-        usuarioReserva.setText("por " + reserva.getUsuario());
-        if (reserva.getEstado() == PENDIENTE) {
+        if (alquiler.alquiladaPorUsuario()) {
+            usuarioReserva.setText("por " + alquiler.getNombreUsuario());
+        } else {
+            usuarioReserva.setText("para " + alquiler.getNombreUsuario());
+        }
+        if (alquiler.getEstado() == PENDIENTE) {
             estadoReserva.setText(view.getResources().getString(R.string.txtHorarioPendienteAprobacion));
-            mostrarBotones(0.5f, botonAprobar, botonCancelar);
+            // Sólo el dueño puede aprobar una reserva pendiente
+            // El usuario la puede cancelar si es propia
+            if (esMiCancha) {
+                mostrarBotones(0.5f, botonAprobar, botonCancelar);
+            } else if (esMiReserva(alquiler)) {
+                mostrarBotones(0.5f, botonCancelar);
+            }
         } else {
             estadoReserva.setText(view.getResources().getString(R.string.txtHorarioReservado));
-            mostrarBotones(0.5f, botonCancelar);
+            // Sólo se puede cancelar una reserva aprobada si la estoy viendo como usuario
+            // y es mi propia reserva
+            if (!esMiCancha && esMiReserva(alquiler)) {
+                mostrarBotones(0.5f, botonCancelar);
+            }
         }
     }
 
@@ -100,6 +141,10 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         }
         layoutTextoReserva.setLayoutParams(
                 new LayoutParams(0, WRAP_CONTENT, tamanioLayout));
+    }
+
+    private boolean esMiReserva(Alquiler alquiler) {
+        return Objects.equals(Sesion.getInstancia().getUsuario().getUid(), alquiler.getIdUsuario());
     }
 
 }

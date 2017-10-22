@@ -20,6 +20,8 @@ public class CanchaFragment extends Fragment {
 
     private static String ARG_CANCHA = "cancha";
 
+    private static String ARG_MI_CANCHA = "miCancha";
+
     @BindView(R.id.container_cancha)
     public ViewPager viewPager;
 
@@ -28,11 +30,12 @@ public class CanchaFragment extends Fragment {
 
     private CanchaPageAdapter adapter;
 
-    public static CanchaFragment nuevaInstancia(Cancha cancha) {
+    public static CanchaFragment nuevaInstancia(Cancha cancha, boolean esMiCancha) {
         CanchaFragment fragment = new CanchaFragment();
 
         Bundle args = new Bundle();
         args.putSerializable(ARG_CANCHA, cancha);
+        args.putBoolean(ARG_MI_CANCHA, esMiCancha);
         fragment.setArguments(args);
 
         return fragment;
@@ -48,7 +51,7 @@ public class CanchaFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         // Tabs canchas
-        adapter = new CanchaPageAdapter(getChildFragmentManager(), cancha());
+        adapter = new CanchaPageAdapter(getChildFragmentManager(), cancha(), esMiCancha());
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
 
@@ -59,6 +62,10 @@ public class CanchaFragment extends Fragment {
 
     private Cancha cancha() {
         return (Cancha) getArguments().getSerializable(ARG_CANCHA);
+    }
+
+    private boolean esMiCancha() {
+        return getArguments().getBoolean(ARG_MI_CANCHA);
     }
 
 }

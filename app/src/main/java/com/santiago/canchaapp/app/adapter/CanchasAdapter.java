@@ -22,11 +22,14 @@ public class CanchasAdapter extends RecyclerView.Adapter<CanchaViewHolder> imple
 
     private List<Cancha> canchas;
 
+    private boolean esMiClub;
+
     private Context context;
 
-    public CanchasAdapter(Context context, List<Cancha> canchas) {
+    public CanchasAdapter(Context context, List<Cancha> canchas, boolean esMiClub) {
         this.canchas = canchas;
         this.context = context;
+        this.esMiClub = esMiClub;
     }
 
     @Override
@@ -54,7 +57,7 @@ public class CanchasAdapter extends RecyclerView.Adapter<CanchaViewHolder> imple
             @Override
             public void run() {
                 ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_frame, CanchaFragment.nuevaInstancia(canchas.get(posicion)), CANCHA.toString())
+                        .replace(R.id.content_frame, CanchaFragment.nuevaInstancia(canchas.get(posicion), esMiClub), CANCHA.toString())
                         .addToBackStack(null)
                         .commit();
             }
