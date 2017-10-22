@@ -10,11 +10,11 @@ public class Club implements Serializable {
 
     private String nombre;
     private String direccion;
-    private LatLng coordenadas;
+    private Coordenada coordenadas;
     private String email;
     private String telefono;
     private Horario rangoHorario;
-    private UUID uuid;
+    private String uuid;
     private List<Cancha> canchas;
     public Club(String nombre, String direccion) {
         this(nombre, direccion, null);
@@ -24,11 +24,13 @@ public class Club implements Serializable {
         this(null, nombre, direccion, null, null, null, rangoHorario, null);
     }
 
+    public Club() {}
+
     public Club(UUID uuid, String nombre, String direccion, LatLng coordenadas, String email, String telefono, Horario rangoHorario, List<Cancha> canchas) {
-        this.uuid = uuid;
+        this.uuid = uuid.toString();
         this.nombre = nombre;
         this.direccion = direccion;
-        this.coordenadas = coordenadas;
+        this.coordenadas = new Coordenada(coordenadas);
         this.email = email;
         this.telefono = telefono;
         this.rangoHorario = rangoHorario;
@@ -39,7 +41,7 @@ public class Club implements Serializable {
 
     public String getDireccion() {return direccion;}
 
-    public LatLng getCoordenadas() {return coordenadas;}
+    public Coordenada getCoordenadas() {return coordenadas;}
 
     public String getEmail() {return email;}
 
@@ -50,4 +52,9 @@ public class Club implements Serializable {
     public String getUuid() {return uuid.toString();}
 
     public List<Cancha> getCanchas() {return canchas;}
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
 }

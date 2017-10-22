@@ -27,9 +27,9 @@ import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHA;
 
 public class CanchasFragment extends Fragment {
 
-    private static String ARG_CANCHAS = "canchas";
+    private static String ARG_ID_CLUB = "idClub";
 
-    private static String ARG_MI_CLUB = "miCancha";
+    private static String ARG_MI_CLUB = "esMiClub";
 
     @BindView(R.id.recycler_view_canchas)
     public RecyclerView canchasRecyclerView;
@@ -41,14 +41,12 @@ public class CanchasFragment extends Fragment {
 
     private CanchasAdapter adapter;
 
-    public static CanchasFragment nuevaInstancia(Club unClub, boolean esMiClub) {
+    public static CanchasFragment nuevaInstancia(String idClub, Boolean esMiClub) {
         CanchasFragment fragment = new CanchasFragment();
-
         Bundle args = new Bundle();
-        args.putSerializable(ARG_CANCHAS, (Serializable) unClub.getCanchas());
         args.putBoolean(ARG_MI_CLUB, esMiClub);
+        args.putString(ARG_ID_CLUB, idClub);
         fragment.setArguments(args);
-
         return fragment;
     }
 
@@ -77,10 +75,8 @@ public class CanchasFragment extends Fragment {
     }
 
     private void abrirFragmentSiguiente() {
-
         Fragment agregarCanchaFragment = AgregarCanchaFragment.nuevaInstancia();
         agregarCanchaFragment.setExitTransition(new Slide(Gravity.LEFT));
-
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.club_layout, agregarCanchaFragment, REGISTRAR_CANCHA.toString())
@@ -89,7 +85,7 @@ public class CanchasFragment extends Fragment {
     }
 
     private List<Cancha> canchas() {
-        return (List<Cancha>) getArguments().getSerializable(ARG_CANCHAS);
+        return Servidor.instancia().getCanchas();
     }
 
     private boolean esMiClub() {

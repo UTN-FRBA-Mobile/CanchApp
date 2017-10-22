@@ -1,5 +1,6 @@
 package com.santiago.canchaapp.servicios;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.Horario;
@@ -36,54 +37,54 @@ public class Servidor {
     }
 
     private List<Reserva> reservasPendientes = asList(
-            new Reserva(new Club("Da Vinci", "Buenos Aires 1234"), FUTBOL5, "16/09/17", horaDesde(21), PENDIENTE),
-            new Reserva(new Club("Los Troncos", "Italia 2580"), TENIS, "06/10/17", horaDesde(17), PENDIENTE),
-            new Reserva(new Club("Los Troncos", "Italia 2580"), TENIS, "06/10/17", horaDesde(18), PENDIENTE)
+            new Reserva(getClub(), FUTBOL5, "16/09/17", horaDesde(21), PENDIENTE),
+            new Reserva(getClub(), TENIS, "06/10/17", horaDesde(17), PENDIENTE),
+            new Reserva(getClub(), TENIS, "06/10/17", horaDesde(18), PENDIENTE)
     );
 
     private List<Reserva> reservasAprobadas = asList(
-                    new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "27/09/17", horaDesde(16), APROBADA),
-                    new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "01/10/17", horaDesde(16), APROBADA),
-                    new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "02/10/17", horaDesde(19), APROBADA),
-                    new Reserva(new Club("Los Troncos", "Italia 2580"), TENIS, "03/10/17", horaDesde(15), APROBADA),
-                    new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "03/10/17", horaDesde(21), APROBADA),
-                    new Reserva(new Club("Club Mitre", "Avellaneda 4433"), FUTBOL7, "04/10/17", horaDesde(11), APROBADA),
-                    new Reserva(new Club("Los Troncos", "Italia 2580"), TENIS, "04/10/17", horaDesde(16), APROBADA),
-                    new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "04/10/17", horaDesde(22), APROBADA),
-                    new Reserva(new Club("Club Mitre", "Avellaneda 4433"), FUTBOL7, "30/10/17", horaDesde(14), APROBADA),
-                    new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "1/11/17", horaDesde(22), APROBADA),
-                    new Reserva(new Club("Club Atlético Independiente", "Bochini 853"), FUTBOL5, "1/11/17", horaDesde(22), APROBADA)
+                    new Reserva(getClub(), FUTBOL5, "27/09/17", horaDesde(16), APROBADA),
+                    new Reserva(getClub(), FUTBOL5, "01/10/17", horaDesde(16), APROBADA),
+                    new Reserva(getClub(), FUTBOL5, "02/10/17", horaDesde(19), APROBADA),
+                    new Reserva(getClub(), TENIS, "03/10/17", horaDesde(15), APROBADA),
+                    new Reserva(getClub(), FUTBOL5, "03/10/17", horaDesde(21), APROBADA),
+                    new Reserva(getClub(), FUTBOL7, "04/10/17", horaDesde(11), APROBADA),
+                    new Reserva(getClub(), TENIS, "04/10/17", horaDesde(16), APROBADA),
+                    new Reserva(getClub(), FUTBOL5, "04/10/17", horaDesde(22), APROBADA),
+                    new Reserva(getClub(), FUTBOL7, "30/10/17", horaDesde(14), APROBADA),
+                    new Reserva(getClub(), FUTBOL5, "1/11/17", horaDesde(22), APROBADA),
+                    new Reserva(getClub(), FUTBOL5, "1/11/17", horaDesde(22), APROBADA)
             );
 
     private List<Reserva> reservasCanceladas = asList(
-            new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "29/09/17", horaDesde(20), CANCELADA, "Va a llover")
+            new Reserva(getClub(), FUTBOL5, "29/09/17", horaDesde(20), CANCELADA, "Va a llover")
     );
 
     private List<Reserva> alquileresAprobados = asList(
-                new Reserva(new Club("Da Vinci", "Buenos Aires 1234"), FUTBOL5, "16/09/17", horaDesde(21), APROBADA),
-                new Reserva(new Club("Los Troncos", "Italia 2580"), TENIS, "06/10/17", horaDesde(17), APROBADA),
-                new Reserva(new Club("Los Troncos", "Italia 2580"), TENIS, "06/10/17", horaDesde(18), APROBADA),
-                new Reserva(new Club("Mitre", "Una calle con nombre ultra largo"), TENIS, "06/10/17", horaDesde(19), APROBADA)
+                new Reserva(getClub(), FUTBOL5, "16/09/17", horaDesde(21), APROBADA),
+                new Reserva(getClub(), TENIS, "06/10/17", horaDesde(17), APROBADA),
+                new Reserva(getClub(), TENIS, "06/10/17", horaDesde(18), APROBADA),
+                new Reserva(getClub(), TENIS, "06/10/17", horaDesde(19), APROBADA)
         );
 
     private List<Reserva> alquileresPendientes  = asList(
-                new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "27/09/17", horaDesde(16), PENDIENTE),
-                new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "01/10/17", horaDesde(16), PENDIENTE),
-                new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "02/10/17", horaDesde(19), PENDIENTE),
-                new Reserva(new Club("Los Troncos", "Italia 2580"), TENIS, "03/10/17", horaDesde(15), PENDIENTE),
-                new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "03/10/17", horaDesde(21), PENDIENTE),
-                new Reserva(new Club("Club Mitre", "Avellaneda 4433"), FUTBOL7, "04/10/17", horaDesde(11), PENDIENTE),
-                new Reserva(new Club("Los Troncos", "Italia 2580"), TENIS, "04/10/17", horaDesde(16), PENDIENTE),
-                new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "04/10/17", horaDesde(22), PENDIENTE),
-                new Reserva(new Club("Club Mitre", "Avellaneda 4433"), FUTBOL7, "30/10/17", horaDesde(14), PENDIENTE),
-                new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "1/11/17", horaDesde(22), PENDIENTE),
-                new Reserva(new Club("Club Atlético Independiente", "Bochini 853"), FUTBOL5, "1/11/17", horaDesde(22), PENDIENTE),
-                new Reserva(new Club("Mitre", "Una calle con nombre ultra largo"), TENIS, "06/10/17", horaDesde(19), PENDIENTE)
+                new Reserva(getClub(), FUTBOL5, "27/09/17", horaDesde(16), PENDIENTE),
+                new Reserva(getClub(), FUTBOL5, "01/10/17", horaDesde(16), PENDIENTE),
+                new Reserva(getClub(), FUTBOL5, "02/10/17", horaDesde(19), PENDIENTE),
+                new Reserva(getClub(), TENIS, "03/10/17", horaDesde(15), PENDIENTE),
+                new Reserva(getClub(), FUTBOL5, "03/10/17", horaDesde(21), PENDIENTE),
+                new Reserva(getClub(), FUTBOL7, "04/10/17", horaDesde(11), PENDIENTE),
+                new Reserva(getClub(), TENIS, "04/10/17", horaDesde(16), PENDIENTE),
+                new Reserva(getClub(), FUTBOL5, "04/10/17", horaDesde(22), PENDIENTE),
+                new Reserva(getClub(), FUTBOL7, "30/10/17", horaDesde(14), PENDIENTE),
+                new Reserva(getClub(), FUTBOL5, "1/11/17", horaDesde(22), PENDIENTE),
+                new Reserva(getClub(), FUTBOL5, "1/11/17", horaDesde(22), PENDIENTE),
+                new Reserva(getClub(), TENIS, "06/10/17", horaDesde(19), PENDIENTE)
         );
 
     private List<Reserva> alquileresCancelados = asList(
-                new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL5, "29/09/17", horaDesde(20), CANCELADA, "No hay gente"),
-                new Reserva(new Club("Da Vinci", "Buenos Aires 2358"), FUTBOL7, "29/09/19", horaDesde(22), CANCELADA, "No pagaron")
+                new Reserva(getClub(), FUTBOL5, "29/09/17", horaDesde(20), CANCELADA, "No hay gente"),
+                new Reserva(getClub(), FUTBOL7, "29/09/19", horaDesde(22), CANCELADA, "No pagaron")
         );
 
     public List<Reserva> getReservasPendientes() {
@@ -131,7 +132,7 @@ public class Servidor {
     public Club getClub() {
         UUID idClubBarcelona = fromString("ac452950-3f5b-419a-a36d-73057a76f81b");
         return new Club(idClubBarcelona, "Barcelona", "Carrer d'Aristides Maillol, 12, 08028 Barcelona, Spain",
-                null, "oab@fcbarcelona.cat", "+34 934963600", new Horario(9, 22),
+                new LatLng(-34.603371, -58.451497), "oab@fcbarcelona.cat", "+34 934963600", new Horario(9, 22),
                 asList(new Cancha(fromString("05da8cde-ce21-4407-b40d-edb1b803839a"), "Cancha Central", FUTBOL7, PASTO, false,
                                 singletonList("https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/2014._Camp_Nou._M%C3%A9s_que_un_club._Barcelona_B40.jpg/1200px-2014._Camp_Nou._M%C3%A9s_que_un_club._Barcelona_B40.jpg"), idClubBarcelona, new Horario(10, 22)),
                         new Cancha(fromString("b36b5704-3abe-425d-9c3c-e1a965935657"), "Cancha Inclinada", FUTBOL7, PASTO, false,
@@ -145,7 +146,7 @@ public class Servidor {
         UUID idClubChelsea = fromString("a048abd3-10bd-4f49-8dd4-fd15cee8512b");
         return asList(
             new Club(idClubBarcelona, "Barcelona", "Carrer d'Aristides Maillol, 12, 08028 Barcelona, Spain",
-                    null, "oab@fcbarcelona.cat", "+34 934963600", new Horario(9, 22),
+                    new LatLng(-34.603371, -58.451497), "oab@fcbarcelona.cat", "+34 934963600", new Horario(9, 22),
                     asList(new Cancha(fromString("a991a22f-bafb-450f-80cc-a3d7bd12ca4c"), "Cancha Central", FUTBOL7, PASTO, false,
                                     singletonList("https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/2014._Camp_Nou._M%C3%A9s_que_un_club._Barcelona_B40.jpg/1200px-2014._Camp_Nou._M%C3%A9s_que_un_club._Barcelona_B40.jpg"), idClubBarcelona, new Horario(9, 22)),
                             new Cancha(fromString("fe62bc0b-aa10-4611-abc4-198451d05012"), "Cancha Inclinada", FUTBOL7, PASTO, false,
@@ -153,7 +154,7 @@ public class Servidor {
                             )
             ),
             new Club(idClubReal, "Real Madrid", "Av. de Concha Espina, 1, 28036 Madrid, Spain",
-                    null, "oas@realmadrid.com", "+34 913984300", new Horario(13, 20),
+                    new LatLng(-34.603371, -58.451497), "oas@realmadrid.com", "+34 913984300", new Horario(13, 20),
                     asList(new Cancha(fromString("392b2443-c28f-4554-94d5-9e5e9b30fcaf"), "Santiago Bernabeu", FUTBOL5, PASTO, false,
                                     singletonList("https://www.esmadrid.com/sites/default/files/styles/content_type_full/public/recursosturisticos/infoturistica/BernabeuEstadio_1412599011.407.jpg?itok=9J7z_5Xl"), idClubReal, new Horario(13, 20)),
                             new Cancha(fromString("4c3d1d86-f6fc-4860-a40c-e9b792597083"), "Estadio suplente", FUTBOL7, PASTO, false,
@@ -165,7 +166,7 @@ public class Servidor {
                             )
             ),
             new Club(idClubChelsea, "Chelsea", "Stamford Bridge, Fulham Road, London, SW6 1HS",
-                    null, "contact@chelsea.com", "00 44 20 7835 6000", new Horario(9, 17),
+                    new LatLng(-34.603371, -58.451497), "contact@chelsea.com", "00 44 20 7835 6000", new Horario(9, 17),
                     asList(new Cancha(fromString("0ffeb129-b54a-4955-8e4a-61ce03c1de6b"), "Stamford Bridge", FUTBOL7, PASTO, false,
                                     singletonList("http://www.chelseafc.com/content/cfc/en/homepage/the-club/stadium-tours-and-museum/educational-visits/_jcr_content.autoteaser.jpeg"), idClubChelsea, new Horario(9, 17)),
                             new Cancha(fromString("1e06f441-8c51-4aa1-9ee7-d7fa4d4664ff"), "Cancha Desproporcionada", FUTBOL7, PASTO, false,
@@ -179,7 +180,7 @@ public class Servidor {
     }
 
     public Club miClub() {
-        return new Club(fromString("77b86fc9-555e-4cc1-9e5e-277e8e92d990"), "Nuestro Club", "Medrano 955, Capital Federal",
-                null, "mail@canchapp.com", "03 03 456", new Horario(9, 22), getCanchas());
+        return new Club(fromString("6d5aa173-2227-42f2-aab3-d4542605fef1"), "Nuestro Club", "Medrano 955, Capital Federal",
+                new LatLng(-34.603371, -58.451497), "mail@canchapp.com", "03 03 456", new Horario(9, 22), getCanchas());
     }
 }

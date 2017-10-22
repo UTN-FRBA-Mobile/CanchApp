@@ -4,7 +4,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.santiago.canchaapp.app.otros.DateUtils;
 
 import java.util.Date;
 
@@ -29,21 +28,25 @@ public class DataBase {
 
     public Usuario insertUser(FirebaseUser user, boolean esDuenio){
         Usuario usuario = new Usuario(user.getUid(), esDuenio, user.getDisplayName(), user.getEmail());
-        mDatabase.child(keyUsuarios).child(user.getUid()).setValue(usuario);
+        getReferenceUser(user.getUid()).setValue(usuario);
         return usuario;
     }
 
-    public DatabaseReference getReferenceUser(String uId){
-        return mDatabase.child(keyUsuarios).child(uId);
+    public DatabaseReference getReferenceUser(String uid){
+        return mDatabase.child(keyUsuarios).child(uid);
     }
 
-    public DatabaseReference getReferenceIdClubUser(String uId){
-        return mDatabase.child(keyUsuarios).child(uId).child("idClub");
+    public DatabaseReference getReferenceClub(String idClub){
+        return mDatabase.child(keyClubes).child(idClub);
+    }
+
+    public DatabaseReference getReferenceIdClubUser(String uid){
+        return getReferenceUser(uid).child("idClub");
     }
 
     public void insertClub(FirebaseUser user, Club club){
-        mDatabase.child(keyUsuarios).child(user.getUid()).child("idClub").setValue(club.getUuid());
-        mDatabase.child(keyClubes).child(club.getUuid()).setValue(club);
+        getReferenceIdClubUser(user.getUid()).setValue(club.getUuid());
+        getReferenceClub(club.getUuid()).setValue(club);
     }
 
     // obtiene alquileres en /alquileres/:idClub/:idCancha/:fecha

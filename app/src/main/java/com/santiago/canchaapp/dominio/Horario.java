@@ -22,6 +22,8 @@ public class Horario implements Serializable {
         this.hasta = hasta;
     }
 
+    public Horario() {}
+
     public int getDesde() {
         return desde;
     }

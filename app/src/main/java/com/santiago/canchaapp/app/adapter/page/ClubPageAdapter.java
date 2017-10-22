@@ -14,21 +14,20 @@ import java.io.Serializable;
 
 public class ClubPageAdapter extends FragmentPagerAdapter {
 
-    private boolean esMiClub;
+    private String idClub;
+    private Boolean esMiClub;
 
-    private Club club;
-
-    public ClubPageAdapter(FragmentManager fm, Boolean esMiClub, Serializable unClub) {
+    public ClubPageAdapter(FragmentManager fm, String idClub, Boolean esMiClub) {
         super(fm);
+        this.idClub = idClub;
         this.esMiClub = esMiClub;
-        this.club = (Club) unClub;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0: return DatosClubFragment.nuevaInstancia(club);
-            case 1: return CanchasFragment.nuevaInstancia(club, esMiClub);
+            case 0: return DatosClubFragment.nuevaInstancia(idClub);
+            case 1: return CanchasFragment.nuevaInstancia(idClub, esMiClub);
         }
         throw new RuntimeException("Tab de Club inesperado");
     }

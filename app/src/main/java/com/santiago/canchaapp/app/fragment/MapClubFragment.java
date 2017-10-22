@@ -87,8 +87,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View view) { //quito las validaciones por ahora
             //if (locationLatLng != null)
-                clickGuardar();
-                abrirFragmentSiguiente();
+                insertClub();
             //else
             //    Toast.makeText(activity.getApplicationContext(), R.string.txtSeleccionarClub, Toast.LENGTH_SHORT).show();
             }
@@ -248,16 +247,9 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    public void clickGuardar(){
-        Toast.makeText(getActivity().getApplicationContext(),"Tu Club ha sido guardado correctamente.", Toast.LENGTH_LONG).show();
-    }
-
-    private void abrirFragmentSiguiente() {
-        insertClub();
-
-        Fragment miClub = ClubFragment.nuevaInstanciaParaMiClub();
+    private void abrirFragmentSiguiente(String uuid) {
+        Fragment miClub = ClubFragment.nuevaInstancia(uuid, true);
         miClub.setEnterTransition(new Slide(Gravity.RIGHT));
-
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_frame, miClub, MI_CLUB.toString())
@@ -268,17 +260,34 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     private void insertClub() {
         Bundle args = getArguments();
         if (args != null) {
-            String nombreClub = args.getString("nombreClub");
-            String telefono = args.getString("telefono");
-            String email = args.getString("email");
-            Horario rangoHorario = (Horario) args.getSerializable("rangoHorario");
-            String direccion = obtenerDireccion(ubicacion.latitude, ubicacion.longitude);
-            UUID uuid = UUID.randomUUID();
+            Club club = generateClub(args);
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            Club club = new Club(uuid, nombreClub, direccion, ubicacion, email, telefono, rangoHorario, null);
-            DataBase.getInstancia().insertClub(user, club);
-            changeItemMenuClub(true);
+            try {
+                DataBase.getInstancia().insertClub(user, club);
+                changeItemMenuClub(true);
+                showToast("Tu Club ha sido guardado correctamente.");
+                abrirFragmentSiguiente(club.getUuid());
+            }
+            catch (Exception e){
+                showToast("Se produjo un problema al guardar el club.");
+            }
         }
+    }
+
+    private void showToast(String mensaje){
+        Toast.makeText(getActivity().getApplicationContext(),mensaje, Toast.LENGTH_LONG).show();
+
+    }
+
+    @NonNull
+    private Club generateClub(Bundle args) {
+        String nombreClub = args.getString("nombreClub");
+        String telefono = args.getString("telefono");
+        String email = args.getString("email");
+        Horario rangoHorario = (Horario) args.getSerializable("rangoHorario");
+        String direccion = obtenerDireccion(ubicacion.latitude, ubicacion.longitude);
+        UUID uuid = UUID.randomUUID();
+        return new Club(uuid, nombreClub, direccion, ubicacion, email, telefono, rangoHorario, null);
     }
 
     private void changeItemMenuClub(boolean mostrar) {

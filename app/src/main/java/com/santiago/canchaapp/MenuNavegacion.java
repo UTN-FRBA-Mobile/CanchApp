@@ -34,6 +34,7 @@ import com.santiago.canchaapp.app.fragment.ClubFragment;
 import com.santiago.canchaapp.app.fragment.RegistrarClubFragment;
 import com.santiago.canchaapp.app.fragment.ReservasFragment;
 import com.santiago.canchaapp.app.otros.FragmentTags;
+import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
 import com.squareup.picasso.Picasso;
 
@@ -60,6 +61,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
     private GoogleApiClient googleApiClient;
     public ActionBarDrawerToggle toggle;
     private FirebaseUser user;
+    final String[] idClub = new String[1];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,10 +111,12 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
             case R.id.navMisAlquileres:
                 abrirFragment(ReservasFragment.nuevaInstanciaParaAlquileres(), MIS_ALQUILERES); break;
             case R.id.navMiClub:
-                abrirFragment(ClubFragment.nuevaInstanciaParaMiClub(), MI_CLUB); break;
+                abrirFragment(ClubFragment.nuevaInstancia(idClub[0], true), MI_CLUB); break;
         }
         return true;
     }
+
+
 
     private void abrirFragment(Fragment fragment, FragmentTags tag) {
         getSupportFragmentManager()
@@ -170,10 +174,13 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Boolean tieneClub = dataSnapshot.getValue() != null;
                 changeItemMenuClub(tieneClub);
-                if(!tieneClub)
+                if(!tieneClub) {
                     abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB);
-                else
-                    abrirFragment(ClubFragment.nuevaInstanciaParaMiClub(), MI_CLUB);
+                }
+                else{
+                    idClub[0] = dataSnapshot.getValue().toString();
+                    abrirFragment(ClubFragment.nuevaInstancia(idClub[0], true), MI_CLUB);
+                }
             }
 
             private void changeItemMenuClub(boolean mostrar) {
@@ -187,8 +194,8 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
                 Toast.makeText(MenuNavegacion.this, R.string.txtErrorLogin, Toast.LENGTH_LONG).show();
             }
         };
-        DatabaseReference referenceUser = DataBase.getInstancia().getReferenceIdClubUser(user.getUid());
-        referenceUser.addListenerForSingleValueEvent(valueEventListener);
+        DatabaseReference referenceIdClubUser = DataBase.getInstancia().getReferenceIdClubUser(user.getUid());
+        referenceIdClubUser.addListenerForSingleValueEvent(valueEventListener);
     }
 
     private void setUserData(FirebaseUser user) {
