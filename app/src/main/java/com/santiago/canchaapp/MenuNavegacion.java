@@ -80,6 +80,8 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
         firebaseAuth = FirebaseAuth.getInstance();
+        setUserData(firebaseAuth.getCurrentUser());
+        changeVisibleMenu();
     }
 
     @Override
@@ -149,13 +151,6 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
     private void goLogInScreen() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-    }
-
-
-    protected void onStart() {
-        super.onStart();
-        setUserData(firebaseAuth.getCurrentUser());
-        changeVisibleMenu();
     }
 
     private void changeVisibleMenu() {
