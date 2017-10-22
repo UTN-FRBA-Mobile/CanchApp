@@ -64,6 +64,7 @@ public class CanchasFragment extends Fragment {
         adapter = new CanchasAdapter(getContext(), canchas(), esMiClub());
         canchasRecyclerView.setAdapter(adapter);
 
+        fab.setVisibility(esMiClub() ? View.VISIBLE : View.GONE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

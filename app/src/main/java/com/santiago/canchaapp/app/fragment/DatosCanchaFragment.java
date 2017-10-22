@@ -43,11 +43,9 @@ public class DatosCanchaFragment extends Fragment {
 
     public static DatosCanchaFragment nuevaInstancia(Cancha cancha) {
         DatosCanchaFragment fragment = new DatosCanchaFragment();
-
         Bundle args = new Bundle();
         args.putSerializable(ARG_CANCHA, cancha);
         fragment.setArguments(args);
-
         return fragment;
     }
 
