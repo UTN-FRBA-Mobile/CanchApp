@@ -90,7 +90,7 @@ public class CargarFotosCanchaFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         actionMenu = (FloatingActionMenu) view.findViewById(R.id.fBtnMenu);
-        actionMenu.setClosedOnTouchOutside(false);
+        actionMenu.setClosedOnTouchOutside(true);
 
         fbutton1 = actionMenu.findViewById(R.id.fBtnTomarFoto);
         fbutton2 = actionMenu.findViewById(R.id.fBtnSeleccionarImagen);
@@ -239,12 +239,12 @@ public class CargarFotosCanchaFragment extends Fragment {
                     //break;
             }
         }
-        try {
+        /*try {
             //Setear tiempo en milisegundos
             Thread.sleep(1000);
         }catch (Exception e){
             e.printStackTrace();
-        }
+        }*/
         super.onActivityResult(requestCode, resultCode, data);
     }
 
