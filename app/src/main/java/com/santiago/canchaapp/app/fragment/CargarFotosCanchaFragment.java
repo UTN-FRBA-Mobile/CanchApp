@@ -71,7 +71,6 @@ public class CargarFotosCanchaFragment extends Fragment {
     private String mPath;
 
     //ImageView imageView1, imageView2, imageView3, imageView4, imageView5, imageView6, imageView7;*/
-
     FloatingActionMenu actionMenu;
     com.github.clans.fab.FloatingActionButton fbutton1, fbutton2, fbutton3;
 
