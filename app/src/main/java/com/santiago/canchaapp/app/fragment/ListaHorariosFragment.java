@@ -106,7 +106,7 @@ public class ListaHorariosFragment extends Fragment {
         horariosRecyclerView.setLayoutManager(layoutManager);
 
         // Adapter
-        adapter = new HorariosAdapter(cancha, getFecha(), esMiCancha());
+        adapter = new HorariosAdapter(cancha, getFecha(), esMiCancha(), cancha.getDatosClub().getRangoHorario());
         horariosRecyclerView.setAdapter(adapter);
 
         // Datos
@@ -135,7 +135,7 @@ public class ListaHorariosFragment extends Fragment {
 
             private void actualizarLista(DataSnapshot snapshotAlquiler) {
                 Alquiler alquiler = snapshotAlquiler.getValue(Alquiler.class);
-                adapter.actualizarLista(cancha.getDatosClub().getRangoHorario(), alquiler);
+                adapter.actualizarLista(alquiler);
             }
 
         });

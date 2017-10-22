@@ -34,15 +34,18 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
 
     private boolean esMiCancha;
 
-    public HorariosAdapter(Cancha cancha, Date fecha, boolean esMiCancha) {
+    private Horario rangoHorario;
+
+    public HorariosAdapter(Cancha cancha, Date fecha, boolean esMiCancha, Horario rangoHorario) {
         this.cancha = cancha;
         this.esMiCancha = esMiCancha;
         this.fecha = fecha;
+        this.rangoHorario = rangoHorario;
         this.alquileres = new ArrayList<>();
         this.horarios = generarListaDeHorarios(cancha.getDatosClub().getRangoHorario(), new ArrayList<Alquiler>());
     }
 
-    public void actualizarLista(Horario rangoHorario, Alquiler alquilerActualizado) {
+    public void actualizarLista(Alquiler alquilerActualizado) {
         actualizarAlquileres(alquilerActualizado);
         horarios.clear();
         horarios.addAll(generarListaDeHorarios(rangoHorario, alquileres));
@@ -54,13 +57,14 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
         return new HorarioViewHolder(
                 LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_horario, viewGroup, false),
                 cancha,
-                esMiCancha
+                esMiCancha,
+                fecha
         );
     }
 
     @Override
     public void onBindViewHolder(HorarioViewHolder viewHolder, final int position) {
-        viewHolder.cargarDatosEnVista(horarios.get(position), fecha);
+        viewHolder.cargarDatosEnVista(horarios.get(position));
     }
 
     @Override
@@ -100,9 +104,11 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
 
     private void actualizarAlquileres(Alquiler alquilerActualizado) {
         Integer i = indiceDeAlquiler(alquilerActualizado);
-        // Se reservó un horario => se agrega alquiler a la lista
+        // Se reservó un horario (y no está cancelado) => se agrega alquiler a la lista
         if (i == null) {
-            alquileres.add(alquilerActualizado);
+            if (alquilerActualizado.getEstado() != CANCELADA) {
+                alquileres.add(alquilerActualizado);
+            }
         } else {
             // Se canceló el alquiler => se saca de la lista
             if (alquilerActualizado.getEstado() == CANCELADA) {

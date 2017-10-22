@@ -57,4 +57,10 @@ public class DataBase {
                 .child(dateToString(fecha)).child(alquiler.getUuid()).setValue(alquiler);
     }
 
+    // actualiza el estado de /alquileres/:idClub/:idCancha/:fecha/:idAlquiler
+    public void updateEstadoAlquiler(String idClub, String idCancha, Date fecha, String idAlquiler, EstadoReserva nuevoEstado) {
+        mDatabase.child(keyAlquileres).child(idClub).child(idCancha)
+                .child(dateToString(fecha)).child(idAlquiler).child("estado").setValue(nuevoEstado);
+    }
+
 }

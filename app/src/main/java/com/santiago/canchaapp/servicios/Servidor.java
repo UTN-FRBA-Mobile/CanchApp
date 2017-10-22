@@ -173,7 +173,8 @@ public class Servidor {
                             new Cancha (fromString("43196d14-cde8-4492-9340-76d369b33d2e"), "Cancha Inundada", FUTBOL5, PASTO, false,
                                     singletonList("http://images.performgroup.com/di/library/Goal_Argentina/dd/4/cancha-lanus-inundada-fortaleza_12dq5dpkb9gds13clt73f8nq9y.jpg?t=1561520289&w=620&h=430"), idClubChelsea, new Horario(9, 17))
                             )
-            )
+            ),
+            miClub()
         );
     }
 
