@@ -117,11 +117,11 @@ public class DatosClubFragment extends Fragment {
                 double finalWidth = width/proporcion;
                 double finalHeight = height/proporcion;
                 String urlMapa =
-                        "https://maps.googleapis.com/maps/api/staticmap?center=" +
-                                club.getDireccion().replace(" ", "+") +
-                                "&zoom=16&size=" +
-                                (int) finalWidth + "x" + (int) finalHeight +
-                                "&key=AIzaSyBfbfsDgjD9_U8j1PpzRlkHtqnlDwD1cGI";
+                        "https://maps.googleapis.com/maps/api/staticmap?zoom=18&size=" +
+                        (int) finalWidth + "x" + (int) finalHeight +
+                        "&markers=color:red|" +
+                        club.getDireccion().replace(" ", "+") +
+                        "&key=AIzaSyBfbfsDgjD9_U8j1PpzRlkHtqnlDwD1cGI";
                 Picasso.with(rootView.getContext()).load(urlMapa).fit().into(imagenMapa);
                 return false;
             }
