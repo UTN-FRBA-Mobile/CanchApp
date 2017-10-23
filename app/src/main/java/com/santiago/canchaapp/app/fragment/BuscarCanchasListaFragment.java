@@ -29,6 +29,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.google.firebase.database.DatabaseError.PERMISSION_DENIED;
+
 public class BuscarCanchasListaFragment extends Fragment {
 
     private static String ARG_CANCHAS = "canchas";
@@ -85,8 +87,8 @@ public class BuscarCanchasListaFragment extends Fragment {
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
-                Toast.makeText(getContext(), R.string.txtErrorDescargandoInfo, Toast.LENGTH_LONG).show();
+                if (databaseError.getCode() != PERMISSION_DENIED)
+                    Toast.makeText(getContext(), R.string.txtErrorDescargandoInfo, Toast.LENGTH_LONG).show();
             }
 
             private void actualizarLista(DataSnapshot snapshotAlquiler) {
