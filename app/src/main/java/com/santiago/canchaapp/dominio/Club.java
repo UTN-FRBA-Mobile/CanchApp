@@ -3,6 +3,7 @@ package com.santiago.canchaapp.dominio;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +35,11 @@ public class Club implements Serializable {
         this.email = email;
         this.telefono = telefono;
         this.rangoHorario = rangoHorario;
-        this.canchas = canchas;
+        this.canchas = (canchas == null ? new ArrayList<Cancha>() : canchas);
+    }
+
+    public Boolean tieneCanchas(){
+        return this.getCanchas() != null && this.getCanchas().size() > 0;
     }
 
     public String getNombre() {return nombre;}
@@ -51,7 +56,10 @@ public class Club implements Serializable {
 
     public String getUuid() {return uuid.toString();}
 
-    public List<Cancha> getCanchas() {return canchas;}
+    public List<Cancha> getCanchas() {
+        canchas = canchas == null ? new ArrayList<Cancha>() : canchas;
+        return canchas;
+    }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;

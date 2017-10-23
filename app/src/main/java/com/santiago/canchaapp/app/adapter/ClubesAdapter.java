@@ -12,11 +12,15 @@ import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.fragment.ClubFragment;
 import com.santiago.canchaapp.app.otros.RecyclerViewOnItemClickListener;
 import com.santiago.canchaapp.app.viewholder.ClubViewHolder;
+import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.Club;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.santiago.canchaapp.app.otros.FragmentTags.CLUB;
+import static com.santiago.canchaapp.dominio.EstadoReserva.CANCELADA;
 
 public class ClubesAdapter extends RecyclerView.Adapter<ClubViewHolder> implements RecyclerViewOnItemClickListener {
 
@@ -24,8 +28,8 @@ public class ClubesAdapter extends RecyclerView.Adapter<ClubViewHolder> implemen
 
     private Context context;
 
-    public ClubesAdapter(Context context, List<Club> clubes) {
-        this.clubes = clubes;
+    public ClubesAdapter(Context context) {
+        this.clubes = new ArrayList<>();
         this.context = context;
     }
 
@@ -35,6 +39,11 @@ public class ClubesAdapter extends RecyclerView.Adapter<ClubViewHolder> implemen
                 LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_club, viewGroup, false),
                 this
         );
+    }
+
+    public void actualizarLista(Club club) {
+        actualizarClubes(club);
+        this.notifyDataSetChanged();
     }
 
     @Override
@@ -58,5 +67,23 @@ public class ClubesAdapter extends RecyclerView.Adapter<ClubViewHolder> implemen
                         .commit();
             }
         }, 250);
+    }
+
+    private void actualizarClubes(Club club) {
+        Integer i = indiceDeClub(club);
+        if (i == null) {
+            clubes.add(club);
+        } else {
+            clubes.set(i, club);
+        }
+    }
+
+    private Integer indiceDeClub(Club club) {
+        for (int i = 0; i < clubes.size(); i++) {
+            if (Objects.equals(clubes.get(i).getUuid(), club.getUuid())) {
+                return i;
+            }
+        }
+        return null;
     }
 }

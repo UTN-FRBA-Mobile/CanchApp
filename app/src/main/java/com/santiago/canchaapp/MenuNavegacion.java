@@ -40,6 +40,8 @@ import com.santiago.canchaapp.dominio.Usuario;
 import com.santiago.canchaapp.servicios.Sesion;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -167,7 +169,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Boolean tieneClub = dataSnapshot.getValue() != null;
+                Boolean tieneClub = !Objects.equals(dataSnapshot.getValue().toString(), "");
                 changeItemMenuClub(tieneClub);
                 if(!tieneClub) {
                     abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB);

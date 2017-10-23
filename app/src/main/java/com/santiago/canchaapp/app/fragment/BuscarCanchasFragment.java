@@ -47,10 +47,8 @@ public class BuscarCanchasFragment extends Fragment{
 
     public static Fragment nuevaInstancia() {
         BuscarCanchasFragment fragment = new BuscarCanchasFragment();
-
         Bundle args = new Bundle();
         fragment.setArguments(args);
-
         return fragment;
     }
 }

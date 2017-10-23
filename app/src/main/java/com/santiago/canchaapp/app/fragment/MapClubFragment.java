@@ -88,10 +88,10 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { //quito las validaciones por ahora
-            //if (locationLatLng != null)
+            if (ubicacion != null)
                 insertClub();
-            //else
-            //    Toast.makeText(activity.getApplicationContext(), R.string.txtSeleccionarClub, Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(activity.getApplicationContext(), R.string.txtSeleccionarClub, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -267,8 +267,10 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
             try {
                 DataBase.getInstancia().insertClub(usuario, club);
                 changeItemMenuClub(true);
+                Sesion.getInstancia().getUsuario().setIdClub(club.getUuid());
                 showToast("Tu Club ha sido guardado correctamente.");
                 abrirFragmentSiguiente(club.getUuid());
+
             }
             catch (Exception e){
                 showToast("Se produjo un problema al guardar el club.");

@@ -84,7 +84,7 @@ public class CanchasFragment extends Fragment {
     }
 
     private List<Cancha> canchas() {
-        return Servidor.instancia().getCanchas();
+        return Servidor.instancia().getCanchasPrueba(getArguments().getString(ARG_ID_CLUB));
     }
 
     private boolean esMiClub() {

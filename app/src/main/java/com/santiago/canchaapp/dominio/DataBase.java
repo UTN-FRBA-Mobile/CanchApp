@@ -1,5 +1,7 @@
 package com.santiago.canchaapp.dominio;
 
+import android.provider.ContactsContract;
+
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -37,7 +39,11 @@ public class DataBase {
     }
 
     public DatabaseReference getReferenceClub(String idClub){
-        return mDatabase.child(keyClubes).child(idClub);
+        return getReferenceClubes().child(idClub);
+    }
+
+    public DatabaseReference getReferenceClubes(){
+        return mDatabase.child(keyClubes);
     }
 
     public DatabaseReference getReferenceIdClubUser(String uid){
