@@ -63,8 +63,6 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
     private FirebaseAuth firebaseAuth;
     private GoogleApiClient googleApiClient;
     public ActionBarDrawerToggle toggle;
-    private FirebaseUser user;
-    final String[] idClub = new String[1];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,7 +114,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
             case R.id.navMisAlquileres:
                 abrirFragment(ReservasFragment.nuevaInstanciaParaAlquileres(), MIS_ALQUILERES); break;
             case R.id.navMiClub:
-                abrirFragment(ClubFragment.nuevaInstancia(idClub[0], true), MI_CLUB); break;
+                abrirFragment(ClubFragment.nuevaInstancia(Sesion.getInstancia().getUsuario().getIdClub(), true), MI_CLUB); break;
         }
         return true;
     }
@@ -175,8 +173,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
                     abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB);
                 }
                 else{
-                    idClub[0] = dataSnapshot.getValue().toString();
-                    abrirFragment(ClubFragment.nuevaInstancia(idClub[0], true), MI_CLUB);
+                    abrirFragment(ClubFragment.nuevaInstancia(Sesion.getInstancia().getUsuario().getIdClub(), true), MI_CLUB);
                 }
             }
 
