@@ -118,11 +118,21 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
     private void cargarHorarioReservado(Alquiler alquiler) {
         layoutHorarioReservado.setVisibility(VISIBLE);
         layoutHorarioLibre.setVisibility(GONE);
-        if (alquiler.alquiladaPorUsuario()) {
-            usuarioReserva.setText("por " + alquiler.getNombreUsuario());
+
+        // Setear textos
+        if (esMiCancha) {
+            if (alquiler.alquiladaPorUsuario()) {
+                usuarioReserva.setText("por " + alquiler.getNombreUsuario());
+            } else {
+                usuarioReserva.setText("para " + alquiler.getNombreUsuario());
+            }
+        } else if (esMiReserva(alquiler)) {
+            usuarioReserva.setText("por mi");
         } else {
-            usuarioReserva.setText("para " + alquiler.getNombreUsuario());
+            usuarioReserva.setVisibility(GONE);
         }
+
+        // Setear botones
         if (alquiler.getEstado() == PENDIENTE) {
             estadoReserva.setText(view.getResources().getString(R.string.txtHorarioPendienteAprobacion));
             // Sólo el dueño puede aprobar una reserva pendiente
