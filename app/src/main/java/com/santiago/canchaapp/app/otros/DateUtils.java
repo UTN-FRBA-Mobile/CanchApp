@@ -3,6 +3,7 @@ package com.santiago.canchaapp.app.otros;
 import com.santiago.canchaapp.dominio.Horario;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -61,6 +62,15 @@ public class DateUtils {
 
     public static Long dateToTimestamp(Date date) {
         return date.getTime();
+    }
+
+    public static Date stringToDateToSave(String fecha) {
+        try {
+            return FORMATO_DIA_COMPLETO_PARA_GUARDAR.parse(fecha);
+        } catch (ParseException e) {
+            throw new RuntimeException("La fecha está mal cargada");
+        }
+
     }
 
 }

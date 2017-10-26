@@ -36,6 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.view.View.INVISIBLE;
+import static com.google.firebase.database.DatabaseError.PERMISSION_DENIED;
 import static com.santiago.canchaapp.app.otros.DateUtils.textoDia;
 
 public class ListaHorariosFragment extends Fragment {
@@ -136,7 +137,8 @@ public class ListaHorariosFragment extends Fragment {
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getContext(), R.string.txtErrorDescargandoInfo, Toast.LENGTH_LONG).show();
+                if (databaseError.getCode() != PERMISSION_DENIED)
+                    Toast.makeText(getContext(), R.string.txtErrorDescargandoInfo, Toast.LENGTH_LONG).show();
             }
 
             private void actualizarLista(DataSnapshot snapshotAlquiler) {

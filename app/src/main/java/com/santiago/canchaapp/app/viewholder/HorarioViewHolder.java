@@ -121,7 +121,7 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
                 DataBase.getInstancia().insertAlquiler(
                         cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler);
                 if (reserva != null) {
-                    DataBase.getInstancia().insertReserva(usuario.getUid(), fecha, reserva);
+                    DataBase.getInstancia().insertReserva(usuario.getUid(), reserva);
                 }
             }
         });
@@ -176,9 +176,10 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
                         cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler.getUuid(), CANCELADA);
                 if (alquiler.alquiladaPorUsuario()) {
                     DataBase.getInstancia().updateEstadoReserva(
-                            alquiler.getIdUsuario(), fecha, alquiler.getIdReserva(), CANCELADA);
+                            alquiler.getIdUsuario(), alquiler.getIdReserva(), CANCELADA);
 
                 }
+                ocultarBotones(botonAprobar, botonCancelar);
             }
         });
     }
@@ -191,7 +192,7 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
                         cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler.getUuid(), APROBADA);
                 if (alquiler.alquiladaPorUsuario()) {
                     DataBase.getInstancia().updateEstadoReserva(
-                            alquiler.getIdUsuario(), fecha, alquiler.getIdReserva(), APROBADA);
+                            alquiler.getIdUsuario(), alquiler.getIdReserva(), APROBADA);
 
                 }
                 ocultarBotones(botonAprobar, botonCancelar);

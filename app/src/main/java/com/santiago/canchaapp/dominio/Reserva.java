@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import static com.santiago.canchaapp.app.otros.DateUtils.dateToString;
+import static com.santiago.canchaapp.app.otros.DateUtils.dateToStringtoSave;
 
 public class Reserva implements Serializable {
 
@@ -38,9 +39,11 @@ public class Reserva implements Serializable {
     private String direccionClub;
     //
 
+    public Reserva() { }
+
     public Reserva(UUID uuid, Usuario usuario, Cancha cancha, Club club, Date fecha, Horario horario, EstadoReserva estado, UUID idAlquiler) {
         this.uuid = uuid.toString();
-        this.fecha = dateToString(fecha);
+        this.fecha = dateToStringtoSave(fecha);
         this.hora = horario.getDesde();
         this.estado = estado;
         this.idUsuario = usuario.getUid();

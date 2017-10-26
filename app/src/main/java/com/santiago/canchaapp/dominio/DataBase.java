@@ -74,16 +74,20 @@ public class DataBase {
                 .child(dateToStringtoSave(fecha)).child(idAlquiler).child("estado").setValue(nuevoEstado);
     }
 
-    // inserta reserva en /reservas/:idUsuario/:fecha/:idReserva
-    public void insertReserva(String idUsuario, Date fecha, Reserva reserva) {
-        mDatabase.child(keyReservas).child(idUsuario).child(dateToStringtoSave(fecha))
-                .child(reserva.getUuid()).setValue(reserva);
+    // inserta reserva en /reservas/:idUsuario/:idReserva
+    public void insertReserva(String idUsuario, Reserva reserva) {
+        mDatabase.child(keyReservas).child(idUsuario).child(reserva.getUuid()).setValue(reserva);
     }
 
-    // actualiza el estado de /reservas/:idClub/:fecha/:idReserva
-    public void updateEstadoReserva(String idUsuario, Date fecha, String idReserva, EstadoReserva nuevoEstado) {
-        mDatabase.child(keyReservas).child(idUsuario).child(dateToStringtoSave(fecha))
-                .child(idReserva).child("estado").setValue(nuevoEstado);
+    // actualiza el estado de /reservas/:idClub/:idReserva
+    public void updateEstadoReserva(String idUsuario, String idReserva, EstadoReserva nuevoEstado) {
+        mDatabase.child(keyReservas).child(idUsuario).child(idReserva).child("estado").setValue(nuevoEstado);
+    }
+
+    // obtiene reservas en /reservas/:idUsuario/ con :fecha >= fechaActual
+    public Query getReferenceReservasActuales(String idUsuario, Date fechaActual) {
+        return mDatabase.child(keyReservas).child(idUsuario)
+                .orderByChild("fecha").startAt(dateToStringtoSave(fechaActual));
     }
 
 }
