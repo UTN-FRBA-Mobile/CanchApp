@@ -1,71 +1,109 @@
 package com.santiago.canchaapp.dominio;
 
+import com.santiago.canchaapp.app.otros.DateUtils;
+
 import java.io.Serializable;
+import java.util.Date;
+import java.util.UUID;
+
+import static com.santiago.canchaapp.app.otros.DateUtils.dateToString;
 
 public class Reserva implements Serializable {
 
-    private Club club;
-
-    private TipoCancha tipoCancha;
+    private String uuid;
 
     private String fecha;
 
-    private Horario horario;
+    private int hora;
 
     private EstadoReserva estado;
 
-    private String motivoCancelacion;
+    private String idUsuario;
 
-    private String usuario;
+    private String idCancha;
 
-    public Reserva(Club club, TipoCancha tipoCancha, String fecha, Horario horario, EstadoReserva estado, String motivoCancelacion, String usuario) {
-        this.club = club;
-        this.tipoCancha = tipoCancha;
-        this.fecha = fecha;
-        this.horario = horario;
+    private String idClub;
+
+    private String idAlquiler;
+
+    // Datos denormalizados
+    private String nombreUsuario;
+
+    private String nombreCancha;
+
+    private TipoCancha tipoCancha;
+
+    private String nombreClub;
+
+    private String direccionClub;
+    //
+
+    public Reserva(UUID uuid, Usuario usuario, Cancha cancha, Club club, Date fecha, Horario horario, EstadoReserva estado, UUID idAlquiler) {
+        this.uuid = uuid.toString();
+        this.fecha = dateToString(fecha);
+        this.hora = horario.getDesde();
         this.estado = estado;
-        this.motivoCancelacion = motivoCancelacion;
-        this.usuario = usuario;
+        this.idUsuario = usuario.getUid();
+        this.nombreUsuario = usuario.getNombre();
+        this.idClub = club.getUuid();
+        this.nombreClub = club.getNombre();
+        this.direccionClub = club.getDireccion();
+        this.idCancha = cancha.getUuid();
+        this.nombreCancha = cancha.getNombre();
+        this.tipoCancha = cancha.getTipoCancha();
+        this.idAlquiler = idAlquiler.toString();
     }
 
-    public Reserva(Club club, TipoCancha tipoCancha, String fecha, Horario horario, EstadoReserva estado, String motivoCancelacion) {
-        this(club, tipoCancha, fecha, horario, estado, motivoCancelacion, null);
-    }
-
-    public Reserva(Club club, TipoCancha tipoCancha, String fecha, Horario horario, EstadoReserva estado) {
-        this(club, tipoCancha, fecha, horario, estado, null);
-    }
-
-    public TipoCancha getTipoCancha() {
-        return tipoCancha;
+    public String getUuid() {
+        return uuid;
     }
 
     public String getFecha() {
         return fecha;
     }
 
-    public Horario getHorario() {
-        return horario;
-    }
-
-    public String getNombreClub() {
-        return club.getNombre();
-    }
-
-    public String getDireccion() {
-        return club.getDireccion();
+    public int getHora() {
+        return hora;
     }
 
     public EstadoReserva getEstado() {
         return estado;
     }
 
-    public String getMotivoCancelacion() {
-        return motivoCancelacion;
+    public String getIdUsuario() {
+        return idUsuario;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getIdCancha() {
+        return idCancha;
+    }
+
+    public String getIdClub() {
+        return idClub;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public String getNombreCancha() {
+        return nombreCancha;
+    }
+
+    public TipoCancha getTipoCancha() {
+        return tipoCancha;
+    }
+
+    public String getNombreClub() {
+        return nombreClub;
+    }
+
+    public String getDireccionClub() {
+        return direccionClub;
+    }
+
+    public String getIdAlquiler() {
+        return idAlquiler;
     }
 
 }

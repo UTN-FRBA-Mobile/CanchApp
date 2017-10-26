@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
+import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.dominio.Reserva;
 
 import butterknife.BindView;
@@ -17,6 +18,7 @@ import butterknife.ButterKnife;
 import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.santiago.canchaapp.app.otros.TextUtils.estaVacio;
+import static com.santiago.canchaapp.dominio.Horario.*;
 
 public class ReservaViewHolder extends RecyclerView.ViewHolder {
 
@@ -48,12 +50,8 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
 
     public void cargarDatosEnVista(Reserva reserva, AccionesSobreReserva acciones) {
         textoClub.setText(reserva.getTipoCancha().nombre + " - " + reserva.getNombreClub());
-        textoDireccion.setText(reserva.getDireccion());
-        textoHora.setText(reserva.getFecha() + ", " + reserva.getHorario());
-        if (!estaVacio(reserva.getMotivoCancelacion())) {
-            textMotivoCancelacion.setVisibility(VISIBLE);
-            textMotivoCancelacion.setText("Cancelada por: " + reserva.getMotivoCancelacion());
-        }
+        textoDireccion.setText(reserva.getDireccionClub());
+        textoHora.setText(reserva.getFecha() + ", " + horaDesde(reserva.getHora()));
         switch (acciones) {
             case SOLO_CANCELAR: mostrarBotones(1.25f, botonCancelar); break;
             case TODAS: mostrarBotones(0.5f, botonAprobar, botonCancelar); break;

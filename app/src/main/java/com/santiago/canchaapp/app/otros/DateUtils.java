@@ -20,6 +20,8 @@ public class DateUtils {
 
     private static DateFormat FORMATO_DIA_COMPLETO = new SimpleDateFormat("dd-MM-yyyy", IDIOMA_ESP);
 
+    private static DateFormat FORMATO_DIA_COMPLETO_PARA_GUARDAR = new SimpleDateFormat("yyyy-MM-dd", IDIOMA_ESP);
+
     public static Date hoy() {
         return calendario().getTime();
     }
@@ -36,6 +38,10 @@ public class DateUtils {
 
     public static String dateToString(Date dia) {
         return FORMATO_DIA_COMPLETO.format(dia);
+    }
+
+    public static String dateToStringtoSave(Date dia) {
+        return FORMATO_DIA_COMPLETO_PARA_GUARDAR.format(dia);
     }
 
     private static Calendar calendario() {

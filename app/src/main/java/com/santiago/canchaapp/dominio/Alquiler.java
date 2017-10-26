@@ -16,6 +16,8 @@ public class Alquiler implements Serializable {
 
     private EstadoReserva estado;
 
+    private String idReserva;
+
     // Datos denormalizados para simplificar queries
     private String idUsuario;
 
@@ -29,15 +31,16 @@ public class Alquiler implements Serializable {
     public Alquiler() { }
 
     public Alquiler(UUID uuid, Date fecha, Horario horario, String idUsuario, String nombreUsuario,
-                    String nombreCancha, TipoCancha tipoCancha, EstadoReserva estado) {
+                    String nombreCancha, TipoCancha tipoCancha, EstadoReserva estado, UUID idReserva) {
         this.uuid = uuid.toString();
         this.fecha = dateToString(fecha);
         this.hora = horario.getDesde();
-        this.idUsuario = idUsuario != null ? idUsuario.toString() : null;
+        this.idUsuario = idUsuario != null ? idUsuario : null;
         this.nombreUsuario = nombreUsuario;
         this.nombreCancha = nombreCancha;
         this.tipoCancha = tipoCancha;
         this.estado = estado;
+        this.idReserva = idReserva != null ? idReserva.toString() : null;
     }
 
     public String getUuid() {
@@ -74,6 +77,10 @@ public class Alquiler implements Serializable {
 
     public TipoCancha getTipoCancha() {
         return tipoCancha;
+    }
+
+    public String getIdReserva() {
+        return idReserva;
     }
 
     public boolean alquiladaPorUsuario() {

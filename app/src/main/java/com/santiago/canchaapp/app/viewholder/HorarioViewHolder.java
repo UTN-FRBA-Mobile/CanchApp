@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.Cancha;
+import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
 import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.dominio.Reserva;
@@ -70,14 +71,17 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
 
     private Cancha cancha;
 
+    private Club club;
+
     private boolean esMiCancha;
 
     private final Date fecha;
 
-    public HorarioViewHolder(View v, Cancha cancha, boolean esMiCancha, Date fecha) {
+    public HorarioViewHolder(View v, Cancha cancha, Club club, boolean esMiCancha, Date fecha) {
         super(v);
         this.view = v;
         this.cancha = cancha;
+        this.club = club;
         this.esMiCancha = esMiCancha;
         this.fecha = fecha;
         ButterKnife.bind(this, v);
@@ -99,18 +103,26 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 Alquiler alquiler;
+                Reserva reserva = null;
+                Usuario usuario = Sesion.getInstancia().getUsuario();
                 if (esMiCancha) {
                     // Pedir nombre de persona para la cual se reserva
                     alquiler = new Alquiler(UUID.randomUUID(), fecha, horario, null, "<alguien>",
-                            cancha.getNombre(), cancha.getTipoCancha(), APROBADA);
+                            cancha.getNombre(), cancha.getTipoCancha(), APROBADA, null);
                 } else {
                     // Tomar nombre de usuario de la persona
-                    Usuario usuario = Sesion.getInstancia().getUsuario();
-                    alquiler = new Alquiler(UUID.randomUUID(), fecha, horario, usuario.getUid(), usuario.getNombre(),
-                            cancha.getNombre(), cancha.getTipoCancha(), PENDIENTE);
+                    UUID idAlquiler = UUID.randomUUID();
+                    UUID idReserva = UUID.randomUUID();
+                    alquiler = new Alquiler(idAlquiler, fecha, horario, usuario.getUid(), usuario.getNombre(),
+                            cancha.getNombre(), cancha.getTipoCancha(), PENDIENTE, idReserva);
+                    // Además se debe insertar una reserva para luego consultar en mis reservas
+                    reserva = new Reserva(idReserva, usuario, cancha, club, fecha, horario, PENDIENTE, idAlquiler);
                 }
                 DataBase.getInstancia().insertAlquiler(
                         cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler);
+                if (reserva != null) {
+                    DataBase.getInstancia().insertReserva(usuario.getUid(), fecha, reserva);
+                }
             }
         });
     }
@@ -162,6 +174,11 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View view) {
                 DataBase.getInstancia().updateEstadoAlquiler(
                         cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler.getUuid(), CANCELADA);
+                if (alquiler.alquiladaPorUsuario()) {
+                    DataBase.getInstancia().updateEstadoReserva(
+                            alquiler.getIdUsuario(), fecha, alquiler.getIdReserva(), CANCELADA);
+
+                }
             }
         });
     }
@@ -172,6 +189,11 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View view) {
                 DataBase.getInstancia().updateEstadoAlquiler(
                         cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler.getUuid(), APROBADA);
+                if (alquiler.alquiladaPorUsuario()) {
+                    DataBase.getInstancia().updateEstadoReserva(
+                            alquiler.getIdUsuario(), fecha, alquiler.getIdReserva(), APROBADA);
+
+                }
                 ocultarBotones(botonAprobar, botonCancelar);
             }
         });

@@ -37,54 +37,22 @@ public class Servidor {
     }
 
     private List<Reserva> reservasPendientes = asList(
-            new Reserva(getClub(), FUTBOL5, "16/09/17", horaDesde(21), PENDIENTE),
-            new Reserva(getClub(), TENIS, "06/10/17", horaDesde(17), PENDIENTE),
-            new Reserva(getClub(), TENIS, "06/10/17", horaDesde(18), PENDIENTE)
     );
 
-    private List<Reserva> reservasAprobadas = asList(
-                    new Reserva(getClub(), FUTBOL5, "27/09/17", horaDesde(16), APROBADA),
-                    new Reserva(getClub(), FUTBOL5, "01/10/17", horaDesde(16), APROBADA),
-                    new Reserva(getClub(), FUTBOL5, "02/10/17", horaDesde(19), APROBADA),
-                    new Reserva(getClub(), TENIS, "03/10/17", horaDesde(15), APROBADA),
-                    new Reserva(getClub(), FUTBOL5, "03/10/17", horaDesde(21), APROBADA),
-                    new Reserva(getClub(), FUTBOL7, "04/10/17", horaDesde(11), APROBADA),
-                    new Reserva(getClub(), TENIS, "04/10/17", horaDesde(16), APROBADA),
-                    new Reserva(getClub(), FUTBOL5, "04/10/17", horaDesde(22), APROBADA),
-                    new Reserva(getClub(), FUTBOL7, "30/10/17", horaDesde(14), APROBADA),
-                    new Reserva(getClub(), FUTBOL5, "1/11/17", horaDesde(22), APROBADA),
-                    new Reserva(getClub(), FUTBOL5, "1/11/17", horaDesde(22), APROBADA)
-            );
+    private List<Reserva> reservasAprobadas = asList();
 
     private List<Reserva> reservasCanceladas = asList(
-            new Reserva(getClub(), FUTBOL5, "29/09/17", horaDesde(20), CANCELADA, "Va a llover")
     );
 
     private List<Reserva> alquileresAprobados = asList(
-                new Reserva(getClub(), FUTBOL5, "16/09/17", horaDesde(21), APROBADA),
-                new Reserva(getClub(), TENIS, "06/10/17", horaDesde(17), APROBADA),
-                new Reserva(getClub(), TENIS, "06/10/17", horaDesde(18), APROBADA),
-                new Reserva(getClub(), TENIS, "06/10/17", horaDesde(19), APROBADA)
         );
 
     private List<Reserva> alquileresPendientes  = asList(
-                new Reserva(getClub(), FUTBOL5, "27/09/17", horaDesde(16), PENDIENTE),
-                new Reserva(getClub(), FUTBOL5, "01/10/17", horaDesde(16), PENDIENTE),
-                new Reserva(getClub(), FUTBOL5, "02/10/17", horaDesde(19), PENDIENTE),
-                new Reserva(getClub(), TENIS, "03/10/17", horaDesde(15), PENDIENTE),
-                new Reserva(getClub(), FUTBOL5, "03/10/17", horaDesde(21), PENDIENTE),
-                new Reserva(getClub(), FUTBOL7, "04/10/17", horaDesde(11), PENDIENTE),
-                new Reserva(getClub(), TENIS, "04/10/17", horaDesde(16), PENDIENTE),
-                new Reserva(getClub(), FUTBOL5, "04/10/17", horaDesde(22), PENDIENTE),
-                new Reserva(getClub(), FUTBOL7, "30/10/17", horaDesde(14), PENDIENTE),
-                new Reserva(getClub(), FUTBOL5, "1/11/17", horaDesde(22), PENDIENTE),
-                new Reserva(getClub(), FUTBOL5, "1/11/17", horaDesde(22), PENDIENTE),
-                new Reserva(getClub(), TENIS, "06/10/17", horaDesde(19), PENDIENTE)
+
         );
 
     private List<Reserva> alquileresCancelados = asList(
-                new Reserva(getClub(), FUTBOL5, "29/09/17", horaDesde(20), CANCELADA, "No hay gente"),
-                new Reserva(getClub(), FUTBOL7, "29/09/19", horaDesde(22), CANCELADA, "No pagaron")
+
         );
 
     public List<Reserva> getReservasPendientes() {

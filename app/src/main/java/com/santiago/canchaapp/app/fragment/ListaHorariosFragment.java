@@ -14,13 +14,16 @@ import android.widget.Toast;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.santiago.canchaapp.LoginActivity;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.HorariosAdapter;
 import com.santiago.canchaapp.app.otros.DateUtils;
 import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.Cancha;
+import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
 import com.santiago.canchaapp.servicios.Servidor;
 
@@ -62,6 +65,10 @@ public class ListaHorariosFragment extends Fragment {
     private HorariosAdapter adapter;
 
     private Query refDatos;
+
+    private Club club;
+
+    private List<Alquiler> alquileresCargados = new ArrayList<>();
 
     public static ListaHorariosFragment nuevaInstancia(Cancha cancha, Date dia, int posicionDia, boolean esMiCancha) {
         ListaHorariosFragment fragment = new ListaHorariosFragment();
@@ -105,9 +112,8 @@ public class ListaHorariosFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         horariosRecyclerView.setLayoutManager(layoutManager);
 
-        // Adapter
-        adapter = new HorariosAdapter(cancha, getFecha(), esMiCancha(), cancha.getDatosClub().getRangoHorario());
-        horariosRecyclerView.setAdapter(adapter);
+        // Para setear adapter
+        getClub(cancha.getDatosClub().getIdClub());
 
         // Datos
         refDatos = DataBase.getInstancia().getReferenceAlquileres(cancha.getDatosClub().getIdClub(), cancha.getUuid(), getFecha());
@@ -135,11 +141,42 @@ public class ListaHorariosFragment extends Fragment {
 
             private void actualizarLista(DataSnapshot snapshotAlquiler) {
                 Alquiler alquiler = snapshotAlquiler.getValue(Alquiler.class);
-                adapter.actualizarLista(alquiler);
+                if (adapter != null) {
+                    adapter.actualizarLista(alquiler);
+                    if (alquileresCargados.size() > 0) {
+                        for (Alquiler alq : alquileresCargados) {
+                            adapter.actualizarLista(alq);
+                        }
+                        alquileresCargados.clear();
+                    }
+                } else {
+                    alquileresCargados.add(alquiler);
+                }
             }
 
         });
 
+    }
+
+    private void getClub(String idClub){
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() != null){
+                    Club club = dataSnapshot.getValue(Club.class);
+                    Cancha cancha = getCancha();
+                    HorariosAdapter horariosAdapter = new HorariosAdapter(cancha, club, getFecha(), esMiCancha(), cancha.getDatosClub().getRangoHorario());
+                    horariosRecyclerView.setAdapter(horariosAdapter);
+                    adapter = horariosAdapter;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+        DatabaseReference referenceClub = DataBase.getInstancia().getReferenceClub(idClub);
+        referenceClub.addListenerForSingleValueEvent(valueEventListener);
     }
 
     private String getTextoFecha() {

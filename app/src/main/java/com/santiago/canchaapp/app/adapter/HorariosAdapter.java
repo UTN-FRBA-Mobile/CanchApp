@@ -9,6 +9,7 @@ import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
 import com.santiago.canchaapp.app.viewholder.HorarioViewHolder;
 import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.Cancha;
+import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.EstadoReserva;
 import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.dominio.Reserva;
@@ -30,14 +31,17 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
 
     private Cancha cancha;
 
+    private Club club;
+
     private Date fecha;
 
     private boolean esMiCancha;
 
     private Horario rangoHorario;
 
-    public HorariosAdapter(Cancha cancha, Date fecha, boolean esMiCancha, Horario rangoHorario) {
+    public HorariosAdapter(Cancha cancha, Club club, Date fecha, boolean esMiCancha, Horario rangoHorario) {
         this.cancha = cancha;
+        this.club = club;
         this.esMiCancha = esMiCancha;
         this.fecha = fecha;
         this.rangoHorario = rangoHorario;
@@ -57,6 +61,7 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
         return new HorarioViewHolder(
                 LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_horario, viewGroup, false),
                 cancha,
+                club,
                 esMiCancha,
                 fecha
         );

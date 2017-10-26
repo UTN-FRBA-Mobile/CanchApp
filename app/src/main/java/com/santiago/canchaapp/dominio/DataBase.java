@@ -10,6 +10,7 @@ import com.google.firebase.database.Query;
 import java.util.Date;
 
 import static com.santiago.canchaapp.app.otros.DateUtils.dateToString;
+import static com.santiago.canchaapp.app.otros.DateUtils.dateToStringtoSave;
 
 public class DataBase {
 
@@ -18,6 +19,7 @@ public class DataBase {
     private static String keyUsuarios = "usuarios";
     private static String keyClubes = "clubes";
     private static String keyAlquileres = "alquileres";
+    private static String keyReservas = "reservas";
 
     private DataBase() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -57,19 +59,31 @@ public class DataBase {
 
     // obtiene alquileres en /alquileres/:idClub/:idCancha/:fecha
     public Query getReferenceAlquileres(String idClub, String idCancha, Date fecha) {
-        return mDatabase.child(keyAlquileres).child(idClub).child(idCancha).child(dateToString(fecha));
+        return mDatabase.child(keyAlquileres).child(idClub).child(idCancha).child(dateToStringtoSave(fecha));
     }
 
     // inserta alquiler en /alquileres/:idClub/:idCancha/:fecha
     public void insertAlquiler(String idClub, String idCancha, Date fecha, Alquiler alquiler) {
         mDatabase.child(keyAlquileres).child(idClub).child(idCancha)
-                .child(dateToString(fecha)).child(alquiler.getUuid()).setValue(alquiler);
+                .child(dateToStringtoSave(fecha)).child(alquiler.getUuid()).setValue(alquiler);
     }
 
     // actualiza el estado de /alquileres/:idClub/:idCancha/:fecha/:idAlquiler
     public void updateEstadoAlquiler(String idClub, String idCancha, Date fecha, String idAlquiler, EstadoReserva nuevoEstado) {
         mDatabase.child(keyAlquileres).child(idClub).child(idCancha)
-                .child(dateToString(fecha)).child(idAlquiler).child("estado").setValue(nuevoEstado);
+                .child(dateToStringtoSave(fecha)).child(idAlquiler).child("estado").setValue(nuevoEstado);
+    }
+
+    // inserta reserva en /reservas/:idUsuario/:fecha/:idReserva
+    public void insertReserva(String idUsuario, Date fecha, Reserva reserva) {
+        mDatabase.child(keyReservas).child(idUsuario).child(dateToStringtoSave(fecha))
+                .child(reserva.getUuid()).setValue(reserva);
+    }
+
+    // actualiza el estado de /reservas/:idClub/:fecha/:idReserva
+    public void updateEstadoReserva(String idUsuario, Date fecha, String idReserva, EstadoReserva nuevoEstado) {
+        mDatabase.child(keyReservas).child(idUsuario).child(dateToStringtoSave(fecha))
+                .child(idReserva).child("estado").setValue(nuevoEstado);
     }
 
 }
