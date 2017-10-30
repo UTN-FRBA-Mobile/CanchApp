@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -54,7 +55,7 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static final int ZOOM_PUNTO_INICIAL = 11;
     private static final int ZOOM = 15;
-    
+
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
 
@@ -100,7 +101,6 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
         googleMap.setOnMarkerClickListener(this);
         inicializarUbicacion();
     }
-
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
@@ -153,10 +153,28 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
 
     private void pedirUbicacionActual() {
         if (checkSelfPermission(getActivity(), ACCESS_FINE_LOCATION) == PERMISSION_GRANTED) {
-            generarUbicacionActual();
+            if (laLocacionEstaActivada(getContext())){
+                generarUbicacionActual();
+            } else {
+                actualizarMapa(CAPITAL_FEDERAL, ZOOM_PUNTO_INICIAL, false);
+            }
         } else {
             pedirPermisosParaUbicacion();
         }
+    }
+
+    public static boolean laLocacionEstaActivada(Context context) {
+        int locationMode = 0;
+        String locationProviders;
+
+        try {
+            locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return locationMode != Settings.Secure.LOCATION_MODE_OFF;
     }
 
     private void generarUbicacionActual() {
@@ -195,10 +213,10 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
 
     private void setearUbicacion(LatLng ubicacion, float zoom) {
         this.ubicacion = ubicacion;
-        actualizarMapa(ubicacion, zoom);
+        actualizarMapa(ubicacion, zoom, true);
     }
 
-    private void actualizarMapa(LatLng ubicacionLatLng, float zoom) {
+    private void actualizarMapa(LatLng ubicacionLatLng, float zoom, Boolean ubicacionActivada) {
         mMap.clear();
 
         //obtiene clubes
@@ -208,7 +226,7 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        cargarUbicacionDeClubes((Map<String,Object>) dataSnapshot.getValue());
+                        cargarUbicacionDeClubes((Map<String, Object>) dataSnapshot.getValue());
                     }
 
                     @Override
@@ -217,13 +235,17 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
                     }
                 });
 
-        Bitmap miUbicacion = BitmapFactory.decodeResource(getResources(), R.drawable.mi_ubicacion);
+        if (ubicacionActivada) {
+            Bitmap miUbicacion = BitmapFactory.decodeResource(getResources(), R.drawable.mi_ubicacion);
 
-        mMap.addMarker(
-                new MarkerOptions()
-                        .position(ubicacionLatLng)
-                        .title("Mi ubicación")
-                        .icon(BitmapDescriptorFactory.fromBitmap(resizearBitmap(miUbicacion, 0.05f))));
+            mMap.addMarker(
+                    new MarkerOptions()
+                            .position(ubicacionLatLng)
+                            .title("Mi ubicación")
+                            .icon(BitmapDescriptorFactory.fromBitmap(resizearBitmap(miUbicacion, 0.05f))));
+        }
+
+        ubicacion = CAPITAL_FEDERAL;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionLatLng, zoom));
     }
 
