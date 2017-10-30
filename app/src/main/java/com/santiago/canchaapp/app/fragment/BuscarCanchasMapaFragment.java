@@ -4,7 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -39,7 +43,9 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static android.support.v4.content.ContextCompat.checkSelfPermission;
 import static com.santiago.canchaapp.app.otros.FragmentTags.CLUB;
 
 public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCallback, OnMarkerClickListener {
@@ -48,8 +54,7 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static final int ZOOM_PUNTO_INICIAL = 11;
     private static final int ZOOM = 15;
-
-    //private Activity activity;
+    
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
 
@@ -72,8 +77,6 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
 
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapa_clubes);
         ButterKnife.bind(this, view);
-
-        ubicacion = CAPITAL_FEDERAL;
 
         btnVerDetalle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +144,53 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
     }
 
     private void inicializarUbicacion() {
-        setearUbicacion(ubicacion, ZOOM);
+        if(ubicacion == null)
+            pedirUbicacionActual();
+        else {
+            setearUbicacion(ubicacion, ZOOM);
+        }
+    }
+
+    private void pedirUbicacionActual() {
+        if (checkSelfPermission(getActivity(), ACCESS_FINE_LOCATION) == PERMISSION_GRANTED) {
+            generarUbicacionActual();
+        } else {
+            pedirPermisosParaUbicacion();
+        }
+    }
+
+    private void generarUbicacionActual() {
+        ponerMapaEnUbicacionDefault();
+        inicializarLocationService();
+    }
+
+    private void inicializarLocationService() {
+        if (checkSelfPermission(getActivity(), ACCESS_FINE_LOCATION) == PERMISSION_GRANTED) {
+            LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestSingleUpdate(new Criteria(), new LocationListener() {
+                @Override
+                public void onLocationChanged(Location ubicacionActual) {
+                    if (ubicacionActual != null) {
+                        double lat = ubicacionActual.getLatitude();
+                        double lon = ubicacionActual.getLongitude();
+                        setearUbicacion(new LatLng(lat, lon), ZOOM);
+                    }
+                }
+
+                @Override
+                public void onStatusChanged(String s, int i, Bundle bundle) { }
+
+                @Override
+                public void onProviderEnabled(String s) { }
+
+                @Override
+                public void onProviderDisabled(String s) { }
+            }, null);
+        }
+    }
+
+    private void pedirPermisosParaUbicacion() {
+        requestPermissions(new String[]{ ACCESS_FINE_LOCATION }, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
     }
 
     private void setearUbicacion(LatLng ubicacion, float zoom) {
@@ -232,10 +281,6 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
 
     private void ponerMapaEnUbicacionDefault() {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(CAPITAL_FEDERAL, ZOOM_PUNTO_INICIAL));
-    }
-
-    private void generarUbicacionActual() {
-        ponerMapaEnUbicacionDefault();
     }
 
     @Override
