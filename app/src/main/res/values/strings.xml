@@ -8,6 +8,7 @@
     <string name="btnAtras">ATRAS</string>
     <string name="btnListo">LISTO!</string>
     <string name="btnComenzar">COMENZAR</string>
+    <string name="btnVerDetalle">Ver Detalle</string>
     <string name="txtNombreCancha">Nombre De Cancha</string>
     <string name="txtDeporte">Deporte</string>
     <string name="txtPrecio">Precio</string>

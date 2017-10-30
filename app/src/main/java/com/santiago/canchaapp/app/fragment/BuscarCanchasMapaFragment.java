@@ -11,32 +11,38 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.santiago.canchaapp.R;
+import com.santiago.canchaapp.app.otros.FragmentTags;
 import com.santiago.canchaapp.dominio.DataBase;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static com.santiago.canchaapp.app.otros.FragmentTags.CLUB;
 
-public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCallback {
-
+public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCallback, OnMarkerClickListener {
 
     private static final LatLng CAPITAL_FEDERAL = new LatLng(-34.603371, -58.451497);
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
@@ -47,7 +53,13 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
 
+    private Map<LatLng, String> ubicaciones = new HashMap<>();
+
     private LatLng ubicacion;
+    private String clubSeleccionado;
+
+    @BindView(R.id.verDetalle)
+    public Button btnVerDetalle;
 
     public static BuscarCanchasMapaFragment nuevaInstancia() {
         return new BuscarCanchasMapaFragment();
@@ -57,11 +69,18 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_mapa_clubes, container, false);
-        //activity = getActivity();
+
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapa_clubes);
         ButterKnife.bind(this, view);
 
         ubicacion = CAPITAL_FEDERAL;
+
+        btnVerDetalle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                abrirFragment(ClubFragment.nuevaInstancia(clubSeleccionado, true), CLUB);;
+                }
+            });
 
         return view;
     }
@@ -75,7 +94,50 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        googleMap.setOnMarkerClickListener(this);
         inicializarUbicacion();
+    }
+
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+
+        LatLng ubicacionMarker = marker.getPosition();
+
+        boolean coincideLatitud = ubicacionMarker.latitude == ubicacion.latitude;
+        boolean coincideLongitud = ubicacionMarker.longitude == ubicacion.longitude;
+
+        if(coincideLatitud && coincideLongitud) {
+            showToast("Tu ubicación");
+        } else {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacionMarker, ZOOM));
+            marker.showInfoWindow();
+
+            final Button verDetalle = getActivity().findViewById(R.id.verDetalle);
+            verDetalle.setText("   Ver más de " + marker.getTitle() + "   ");
+            verDetalle.setVisibility(View.VISIBLE);
+
+            mMap.setOnInfoWindowCloseListener(
+                    new GoogleMap.OnInfoWindowCloseListener() {
+                          @Override
+                          public void onInfoWindowClose(Marker marker) {
+                              verDetalle.setVisibility(View.GONE);
+                          }
+                    }
+            );
+
+            String uuid = ubicaciones.get(ubicacionMarker);
+            clubSeleccionado = uuid;
+        }
+        return true;
+    }
+
+    private void abrirFragment(Fragment fragment, FragmentTags tag) {
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_frame, fragment, tag.toString())
+                .addToBackStack(null)
+                .commit();
     }
 
     private void inicializarUbicacion() {
@@ -116,13 +178,13 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionLatLng, zoom));
     }
 
-    private void cargarUbicacionDeClubes(Map<String,Object> users) {
-        for (Map.Entry<String, Object> entry : users.entrySet()){
+    private void cargarUbicacionDeClubes(Map<String,Object> clubes) {
+        for (Map.Entry<String, Object> entry : clubes.entrySet()){
 
-            Map singleUser = (Map) entry.getValue();
+            Map club = (Map) entry.getValue();
 
-            LatLng punto = getLocationFromAddress(getContext(), (String) singleUser.get("direccion"));
-            String nombre = (String) singleUser.get("nombre");
+            LatLng punto = obtenerLocacionDeUnaDireccion(getContext(), (String) club.get("direccion"));
+            String nombre = (String) club.get("nombre");
 
             Bitmap ubicacion_club = BitmapFactory.decodeResource(getResources(), R.drawable.ubicacion_club);
 
@@ -131,6 +193,8 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
                             .position(punto)
                             .title(nombre)
                             .icon(BitmapDescriptorFactory.fromBitmap(resizearBitmap(ubicacion_club, 0.053f))));
+
+            ubicaciones.put(punto, entry.getKey());
         }
     }
 
@@ -141,7 +205,7 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
         return bitmapOut;
     }
 
-    public LatLng getLocationFromAddress(Context context, String strAddress) {
+    public LatLng obtenerLocacionDeUnaDireccion(Context context, String strAddress) {
         Geocoder coder = new Geocoder(context);
         List<Address> address;
         LatLng p1 = null;
