@@ -9,7 +9,10 @@ import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
+import com.santiago.canchaapp.app.otros.DateUtils;
+import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.DataBase;
+import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.dominio.Reserva;
 
 import butterknife.BindView;
@@ -18,33 +21,35 @@ import butterknife.ButterKnife;
 import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.santiago.canchaapp.app.otros.DateUtils.stringToDateToSave;
+import static com.santiago.canchaapp.app.otros.TextUtils.estaVacio;
+import static com.santiago.canchaapp.dominio.EstadoReserva.APROBADA;
 import static com.santiago.canchaapp.dominio.EstadoReserva.CANCELADA;
 import static com.santiago.canchaapp.dominio.Horario.*;
 
-public class ReservaViewHolder extends RecyclerView.ViewHolder {
+public class AlquilerViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.reserva_club)
+    @BindView(R.id.alquiler_club)
     public TextView textoClub;
 
-    @BindView(R.id.reserva_direccion)
+    @BindView(R.id.alquiler_direccion)
     public TextView textoDireccion;
 
-    @BindView(R.id.reserva_hora)
+    @BindView(R.id.alquiler_hora)
     public TextView textoHora;
 
-    @BindView(R.id.reserva_motivo_cancelacion)
+    @BindView(R.id.alquiler_motivo_cancelacion)
     public TextView textMotivoCancelacion;
 
-    @BindView(R.id.boton_aprobar_reserva)
+    @BindView(R.id.boton_aprobar_alquiler)
     public Button botonAprobar;
 
-    @BindView(R.id.boton_cancelar_reserva)
+    @BindView(R.id.boton_cancelar_alquiler)
     public Button botonCancelar;
 
-    @BindView(R.id.texto_reserva)
-    public LinearLayout textoReserva;
+    @BindView(R.id.texto_alquiler)
+    public LinearLayout textoAlquiler;
 
-    public ReservaViewHolder(View v) {
+    public AlquilerViewHolder(View v) {
         super(v);
         ButterKnife.bind(this, v);
     }
@@ -70,7 +75,7 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
         for(Button boton : botones) {
             boton.setVisibility(VISIBLE);
         }
-        textoReserva.setLayoutParams(
+        textoAlquiler.setLayoutParams(
                 new LayoutParams(0, WRAP_CONTENT, tamanioLayout));
     }
 

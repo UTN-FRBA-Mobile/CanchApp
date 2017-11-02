@@ -7,14 +7,14 @@ import android.view.ViewGroup;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
 import com.santiago.canchaapp.app.otros.TipoReservas;
-import com.santiago.canchaapp.app.viewholder.ReservaViewHolder;
+import com.santiago.canchaapp.app.viewholder.AlquilerViewHolder;
 import com.santiago.canchaapp.dominio.Reserva;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
+public class AlquileresAdapter extends RecyclerView.Adapter<AlquilerViewHolder> {
 
     private List<Reserva> reservas;
 
@@ -22,7 +22,7 @@ public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
 
     private AccionesSobreReserva accionesSobreReserva;
 
-    public ReservasAdapter(TipoReservas tipoReservas, AccionesSobreReserva accionesSobreReserva) {
+    public AlquileresAdapter(TipoReservas tipoReservas, AccionesSobreReserva accionesSobreReserva) {
         this.reservas = new ArrayList<>();
         this.tipoReservas = tipoReservas;
         this.accionesSobreReserva = accionesSobreReserva;
@@ -35,14 +35,14 @@ public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
     }
 
     @Override
-    public ReservaViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        return new ReservaViewHolder(
-                LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_reserva, viewGroup, false)
+    public AlquilerViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        return new AlquilerViewHolder(
+                LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_alquiler, viewGroup, false)
         );
     }
 
     @Override
-    public void onBindViewHolder(ReservaViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(AlquilerViewHolder viewHolder, final int position) {
         viewHolder.cargarDatosEnVista(reservas.get(position), accionesSobreReserva);
     }
 

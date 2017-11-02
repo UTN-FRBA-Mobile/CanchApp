@@ -40,13 +40,21 @@ public class DataBase {
         return mDatabase.child(keyUsuarios).child(uid);
     }
 
+    public DatabaseReference getReferenceReservasUser(String idUsuario) {
+        return mDatabase.child(keyReservas).child(idUsuario);
+    }
+
+    public DatabaseReference getReferenceClubes() {
+        return mDatabase.child(keyClubes);
+    }
+
+    public DatabaseReference getReferenceReserva(String idUsuario, String idReserva) {
+        return getReferenceReservasUser(idUsuario).child(idReserva);
+    }
     public DatabaseReference getReferenceClub(String idClub){
         return getReferenceClubes().child(idClub);
     }
 
-    public DatabaseReference getReferenceClubes(){
-        return mDatabase.child(keyClubes);
-    }
 
     public DatabaseReference getReferenceIdClubUser(String uid){
         return getReferenceUser(uid).child("idClub");
@@ -76,18 +84,17 @@ public class DataBase {
 
     // inserta reserva en /reservas/:idUsuario/:idReserva
     public void insertReserva(String idUsuario, Reserva reserva) {
-        mDatabase.child(keyReservas).child(idUsuario).child(reserva.getUuid()).setValue(reserva);
+        getReferenceReserva(idUsuario, reserva.getUuid()).setValue(reserva);
     }
 
     // actualiza el estado de /reservas/:idClub/:idReserva
     public void updateEstadoReserva(String idUsuario, String idReserva, EstadoReserva nuevoEstado) {
-        mDatabase.child(keyReservas).child(idUsuario).child(idReserva).child("estado").setValue(nuevoEstado);
+        getReferenceReserva(idUsuario, idReserva).child("estado").setValue(nuevoEstado);
     }
 
     // obtiene reservas en /reservas/:idUsuario/ con :fecha >= fechaActual
     public Query getReferenceReservasActuales(String idUsuario, Date fechaActual) {
-        return mDatabase.child(keyReservas).child(idUsuario)
-                .orderByChild("fecha").startAt(dateToStringtoSave(fechaActual));
+        return getReferenceReservasUser(idUsuario).orderByChild("fecha").startAt(dateToStringtoSave(fechaActual));
     }
 
 }
