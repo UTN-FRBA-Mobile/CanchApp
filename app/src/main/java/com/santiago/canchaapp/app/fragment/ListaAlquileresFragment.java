@@ -20,6 +20,7 @@ import com.santiago.canchaapp.app.adapter.ReservasAdapter;
 import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
 import com.santiago.canchaapp.app.otros.DateUtils;
 import com.santiago.canchaapp.app.otros.TipoReservas;
+import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
 import com.santiago.canchaapp.dominio.Reserva;
@@ -83,7 +84,7 @@ public class ListaAlquileresFragment extends Fragment {
         alquileresRecyclerView.setAdapter(adapter);
 
         // Datos
-        Query ref = DataBase.getInstancia().getReferenceReservasActuales(Sesion.getInstancia().getUsuario().getUid(), DateUtils.hoy());
+        Query ref = DataBase.getInstancia().getReferenceAlquileresPorClub(Sesion.getInstancia().getUsuario().getIdClub());
         ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -103,9 +104,9 @@ public class ListaAlquileresFragment extends Fragment {
                     Toast.makeText(getContext(), R.string.txtErrorDescargandoInfo, Toast.LENGTH_LONG).show();
             }
 
-            private void actualizarLista(DataSnapshot snapshotReserva) {
-                Reserva reserva = snapshotReserva.getValue(Reserva.class);
-                adapter.actualizarLista(reserva);
+            private void actualizarLista(DataSnapshot snapshotAlquiler) {
+                Alquiler alquiler = snapshotAlquiler.getValue(Alquiler.class);
+                adapter.actualizarLista(alquiler);
             }
 
         });

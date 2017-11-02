@@ -31,8 +31,8 @@ public class AlquilerViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.alquiler_club)
     public TextView textoClub;
 
-    @BindView(R.id.alquiler_direccion)
-    public TextView textoDireccion;
+    @BindView(R.id.alquiler_nombreUsuario)
+    public TextView textoNombreUsuario;
 
     @BindView(R.id.alquiler_hora)
     public TextView textoHora;
@@ -54,19 +54,20 @@ public class AlquilerViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, v);
     }
 
-    public void cargarDatosEnVista(Reserva reserva, AccionesSobreReserva acciones) {
+    public void cargarDatosEnVista(Alquiler alquiler, AccionesSobreReserva acciones) {
         // Setear textos
-        textoClub.setText(reserva.getTipoCancha().nombre + " - " + reserva.getNombreClub());
-        textoDireccion.setText(reserva.getDireccionClub());
-        textoHora.setText(reserva.getFecha() + ", " + horaDesde(reserva.getHora()));
+        textoClub.setText(alquiler.getNombreCancha() + " - " + alquiler.getTipoCancha());
+        textoNombreUsuario.setText(alquiler.getNombreUsuario());
+        textoHora.setText(alquiler.getFecha() + ", " + horaDesde(alquiler.getHora()));
         // Setear botones
         switch (acciones) {
             case SOLO_CANCELAR:
                 mostrarBotones(1.25f, botonCancelar);
-                setearListenerCancelacion(reserva);
+                setearListenerCancelacion(alquiler);
                 break;
             case TODAS: mostrarBotones(0.5f, botonAprobar, botonCancelar);
-                setearListenerCancelacion(reserva);
+                setearListenerCancelacion(alquiler);
+                setearListenerAprobacion(alquiler);
                 break;
         }
     }
@@ -79,14 +80,25 @@ public class AlquilerViewHolder extends RecyclerView.ViewHolder {
                 new LayoutParams(0, WRAP_CONTENT, tamanioLayout));
     }
 
-    private void setearListenerCancelacion(final Reserva reserva) {
+    private void setearListenerCancelacion(final Alquiler alquiler) {
         botonCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataBase.getInstancia().updateEstadoReserva(
-                        reserva.getIdUsuario(), reserva.getUuid(), CANCELADA);
-                DataBase.getInstancia().updateEstadoAlquiler(
-                        reserva.getIdClub(), reserva.getIdCancha(), stringToDateToSave(reserva.getFecha()), reserva.getIdAlquiler(), CANCELADA);
+                DataBase.getInstancia().updateEstadoReserva(alquiler.getIdUsuario(), alquiler.getIdReserva(), CANCELADA);
+                DataBase.getInstancia().updateEstadoAlquiler(alquiler.getIdClub(), alquiler.getIdCancha(), stringToDateToSave(alquiler.getFecha()), alquiler.getUuid(), CANCELADA);
+                DataBase.getInstancia().updateEstadoAlquilerPorClub(alquiler.getIdClub(), alquiler.getUuid(), CANCELADA);
+
+            }
+        });
+    }
+
+    private void setearListenerAprobacion(final Alquiler alquiler) {
+        botonAprobar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DataBase.getInstancia().updateEstadoReserva(alquiler.getIdUsuario(), alquiler.getIdReserva(), APROBADA);
+                DataBase.getInstancia().updateEstadoAlquiler(alquiler.getIdClub(), alquiler.getIdCancha(), stringToDateToSave(alquiler.getFecha()), alquiler.getUuid(), APROBADA);
+                DataBase.getInstancia().updateEstadoAlquilerPorClub(alquiler.getIdClub(), alquiler.getUuid(), APROBADA);
 
             }
         });

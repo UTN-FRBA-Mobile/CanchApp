@@ -20,6 +20,7 @@ public class DataBase {
     private static String keyClubes = "clubes";
     private static String keyAlquileres = "alquileres";
     private static String keyReservas = "reservas";
+    private static String keyAlquileresPorClub = "alquileresPorUsuario";
 
     private DataBase() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -30,71 +31,88 @@ public class DataBase {
         return instancia;
     }
 
+    //usuarios/:idUsuario
+    public DatabaseReference getReferenceUser(String uid){ return mDatabase.child(keyUsuarios).child(uid); }
+
+    //usuarios/:idUsuario/idClub
+    public DatabaseReference getReferenceIdClubUser(String uid){ return getReferenceUser(uid).child("idClub"); }
+
+    //reservas/:idUsuario
+    public DatabaseReference getReferenceReservasUser(String idUsuario) { return mDatabase.child(keyReservas).child(idUsuario); }
+
+    //reservas/:idUsuario/:idReserva
+    public DatabaseReference getReferenceReserva(String idUsuario, String idReserva) { return getReferenceReservasUser(idUsuario).child(idReserva); }
+
+    //reservas/:idUsuario/ con :fecha >= fechaActual
+    public Query getReferenceReservasActuales(String idUsuario, Date fechaActual) {
+        return getReferenceReservasUser(idUsuario).orderByChild("fecha").startAt(dateToStringtoSave(fechaActual));
+    }
+
+    //clubes
+    public DatabaseReference getReferenceClubes() {
+        return mDatabase.child(keyClubes);
+    }
+
+    //clubes/:idClub
+    public DatabaseReference getReferenceClub(String idClub){ return getReferenceClubes().child(idClub); }
+
+
+    //alquileres/:idClub/:idCancha/:fecha
+    public Query getReferenceAlquileres(String idClub, String idCancha, Date fecha) {
+        return mDatabase.child(keyAlquileres).child(idClub).child(idCancha).child(dateToStringtoSave(fecha));
+    }
+
+    //alquileresPorClub/:idClub
+    public Query getReferenceAlquileresPorClub(String idClub) {
+        return mDatabase.child(keyAlquileresPorClub).child(idClub);
+    }
+
+    //alquileresPorUsuario/:idClub/:idAlquiler
+    public DatabaseReference getReferenceAlquilerPorClub(String idClub, String idAlquiler) {
+        return ((DatabaseReference) getReferenceAlquileresPorClub(idClub)).child(idAlquiler);
+    }
+
+    //usuarios/:idUsuario
     public Usuario insertUser(FirebaseUser user, boolean esDuenio){
         Usuario usuario = new Usuario(user.getUid(), esDuenio, user.getDisplayName(), user.getEmail());
         getReferenceUser(usuario.getUid()).setValue(usuario);
         return usuario;
     }
 
-    public DatabaseReference getReferenceUser(String uid){
-        return mDatabase.child(keyUsuarios).child(uid);
+    //reservas/:idUsuario/:idReserva
+    public void insertReserva(String idUsuario, Reserva reserva) {
+        getReferenceReserva(idUsuario, reserva.getUuid()).setValue(reserva);
     }
 
-    public DatabaseReference getReferenceReservasUser(String idUsuario) {
-        return mDatabase.child(keyReservas).child(idUsuario);
+    //alquileres/:idClub/:idCancha/:fecha
+    public void insertAlquiler(String idClub, String idCancha, Date fecha, Alquiler alquiler) {
+        ((DatabaseReference) getReferenceAlquileres(idClub, idCancha, fecha)).child(alquiler.getUuid()).setValue(alquiler);
     }
 
-    public DatabaseReference getReferenceClubes() {
-        return mDatabase.child(keyClubes);
+    //alquileresPorUsuario/:idUsuario/:idAlquiler
+    public void insertAlquilerPorClub(String idClub, Alquiler alquiler){
+        getReferenceAlquilerPorClub(idClub, alquiler.getUuid()).setValue(alquiler);
     }
 
-    public DatabaseReference getReferenceReserva(String idUsuario, String idReserva) {
-        return getReferenceReservasUser(idUsuario).child(idReserva);
-    }
-    public DatabaseReference getReferenceClub(String idClub){
-        return getReferenceClubes().child(idClub);
-    }
-
-
-    public DatabaseReference getReferenceIdClubUser(String uid){
-        return getReferenceUser(uid).child("idClub");
-    }
-
+    //clubes/:idClub
     public void insertClub(Usuario usuario, Club club){
         getReferenceIdClubUser(usuario.getUid()).setValue(club.getUuid());
         getReferenceClub(club.getUuid()).setValue(club);
     }
 
-    // obtiene alquileres en /alquileres/:idClub/:idCancha/:fecha
-    public Query getReferenceAlquileres(String idClub, String idCancha, Date fecha) {
-        return mDatabase.child(keyAlquileres).child(idClub).child(idCancha).child(dateToStringtoSave(fecha));
-    }
-
-    // inserta alquiler en /alquileres/:idClub/:idCancha/:fecha
-    public void insertAlquiler(String idClub, String idCancha, Date fecha, Alquiler alquiler) {
-        mDatabase.child(keyAlquileres).child(idClub).child(idCancha)
-                .child(dateToStringtoSave(fecha)).child(alquiler.getUuid()).setValue(alquiler);
-    }
-
-    // actualiza el estado de /alquileres/:idClub/:idCancha/:fecha/:idAlquiler
+    ///alquileres/:idClub/:idCancha/:fecha/:idAlquiler
     public void updateEstadoAlquiler(String idClub, String idCancha, Date fecha, String idAlquiler, EstadoReserva nuevoEstado) {
-        mDatabase.child(keyAlquileres).child(idClub).child(idCancha)
-                .child(dateToStringtoSave(fecha)).child(idAlquiler).child("estado").setValue(nuevoEstado);
+        ((DatabaseReference) getReferenceAlquileres(idClub, idCancha, fecha)).child(idAlquiler).child("estado").setValue(nuevoEstado);
     }
 
-    // inserta reserva en /reservas/:idUsuario/:idReserva
-    public void insertReserva(String idUsuario, Reserva reserva) {
-        getReferenceReserva(idUsuario, reserva.getUuid()).setValue(reserva);
+    ///alquileresPorClub/:idClub/:id:idAlquiler
+    public void updateEstadoAlquilerPorClub(String idClub, String idAlquiler, EstadoReserva nuevoEstado) {
+        getReferenceAlquilerPorClub(idClub, idAlquiler).child("estado").setValue(nuevoEstado);
     }
 
     // actualiza el estado de /reservas/:idClub/:idReserva
     public void updateEstadoReserva(String idUsuario, String idReserva, EstadoReserva nuevoEstado) {
         getReferenceReserva(idUsuario, idReserva).child("estado").setValue(nuevoEstado);
-    }
-
-    // obtiene reservas en /reservas/:idUsuario/ con :fecha >= fechaActual
-    public Query getReferenceReservasActuales(String idUsuario, Date fechaActual) {
-        return getReferenceReservasUser(idUsuario).orderByChild("fecha").startAt(dateToStringtoSave(fechaActual));
     }
 
 }

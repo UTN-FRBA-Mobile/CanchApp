@@ -8,6 +8,7 @@ import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
 import com.santiago.canchaapp.app.otros.TipoReservas;
 import com.santiago.canchaapp.app.viewholder.AlquilerViewHolder;
+import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.Reserva;
 
 import java.util.ArrayList;
@@ -16,20 +17,20 @@ import java.util.Objects;
 
 public class AlquileresAdapter extends RecyclerView.Adapter<AlquilerViewHolder> {
 
-    private List<Reserva> reservas;
+    private List<Alquiler> alquileres;
 
     private TipoReservas tipoReservas;
 
-    private AccionesSobreReserva accionesSobreReserva;
+    private AccionesSobreReserva accionesSobreAlquiler;
 
-    public AlquileresAdapter(TipoReservas tipoReservas, AccionesSobreReserva accionesSobreReserva) {
-        this.reservas = new ArrayList<>();
+    public AlquileresAdapter(TipoReservas tipoReservas, AccionesSobreReserva accionesSobreAlquiler) {
+        this.alquileres = new ArrayList<>();
         this.tipoReservas = tipoReservas;
-        this.accionesSobreReserva = accionesSobreReserva;
+        this.accionesSobreAlquiler = accionesSobreAlquiler;
     }
 
-    public void actualizarLista(Reserva reserva) {
-        if (actualizarReservas(reserva)) {
+    public void actualizarLista(Alquiler alquiler) {
+        if (actualizarAlquileres(alquiler)) {
             this.notifyDataSetChanged();
         }
     }
@@ -43,40 +44,40 @@ public class AlquileresAdapter extends RecyclerView.Adapter<AlquilerViewHolder> 
 
     @Override
     public void onBindViewHolder(AlquilerViewHolder viewHolder, final int position) {
-        viewHolder.cargarDatosEnVista(reservas.get(position), accionesSobreReserva);
+        viewHolder.cargarDatosEnVista(alquileres.get(position), accionesSobreAlquiler);
     }
 
     @Override
     public int getItemCount() {
-        return reservas.size();
+        return alquileres.size();
     }
 
     // Auxiliar
 
-    private boolean actualizarReservas(Reserva reservaActualizada) {
-        Integer i = indiceDeReserva(reservaActualizada);
+    private boolean actualizarAlquileres(Alquiler alquilerActualizado) {
+        Integer i = indiceDeAlquiler(alquilerActualizado);
         if (i == null) {
             // Sólo se debe agregar una reserva nueva si es de este estado
-            if (reservaActualizada.getEstado() == tipoReservas.toEstado()) {
-                reservas.add(reservaActualizada);
+            if (alquilerActualizado.getEstado() == tipoReservas.toEstado()) {
+                alquileres.add(alquilerActualizado);
             } else {
                 return false;
             }
         } else {
-            if (reservaActualizada.getEstado() != tipoReservas.toEstado()) {
+            if (alquilerActualizado.getEstado() != tipoReservas.toEstado()) {
                 // si cambió el estado se saca de la lista
-                reservas.remove((int) i);
+                alquileres.remove((int) i);
             } else {
                 // en otro caso se la modifica
-                reservas.set(i, reservaActualizada);
+                alquileres.set(i, alquilerActualizado);
             }
         }
         return true;
     }
 
-    private Integer indiceDeReserva(Reserva reserva) {
-        for (int i = 0; i < reservas.size(); i++) {
-            if (Objects.equals(reservas.get(i).getUuid(), reserva.getUuid())) {
+    private Integer indiceDeAlquiler(Alquiler alquiler) {
+        for (int i = 0; i < alquileres.size(); i++) {
+            if (Objects.equals(alquileres.get(i).getUuid(), alquiler.getUuid())) {
                 return i;
             }
         }

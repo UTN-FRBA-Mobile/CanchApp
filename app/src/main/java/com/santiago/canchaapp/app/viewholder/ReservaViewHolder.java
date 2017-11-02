@@ -78,10 +78,9 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
         botonCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataBase.getInstancia().updateEstadoReserva(
-                        reserva.getIdUsuario(), reserva.getUuid(), CANCELADA);
-                DataBase.getInstancia().updateEstadoAlquiler(
-                        reserva.getIdClub(), reserva.getIdCancha(), stringToDateToSave(reserva.getFecha()), reserva.getIdAlquiler(), CANCELADA);
+                DataBase.getInstancia().updateEstadoReserva(reserva.getIdUsuario(), reserva.getUuid(), CANCELADA);
+                DataBase.getInstancia().updateEstadoAlquiler(reserva.getIdClub(), reserva.getIdCancha(), stringToDateToSave(reserva.getFecha()), reserva.getIdAlquiler(), CANCELADA);
+                DataBase.getInstancia().updateEstadoAlquilerPorClub(reserva.getIdClub(), reserva.getIdAlquiler(), CANCELADA);
 
             }
         });
