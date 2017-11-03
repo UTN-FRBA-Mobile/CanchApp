@@ -10,42 +10,38 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.santiago.canchaapp.R;
+import com.santiago.canchaapp.app.adapter.page.AlquileresPageAdapter;
 import com.santiago.canchaapp.app.adapter.page.ReservasPageAdapter;
+import com.santiago.canchaapp.dominio.Alquiler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ReservasFragment extends Fragment {
+public class AlquileresFragment extends Fragment {
 
-    @BindView(R.id.container_reservas)
+    @BindView(R.id.container_alquileres)
     public ViewPager viewPager;
 
-    @BindView(R.id.tabs_reservas)
+    @BindView(R.id.tabs_alquileres)
     public TabLayout tabs;
 
-    private ReservasPageAdapter adapter;
+    private AlquileresPageAdapter adapter;
 
-    public static ReservasFragment  nuevaInstancia() {
-        return new ReservasFragment();
+    public static AlquileresFragment nuevaInstancia() {
+        return new AlquileresFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // General
         super.onCreate(savedInstanceState);
-
-        // View
-        View view = inflater.inflate(R.layout.fragment_reservas, container, false);
+        View view = inflater.inflate(R.layout.fragment_alquileres, container, false);
         ButterKnife.bind(this, view);
 
-        // Tabs reservas
-        // IMPORTANTE: usar getChildFragmentManager()
-        adapter = new ReservasPageAdapter(getChildFragmentManager());
+        adapter = new AlquileresPageAdapter(getChildFragmentManager());
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Mis reservas");
-
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Mis alquileres");
         return view;
     }
 

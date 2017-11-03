@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import static com.santiago.canchaapp.app.otros.DateUtils.dateToString;
+import static com.santiago.canchaapp.dominio.EstadoReserva.PENDIENTE;
 
 public class Alquiler implements Serializable {
 
@@ -21,26 +22,39 @@ public class Alquiler implements Serializable {
     // Datos denormalizados para simplificar queries
     private String idUsuario;
 
+    private String idClub;
+
     private String nombreUsuario;
 
     private String nombreCancha;
 
     private TipoCancha tipoCancha;
-    //
+
+    private String idCancha;
 
     public Alquiler() { }
 
     public Alquiler(UUID uuid, Date fecha, Horario horario, String idUsuario, String nombreUsuario,
-                    String nombreCancha, TipoCancha tipoCancha, EstadoReserva estado, UUID idReserva) {
+                    Cancha cancha, EstadoReserva estado, UUID idReserva) {
         this.uuid = uuid.toString();
         this.fecha = dateToString(fecha);
         this.hora = horario.getDesde();
         this.idUsuario = idUsuario != null ? idUsuario : null;
         this.nombreUsuario = nombreUsuario;
-        this.nombreCancha = nombreCancha;
-        this.tipoCancha = tipoCancha;
+        this.nombreCancha = cancha.getNombre();
+        this.tipoCancha = cancha.getTipoCancha();
+        this.idCancha = cancha.getUuid();
+        this.idClub = cancha.getDatosClub().getIdClub();
         this.estado = estado;
         this.idReserva = idReserva != null ? idReserva.toString() : null;
+    }
+
+    public boolean esUsuarioRegistrado() {
+        return uuid != null;
+    }
+
+    public boolean alquiladaPorUsuario() {
+        return idUsuario != null;
     }
 
     public String getUuid() {
@@ -59,16 +73,20 @@ public class Alquiler implements Serializable {
         return estado;
     }
 
+    public String getIdReserva() {
+        return idReserva;
+    }
+
     public String getIdUsuario() {
         return idUsuario;
     }
 
-    public String getNombreUsuario() {
-        return nombreUsuario;
+    public String getIdClub() {
+        return idClub;
     }
 
-    public boolean esUsuarioRegistrado() {
-        return uuid != null;
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
 
     public String getNombreCancha() {
@@ -79,12 +97,7 @@ public class Alquiler implements Serializable {
         return tipoCancha;
     }
 
-    public String getIdReserva() {
-        return idReserva;
+    public String getIdCancha() {
+        return idCancha;
     }
-
-    public boolean alquiladaPorUsuario() {
-        return idUsuario != null;
-    }
-
 }

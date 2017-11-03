@@ -11,13 +11,9 @@ public enum TipoReservas {
 
     public String titulo;
 
-    TipoReservas(String titulo) {
-        this.titulo = titulo;
-    }
+    TipoReservas(String titulo) { this.titulo = titulo; }
 
-    public static TipoReservas enPosicion(int pos) {
-        return TipoReservas.values()[pos];
-    }
+    public static TipoReservas enPosicion(int pos) { return TipoReservas.values()[pos]; }
 
     public EstadoReserva toEstado() {
         switch (this) {

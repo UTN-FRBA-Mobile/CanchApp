@@ -108,18 +108,18 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
                 if (esMiCancha) {
                     // Pedir nombre de persona para la cual se reserva
                     alquiler = new Alquiler(UUID.randomUUID(), fecha, horario, null, "<alguien>",
-                            cancha.getNombre(), cancha.getTipoCancha(), APROBADA, null);
+                            cancha, APROBADA, null);
                 } else {
                     // Tomar nombre de usuario de la persona
                     UUID idAlquiler = UUID.randomUUID();
                     UUID idReserva = UUID.randomUUID();
                     alquiler = new Alquiler(idAlquiler, fecha, horario, usuario.getUid(), usuario.getNombre(),
-                            cancha.getNombre(), cancha.getTipoCancha(), PENDIENTE, idReserva);
+                            cancha, PENDIENTE, idReserva);
                     // Además se debe insertar una reserva para luego consultar en mis reservas
                     reserva = new Reserva(idReserva, usuario, cancha, club, fecha, horario, PENDIENTE, idAlquiler);
                 }
-                DataBase.getInstancia().insertAlquiler(
-                        cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler);
+                DataBase.getInstancia().insertAlquiler(cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler);
+                DataBase.getInstancia().insertAlquilerPorClub(cancha.getDatosClub().getIdClub(), alquiler);
                 if (reserva != null) {
                     DataBase.getInstancia().insertReserva(usuario.getUid(), reserva);
                 }
@@ -172,11 +172,10 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         botonCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataBase.getInstancia().updateEstadoAlquiler(
-                        cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler.getUuid(), CANCELADA);
+                DataBase.getInstancia().updateEstadoAlquiler(cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler.getUuid(), CANCELADA);
+                DataBase.getInstancia().updateEstadoAlquilerPorClub(cancha.getDatosClub().getIdClub(), alquiler.getUuid(), CANCELADA);
                 if (alquiler.alquiladaPorUsuario()) {
-                    DataBase.getInstancia().updateEstadoReserva(
-                            alquiler.getIdUsuario(), alquiler.getIdReserva(), CANCELADA);
+                    DataBase.getInstancia().updateEstadoReserva(alquiler.getIdUsuario(), alquiler.getIdReserva(), CANCELADA);
 
                 }
                 ocultarBotones(botonAprobar, botonCancelar);
@@ -188,8 +187,8 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         botonAprobar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataBase.getInstancia().updateEstadoAlquiler(
-                        cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler.getUuid(), APROBADA);
+                DataBase.getInstancia().updateEstadoAlquiler(cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler.getUuid(), APROBADA);
+                DataBase.getInstancia().updateEstadoAlquilerPorClub(cancha.getDatosClub().getIdClub(), alquiler.getUuid(), APROBADA);
                 if (alquiler.alquiladaPorUsuario()) {
                     DataBase.getInstancia().updateEstadoReserva(
                             alquiler.getIdUsuario(), alquiler.getIdReserva(), APROBADA);

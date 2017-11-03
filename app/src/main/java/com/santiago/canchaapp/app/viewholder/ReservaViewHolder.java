@@ -9,10 +9,7 @@ import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
-import com.santiago.canchaapp.app.otros.DateUtils;
-import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.DataBase;
-import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.dominio.Reserva;
 
 import butterknife.BindView;
@@ -21,8 +18,6 @@ import butterknife.ButterKnife;
 import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.santiago.canchaapp.app.otros.DateUtils.stringToDateToSave;
-import static com.santiago.canchaapp.app.otros.TextUtils.estaVacio;
-import static com.santiago.canchaapp.dominio.EstadoReserva.APROBADA;
 import static com.santiago.canchaapp.dominio.EstadoReserva.CANCELADA;
 import static com.santiago.canchaapp.dominio.Horario.*;
 
@@ -83,10 +78,9 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
         botonCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataBase.getInstancia().updateEstadoReserva(
-                        reserva.getIdUsuario(), reserva.getUuid(), CANCELADA);
-                DataBase.getInstancia().updateEstadoAlquiler(
-                        reserva.getIdClub(), reserva.getIdCancha(), stringToDateToSave(reserva.getFecha()), reserva.getIdAlquiler(), CANCELADA);
+                DataBase.getInstancia().updateEstadoReserva(reserva.getIdUsuario(), reserva.getUuid(), CANCELADA);
+                DataBase.getInstancia().updateEstadoAlquiler(reserva.getIdClub(), reserva.getIdCancha(), stringToDateToSave(reserva.getFecha()), reserva.getIdAlquiler(), CANCELADA);
+                DataBase.getInstancia().updateEstadoAlquilerPorClub(reserva.getIdClub(), reserva.getIdAlquiler(), CANCELADA);
 
             }
         });

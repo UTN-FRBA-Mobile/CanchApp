@@ -8,8 +8,6 @@ import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
 import com.santiago.canchaapp.app.otros.TipoReservas;
 import com.santiago.canchaapp.app.viewholder.ReservaViewHolder;
-import com.santiago.canchaapp.dominio.Club;
-import com.santiago.canchaapp.dominio.EstadoReserva;
 import com.santiago.canchaapp.dominio.Reserva;
 
 import java.util.ArrayList;

@@ -28,15 +28,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.santiago.canchaapp.app.fragment.AlquileresFragment;
 import com.santiago.canchaapp.app.fragment.BuscarCanchasFragment;
-import com.santiago.canchaapp.app.fragment.CanchasFragment;
 import com.santiago.canchaapp.app.fragment.ClubFragment;
 import com.santiago.canchaapp.app.fragment.RegistrarClubFragment;
 import com.santiago.canchaapp.app.fragment.ReservasFragment;
 import com.santiago.canchaapp.app.otros.FragmentTags;
-import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
-import com.santiago.canchaapp.dominio.Usuario;
 import com.santiago.canchaapp.servicios.Sesion;
 import com.squareup.picasso.Picasso;
 
@@ -48,7 +46,6 @@ import butterknife.ButterKnife;
 import static com.santiago.canchaapp.app.otros.FragmentTags.BUSCAR_CANCHAS;
 import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_ALQUILERES;
 import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_RESERVAS;
-import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_CANCHAS;
 import static com.santiago.canchaapp.app.otros.FragmentTags.MI_CLUB;
 import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CLUB;
 
@@ -110,9 +107,9 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
             case R.id.navRegistrarClub:
                 abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB); break;
             case R.id.navMisReservas:
-                abrirFragment(ReservasFragment.nuevaInstanciaParaReservas(), MIS_RESERVAS); break;
+                abrirFragment(ReservasFragment.nuevaInstancia(), MIS_RESERVAS); break;
             case R.id.navMisAlquileres:
-                abrirFragment(ReservasFragment.nuevaInstanciaParaAlquileres(), MIS_ALQUILERES); break;
+                abrirFragment(AlquileresFragment.nuevaInstancia(), MIS_ALQUILERES); break;
             case R.id.navMiClub:
                 abrirFragment(ClubFragment.nuevaInstancia(Sesion.getInstancia().getUsuario().getIdClub(), true), MI_CLUB); break;
         }
@@ -160,7 +157,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
         if(mostrarSeccionClub)
             getInfoClub();
         else
-            abrirFragment(ReservasFragment.nuevaInstanciaParaReservas(), MIS_RESERVAS);
+            abrirFragment(ReservasFragment.nuevaInstancia(), MIS_RESERVAS);
     }
 
     private void getInfoClub() {
