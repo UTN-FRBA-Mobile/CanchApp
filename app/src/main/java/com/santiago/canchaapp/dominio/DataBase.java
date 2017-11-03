@@ -44,9 +44,7 @@ public class DataBase {
     public DatabaseReference getReferenceReserva(String idUsuario, String idReserva) { return getReferenceReservasUser(idUsuario).child(idReserva); }
 
     //reservas/:idUsuario/ con :fecha >= fechaActual
-    public Query getReferenceReservasActuales(String idUsuario, Date fechaActual) {
-        return getReferenceReservasUser(idUsuario).orderByChild("fecha").startAt(dateToStringtoSave(fechaActual));
-    }
+    public Query getReferenceReservasActuales(String idUsuario, Date fechaActual) { return getReferenceReservasUser(idUsuario).orderByChild("fecha").startAt(dateToStringtoSave(fechaActual)); }
 
     //clubes
     public DatabaseReference getReferenceClubes() {
@@ -58,19 +56,13 @@ public class DataBase {
 
 
     //alquileres/:idClub/:idCancha/:fecha
-    public Query getReferenceAlquileres(String idClub, String idCancha, Date fecha) {
-        return mDatabase.child(keyAlquileres).child(idClub).child(idCancha).child(dateToStringtoSave(fecha));
-    }
+    public Query getReferenceAlquileres(String idClub, String idCancha, Date fecha) { return mDatabase.child(keyAlquileres).child(idClub).child(idCancha).child(dateToStringtoSave(fecha)); }
 
     //alquileresPorClub/:idClub
-    public Query getReferenceAlquileresPorClub(String idClub) {
-        return mDatabase.child(keyAlquileresPorClub).child(idClub);
-    }
+    public Query getReferenceAlquileresPorClub(String idClub) { return mDatabase.child(keyAlquileresPorClub).child(idClub); }
 
     //alquileresPorUsuario/:idClub/:idAlquiler
-    public DatabaseReference getReferenceAlquilerPorClub(String idClub, String idAlquiler) {
-        return ((DatabaseReference) getReferenceAlquileresPorClub(idClub)).child(idAlquiler);
-    }
+    public DatabaseReference getReferenceAlquilerPorClub(String idClub, String idAlquiler) { return ((DatabaseReference) getReferenceAlquileresPorClub(idClub)).child(idAlquiler); }
 
     //usuarios/:idUsuario
     public Usuario insertUser(FirebaseUser user, boolean esDuenio){
@@ -80,19 +72,13 @@ public class DataBase {
     }
 
     //reservas/:idUsuario/:idReserva
-    public void insertReserva(String idUsuario, Reserva reserva) {
-        getReferenceReserva(idUsuario, reserva.getUuid()).setValue(reserva);
-    }
+    public void insertReserva(String idUsuario, Reserva reserva) { getReferenceReserva(idUsuario, reserva.getUuid()).setValue(reserva); }
 
     //alquileres/:idClub/:idCancha/:fecha
-    public void insertAlquiler(String idClub, String idCancha, Date fecha, Alquiler alquiler) {
-        ((DatabaseReference) getReferenceAlquileres(idClub, idCancha, fecha)).child(alquiler.getUuid()).setValue(alquiler);
-    }
+    public void insertAlquiler(String idClub, String idCancha, Date fecha, Alquiler alquiler) { ((DatabaseReference) getReferenceAlquileres(idClub, idCancha, fecha)).child(alquiler.getUuid()).setValue(alquiler); }
 
     //alquileresPorUsuario/:idUsuario/:idAlquiler
-    public void insertAlquilerPorClub(String idClub, Alquiler alquiler){
-        getReferenceAlquilerPorClub(idClub, alquiler.getUuid()).setValue(alquiler);
-    }
+    public void insertAlquilerPorClub(String idClub, Alquiler alquiler){ getReferenceAlquilerPorClub(idClub, alquiler.getUuid()).setValue(alquiler); }
 
     //clubes/:idClub
     public void insertClub(Usuario usuario, Club club){
@@ -101,18 +87,12 @@ public class DataBase {
     }
 
     ///alquileres/:idClub/:idCancha/:fecha/:idAlquiler
-    public void updateEstadoAlquiler(String idClub, String idCancha, Date fecha, String idAlquiler, EstadoReserva nuevoEstado) {
-        ((DatabaseReference) getReferenceAlquileres(idClub, idCancha, fecha)).child(idAlquiler).child("estado").setValue(nuevoEstado);
-    }
+    public void updateEstadoAlquiler(String idClub, String idCancha, Date fecha, String idAlquiler, EstadoReserva nuevoEstado) { ((DatabaseReference) getReferenceAlquileres(idClub, idCancha, fecha)).child(idAlquiler).child("estado").setValue(nuevoEstado); }
 
     ///alquileresPorClub/:idClub/:id:idAlquiler
-    public void updateEstadoAlquilerPorClub(String idClub, String idAlquiler, EstadoReserva nuevoEstado) {
-        getReferenceAlquilerPorClub(idClub, idAlquiler).child("estado").setValue(nuevoEstado);
-    }
+    public void updateEstadoAlquilerPorClub(String idClub, String idAlquiler, EstadoReserva nuevoEstado) { getReferenceAlquilerPorClub(idClub, idAlquiler).child("estado").setValue(nuevoEstado); }
 
     // actualiza el estado de /reservas/:idClub/:idReserva
-    public void updateEstadoReserva(String idUsuario, String idReserva, EstadoReserva nuevoEstado) {
-        getReferenceReserva(idUsuario, idReserva).child("estado").setValue(nuevoEstado);
-    }
+    public void updateEstadoReserva(String idUsuario, String idReserva, EstadoReserva nuevoEstado) { getReferenceReserva(idUsuario, idReserva).child("estado").setValue(nuevoEstado); }
 
 }
