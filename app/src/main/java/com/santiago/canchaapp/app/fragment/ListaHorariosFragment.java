@@ -114,10 +114,10 @@ public class ListaHorariosFragment extends Fragment {
         horariosRecyclerView.setLayoutManager(layoutManager);
 
         // Para setear adapter
-        getClub(cancha.getDatosClub().getIdClub());
+        getClub(cancha.getIdClub());
 
         // Datos
-        refDatos = DataBase.getInstancia().getReferenceAlquileres(cancha.getDatosClub().getIdClub(), cancha.getUuid(), getFecha());
+        refDatos = DataBase.getInstancia().getReferenceAlquileres(cancha.getIdClub(), cancha.getUuid(), getFecha());
         refDatos.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -167,7 +167,7 @@ public class ListaHorariosFragment extends Fragment {
                 if(dataSnapshot.getValue() != null){
                     Club club = dataSnapshot.getValue(Club.class);
                     Cancha cancha = getCancha();
-                    HorariosAdapter horariosAdapter = new HorariosAdapter(cancha, club, getFecha(), esMiCancha(), cancha.getDatosClub().getRangoHorario());
+                    HorariosAdapter horariosAdapter = new HorariosAdapter(cancha, club, getFecha(), esMiCancha(), cancha.getRangoHorario());
                     horariosRecyclerView.setAdapter(horariosAdapter);
                     adapter = horariosAdapter;
                 }

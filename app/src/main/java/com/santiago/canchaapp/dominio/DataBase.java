@@ -18,6 +18,7 @@ public class DataBase {
     private static DatabaseReference mDatabase;
     private static String keyUsuarios = "usuarios";
     private static String keyClubes = "clubes";
+    private static String keyCanchas = "canchas";
     private static String keyAlquileres = "alquileres";
     private static String keyReservas = "reservas";
     private static String keyAlquileresPorClub = "alquileresPorUsuario";
@@ -49,6 +50,11 @@ public class DataBase {
     //clubes
     public DatabaseReference getReferenceClubes() {
         return mDatabase.child(keyClubes);
+    }
+
+    //canchas
+    public DatabaseReference getReferenceCanchas() {
+        return mDatabase.child(keyCanchas);
     }
 
     //clubes/:idClub
@@ -94,5 +100,11 @@ public class DataBase {
 
     // actualiza el estado de /reservas/:idClub/:idReserva
     public void updateEstadoReserva(String idUsuario, String idReserva, EstadoReserva nuevoEstado) { getReferenceReserva(idUsuario, idReserva).child("estado").setValue(nuevoEstado); }
+
+    //canchas/:idClub/:idCancha
+    public void insertCancha(String idClub, Cancha cancha) {
+        getReferenceCanchas().child(idClub).child(cancha.getUuid()).setValue(cancha);
+    }
+
 
 }

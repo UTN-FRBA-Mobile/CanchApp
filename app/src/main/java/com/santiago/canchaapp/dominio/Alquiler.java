@@ -44,7 +44,7 @@ public class Alquiler implements Serializable {
         this.nombreCancha = cancha.getNombre();
         this.tipoCancha = cancha.getTipoCancha();
         this.idCancha = cancha.getUuid();
-        this.idClub = cancha.getDatosClub().getIdClub();
+        this.idClub = cancha.getIdClub();
         this.estado = estado;
         this.idReserva = idReserva != null ? idReserva.toString() : null;
     }

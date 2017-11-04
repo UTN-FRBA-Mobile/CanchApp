@@ -7,9 +7,11 @@ import java.util.UUID;
 
 public class Cancha implements Serializable {
 
-    private UUID uuid;
+    private String uuid;
 
     private String nombre;
+
+    private int precio;
 
     private TipoCancha tipoCancha;
 
@@ -17,23 +19,27 @@ public class Cancha implements Serializable {
 
     private Boolean techada;
 
-    // Denormalizado para facilitar queries
-    private DatosClub datosClub;
-
     private List<String> fotosUrls = new ArrayList<>();
 
-    public Cancha(UUID uuid, String nombre, TipoCancha tipoCancha, TipoSuperficie superficie, Boolean techada, List<String> fotosUrls, UUID idClub, Horario horario) {
-        this.uuid = uuid;
+    // Denormalizado para facilitar queries
+    private String idClub;
+
+    private Horario rangoHorario;
+
+    public Cancha(UUID uuid, String nombre, TipoCancha tipoCancha, TipoSuperficie superficie, Boolean techada, int precio, List<String> fotosUrls, UUID idClub, Horario horario) {
+        this.uuid = uuid.toString();
         this.nombre = nombre;
         this.tipoCancha = tipoCancha;
         this.superficie = superficie;
         this.techada = techada;
         this.fotosUrls = fotosUrls;
-        this.datosClub = new DatosClub(idClub, horario);
+        this.idClub = idClub.toString();
+        this.rangoHorario = horario;
+        this.precio = precio;
     }
 
     public String getUuid() {
-        return uuid.toString();
+        return uuid;
     }
 
     public String getNombre() {
@@ -64,29 +70,20 @@ public class Cancha implements Serializable {
         return this.fotosUrls;
     }
 
-    public DatosClub getDatosClub() {
-        return datosClub;
+    public Boolean getTechada() {
+        return techada;
     }
 
-    public class DatosClub implements Serializable {
+    public String getIdClub() {
+        return idClub;
+    }
 
-        private UUID idClub;
+    public Horario getRangoHorario() {
+        return rangoHorario;
+    }
 
-        private Horario rangoHorario;
-
-        public DatosClub(UUID idClub, Horario rangoHorario) {
-
-            this.idClub = idClub;
-            this.rangoHorario = rangoHorario;
-        }
-
-        public String getIdClub() {
-            return idClub.toString();
-        }
-
-        public Horario getRangoHorario() {
-            return rangoHorario;
-        }
+    public int getPrecio() {
+        return precio;
     }
 
 }

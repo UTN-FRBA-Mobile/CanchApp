@@ -33,21 +33,18 @@
             android:hint="@string/txtNombreCancha"/>
 
         <EditText
-            android:id="@+id/txtDeporte"
-            style="@style/editText"
-            android:hint="@string/txtDeporte"/>
-
-        <EditText
             android:id="@+id/txtPrecio"
             style="@style/editText"
             android:hint="@string/txtPrecio"
-            android:inputType="numberDecimal"/>
-
-        <EditText
-            android:id="@+id/txtSuperficie"
-            style="@style/editText"
-            android:hint="@string/txtSuperficie"
             android:inputType="number"/>
+
+        <Spinner
+            android:id="@+id/spinnerDeporte"
+            style="@style/spinner" />
+
+        <Spinner
+            android:id="@+id/spinnerSuperficie"
+            style="@style/spinner" />
 
         <LinearLayout
             android:layout_width="match_parent"

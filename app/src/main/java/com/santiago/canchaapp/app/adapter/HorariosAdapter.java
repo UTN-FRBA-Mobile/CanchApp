@@ -46,7 +46,7 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
         this.fecha = fecha;
         this.rangoHorario = rangoHorario;
         this.alquileres = new ArrayList<>();
-        this.horarios = generarListaDeHorarios(cancha.getDatosClub().getRangoHorario(), new ArrayList<Alquiler>());
+        this.horarios = generarListaDeHorarios(cancha.getRangoHorario(), new ArrayList<Alquiler>());
     }
 
     public void actualizarLista(Alquiler alquilerActualizado) {

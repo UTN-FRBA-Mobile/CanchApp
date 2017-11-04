@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -32,12 +33,19 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionMenu;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.FotosCanchaAdapter;
+import com.santiago.canchaapp.dominio.Cancha;
+import com.santiago.canchaapp.dominio.DataBase;
+import com.santiago.canchaapp.dominio.Horario;
+import com.santiago.canchaapp.dominio.TipoCancha;
+import com.santiago.canchaapp.dominio.TipoSuperficie;
+import com.santiago.canchaapp.servicios.Sesion;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.ButterKnife;
 
@@ -292,8 +300,18 @@ public class CargarFotosCanchaFragment extends Fragment {
     }
 
     private void abrirFragmentSiguiente() {
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        Cancha cancha = new Cancha(UUID.randomUUID(),
+                getArguments().getString("nombreCancha"),
+                TipoCancha.deNombre(getArguments().getString("deporte")),
+                TipoSuperficie.deNombre(getArguments().getString("superficie")),
+                getArguments().getBoolean("opcTechada"),
+                getArguments().getInt("precio"),
+                new ArrayList<String>(),
+                UUID.fromString(Sesion.getInstancia().getUsuario().getIdClub()),
+                new Horario(10,20)); // TODO usar horario del club
+        DataBase.getInstancia().insertCancha(cancha.getIdClub(), cancha);
 
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Datos del Club");
     }
 }

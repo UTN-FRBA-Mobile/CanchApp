@@ -10,7 +10,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +20,8 @@ import android.widget.CompoundButton;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.otros.TextUtils;
+import com.santiago.canchaapp.dominio.TipoCancha;
+import com.santiago.canchaapp.dominio.TipoSuperficie;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,12 +32,12 @@ public class AgregarCanchaFragment extends Fragment {
 
     @BindView(R.id.txtNombreCancha)
     public EditText txtNombreCancha;
-    @BindView(R.id.txtDeporte)
-    public EditText txtDeporte;
+    @BindView(R.id.spinnerDeporte)
+    public Spinner spinnerDeporte;
     @BindView(R.id.txtPrecio)
     public EditText txtPrecio;
-    @BindView(R.id.txtSuperficie)
-    public EditText txtSuperficie;
+    @BindView(R.id.spinnerSuperficie)
+    public Spinner spinnerSuperficie;
     @BindView(R.id.switchTechada)
     public Switch switchTechada;
     @BindView(R.id.floatingbtnContinuar)
@@ -41,10 +45,6 @@ public class AgregarCanchaFragment extends Fragment {
     public CargarFotosCanchaFragment unacargarFotosCanchaFragment = new CargarFotosCanchaFragment();
 
     public static AgregarCanchaFragment nuevaInstancia() {
-        /* Por si hay que agregar el link del club.
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_CANCHAS, (Serializable) datosDeCanchas());
-        fragment.setArguments(args);*/
         return new AgregarCanchaFragment();
     }
 
@@ -67,11 +67,23 @@ public class AgregarCanchaFragment extends Fragment {
         continuar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if (validarCampos(view.getContext())) {
+                if (validarCampos(view.getContext())) {
                 abrirFragmentSiguiente();
-                //}
+                }
             }
         });
+
+        // Spinners
+        // Deporte
+        ArrayAdapter<String> adapterDeporte = new ArrayAdapter<String>(view.getContext(),
+                android.R.layout.simple_spinner_item, TipoCancha.nombres());
+        adapterDeporte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDeporte.setAdapter(adapterDeporte);
+        // Superficie
+        ArrayAdapter<String> adapterSuperficie = new ArrayAdapter<String>(view.getContext(),
+                android.R.layout.simple_spinner_item, TipoSuperficie.nombres());
+        adapterSuperficie.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSuperficie.setAdapter(adapterSuperficie);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Agregar cancha");
 
@@ -91,7 +103,7 @@ public class AgregarCanchaFragment extends Fragment {
     }
 
     private boolean validarCampos(Context context) {
-        if (estaVacio(nombreCancha()) || estaVacio(deporte()) || estaVacio(telefono()) || estaVacio(superficie())) {
+        if (estaVacio(nombreCancha()) || estaVacio(precio())) {
             Toast.makeText(context, R.string.txtCompletarTodosLosCampos, Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -102,7 +114,7 @@ public class AgregarCanchaFragment extends Fragment {
         Bundle args = new Bundle();
         args.putString("nombreCancha", nombreCancha());
         args.putString("deporte", deporte());
-        args.putString("telefono", telefono());
+        args.putInt("precio", Integer.parseInt(precio()));
         args.putString("superficie", superficie());
         args.putBoolean("opcTechada", opcionTechada());
         return args;
@@ -118,14 +130,14 @@ public class AgregarCanchaFragment extends Fragment {
     }
 
     private String deporte() {
-        return txtDeporte.getText().toString();
+        return spinnerDeporte.getSelectedItem().toString();
     }
 
-    private String telefono() {
+    private String precio() {
         return txtPrecio.getText().toString();
     }
 
-    private String superficie() { return txtSuperficie.getText().toString(); }
+    private String superficie() { return spinnerSuperficie.getSelectedItem().toString(); }
 
     private Boolean opcionTechada() { return switchTechada.isChecked();}
 

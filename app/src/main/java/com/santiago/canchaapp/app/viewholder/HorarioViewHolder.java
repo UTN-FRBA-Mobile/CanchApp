@@ -118,8 +118,8 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
                     // Además se debe insertar una reserva para luego consultar en mis reservas
                     reserva = new Reserva(idReserva, usuario, cancha, club, fecha, horario, PENDIENTE, idAlquiler);
                 }
-                DataBase.getInstancia().insertAlquiler(cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler);
-                DataBase.getInstancia().insertAlquilerPorClub(cancha.getDatosClub().getIdClub(), alquiler);
+                DataBase.getInstancia().insertAlquiler(cancha.getIdClub(), cancha.getUuid(), fecha, alquiler);
+                DataBase.getInstancia().insertAlquilerPorClub(cancha.getIdClub(), alquiler);
                 if (reserva != null) {
                     DataBase.getInstancia().insertReserva(usuario.getUid(), reserva);
                 }
@@ -172,8 +172,8 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         botonCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataBase.getInstancia().updateEstadoAlquiler(cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler.getUuid(), CANCELADA);
-                DataBase.getInstancia().updateEstadoAlquilerPorClub(cancha.getDatosClub().getIdClub(), alquiler.getUuid(), CANCELADA);
+                DataBase.getInstancia().updateEstadoAlquiler(cancha.getIdClub(), cancha.getUuid(), fecha, alquiler.getUuid(), CANCELADA);
+                DataBase.getInstancia().updateEstadoAlquilerPorClub(cancha.getIdClub(), alquiler.getUuid(), CANCELADA);
                 if (alquiler.alquiladaPorUsuario()) {
                     DataBase.getInstancia().updateEstadoReserva(alquiler.getIdUsuario(), alquiler.getIdReserva(), CANCELADA);
 
@@ -187,8 +187,8 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         botonAprobar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataBase.getInstancia().updateEstadoAlquiler(cancha.getDatosClub().getIdClub(), cancha.getUuid(), fecha, alquiler.getUuid(), APROBADA);
-                DataBase.getInstancia().updateEstadoAlquilerPorClub(cancha.getDatosClub().getIdClub(), alquiler.getUuid(), APROBADA);
+                DataBase.getInstancia().updateEstadoAlquiler(cancha.getIdClub(), cancha.getUuid(), fecha, alquiler.getUuid(), APROBADA);
+                DataBase.getInstancia().updateEstadoAlquilerPorClub(cancha.getIdClub(), alquiler.getUuid(), APROBADA);
                 if (alquiler.alquiladaPorUsuario()) {
                     DataBase.getInstancia().updateEstadoReserva(
                             alquiler.getIdUsuario(), alquiler.getIdReserva(), APROBADA);
