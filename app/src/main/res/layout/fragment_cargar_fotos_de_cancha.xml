@@ -34,29 +34,15 @@
                 android:textColor="@color/colorText"
                 android:text="@string/txtSubirFotosCancha" />
 
-            <LinearLayout
+            <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/grid_view_fotos_cancha"
                 android:layout_width="match_parent"
-                android:layout_height="0dip"
-                android:orientation="horizontal"
-                android:textAlignment="center"
-                android:layout_weight="1.30"
-                android:layout_marginBottom="@dimen/margin_topBottom_text"
-                android:layout_marginLeft="@dimen/margin_Left" >
-
-                <ImageView
-                    android:id="@+id/ImageView01"
-                    android:layout_width="@dimen/width_imageview_add"
-                    android:layout_height="@dimen/height_imageview_add"
-                    android:src="@drawable/cancha_sin_foto"
-                    android:contentDescription="@string/txtDescripcionBtnCargaFotos" />
-
-            </LinearLayout>
-
-            <ListView
-                android:id="@+id/ListView"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:choiceMode="multipleChoice" />
+                android:layout_height="match_parent"
+                android:numColumns="3"
+                android:verticalSpacing="1dp"
+                android:stretchMode="columnWidth"
+                android:gravity="center"
+                />
 
         </LinearLayout>
 

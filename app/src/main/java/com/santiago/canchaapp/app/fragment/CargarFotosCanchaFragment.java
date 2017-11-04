@@ -2,12 +2,12 @@ package com.santiago.canchaapp.app.fragment;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -16,48 +16,34 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.widget.ListView;
+
+import com.github.clans.fab.FloatingActionMenu;
+import com.santiago.canchaapp.R;
+import com.santiago.canchaapp.app.adapter.FotosCanchaAdapter;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import com.santiago.canchaapp.R;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
-import com.github.clans.fab.FloatingActionMenu;
-import com.santiago.canchaapp.app.adapter.page.GridFotosAdapter;
-import com.santiago.canchaapp.dominio.ImageItem;
-import com.squareup.picasso.Picasso;
-
-import android.content.Context;
-import android.os.CountDownTimer;
+import static java.util.Collections.singletonList;
 
 public class CargarFotosCanchaFragment extends Fragment {
 
@@ -68,25 +54,16 @@ public class CargarFotosCanchaFragment extends Fragment {
     private final int PHOTO_CODE = 200;
     private final int SELECT_PICTURE = 300;
 
-    private ImageView setImage;
     private LinearLayout mRlView;
     private String mPath;
 
-    private GridView gridView;
-    private ArrayList<File> fotosList;
-
-    private ArrayList<ImageView> itemList;
-    ArrayAdapter<ImageView> adapter;
-    ListView lv;
+    private GridView gridview;
+    private FotosCanchaAdapter fotosCanchaAdapter;
 
     FloatingActionMenu actionMenu;
         com.github.clans.fab.FloatingActionButton fbutton1, fbutton2, fbutton3;
 
     public static CargarFotosCanchaFragment nuevaInstancia() {
-        /*CargarFotosCanchaFragment fragment = new CargarFotosCanchaFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_CANCHAS, (Serializable) datosDeCanchas());
-        fragment.setArguments(args);*/
         return new CargarFotosCanchaFragment();
     }
 
@@ -102,13 +79,10 @@ public class CargarFotosCanchaFragment extends Fragment {
         fbutton1 = actionMenu.findViewById(R.id.fBtnTomarFoto);
         fbutton2 = actionMenu.findViewById(R.id.fBtnSeleccionarImagen);
         fbutton3 = actionMenu.findViewById(R.id.fBtnGuardar);
-        setImage = view.findViewById(R.id.ImageView01);
-        gridView = view.findViewById(R.id.gridViewImages);
 
-        lv = view.findViewById(R.id.ListView);
-        itemList = new ArrayList<>();
-        adapter = new ArrayAdapter<ImageView>(getActivity(), android.R.layout.simple_list_item_multiple_choice, itemList);
-        lv.setAdapter(adapter);
+        gridview = view.findViewById(R.id.grid_view_fotos_cancha);
+        fotosCanchaAdapter = new FotosCanchaAdapter(view.getContext());
+        gridview.setAdapter(fotosCanchaAdapter);
 
         if(mayRequestStoragePermission()){
             fbutton1.setEnabled(true);
@@ -117,22 +91,6 @@ public class CargarFotosCanchaFragment extends Fragment {
             fbutton1.setEnabled(false);
             fbutton2.setEnabled(false);
         }
-
-        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
-            @Override
-            public boolean onItemLongClick(AdapterView parent, View view,int position, long id){
-                SparseBooleanArray positionChecker = lv.getCheckedItemPositions();
-                int count = lv.getCount();
-                for(int item = count -1; item >= 0; item--){
-                    if(positionChecker.get(item)){
-                        adapter.remove(itemList.get(item));
-                    }
-                }
-                positionChecker.clear();
-                adapter.notifyDataSetChanged();
-                return false;
-            }
-        });
 
         fbutton1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,9 +102,12 @@ public class CargarFotosCanchaFragment extends Fragment {
         View.OnClickListener addlistener = new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
-                startActivityForResult(intent.createChooser(intent, "Por favor, seleccioná app de imagen:"), SELECT_PICTURE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                }
+                startActivityForResult(Intent.createChooser(intent, "Por favor, seleccioná app de imagen:"), SELECT_PICTURE);
             }
         };
 
@@ -163,31 +124,6 @@ public class CargarFotosCanchaFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Cargar fotos de cancha");
 
         return view;
-    }
-
-    class GridAdapter extends BaseAdapter{
-        @Override
-        public int getCount(){
-            return fotosList.size();
-        }
-
-        @Override
-        public Object getItem(int position){
-            return fotosList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position){
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent){
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_foto_cancha, parent, false);
-            ImageView imageView = convertView.findViewById(R.id.foto_cancha_item);
-            imageView.setImageURI(Uri.parse(getItem(position).toString() ));
-            return convertView;
-        }
     }
 
     ArrayList<File> imageReader(File root){
@@ -269,20 +205,25 @@ public class CargarFotosCanchaFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        /*Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.dualPane);
-          fragment.onActivityResult(requestCode, resultCode, data);*/
-
-        //onActivityResult(requestCode, resultCode, data);
-        //getActivity().onActivityReenter(resultCode, data);
         if(resultCode == Activity.RESULT_OK){
             switch (requestCode){
                 case PHOTO_CODE:
                     setLocationImage(mPath);
-                    setImageButton(mPath, setImage);
+                    //setImageButton(mPath, setImage);
                     break;
                 case SELECT_PICTURE:
-                    Uri path1 = data.getData();
-                    setImage.setImageURI(path1);
+                    if (data.getClipData() == null) { // Galería deja seleccionar 1 sola foto
+                        fotosCanchaAdapter.agregarFotos(singletonList(data.getData()));
+                    } else { // Galería deja seleccionar más de una foto
+                        ClipData clipData = data.getClipData();
+                        List<Uri> selectedImages = new ArrayList<>();
+                        for (int image = 0; image < clipData.getItemCount(); image++) {
+                            Uri path = clipData.getItemAt(image).getUri();
+                            selectedImages.add(path);
+                        }
+                        fotosCanchaAdapter.agregarFotos(selectedImages);
+                    }
+
                     break;
             }
         }
