@@ -18,6 +18,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -156,9 +157,9 @@ public class CargarFotosCanchaFragment extends Fragment {
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
             return true;
 
-        /*if((checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) &&
-                (checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED))
-            return true;*/
+        if((ActivityCompat.checkSelfPermission(getContext(),WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) &&
+                (ActivityCompat.checkSelfPermission(getContext(),CAMERA) == PackageManager.PERMISSION_GRANTED))
+            return true;
 
         if((shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) || (shouldShowRequestPermissionRationale(CAMERA))){
             Snackbar.make(mRlView, "@string/txtDialogExplanationPermisos1",
@@ -206,7 +207,7 @@ public class CargarFotosCanchaFragment extends Fragment {
 
     //@Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        //super.onRestoreInstanceState(savedInstanceState);
+        super.onViewStateRestored(savedInstanceState);
 
         mPath = savedInstanceState.getString("file_path");
     }
@@ -279,8 +280,8 @@ public class CargarFotosCanchaFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent();
                 intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                //Uri uri = Uri.fromParts("package", getPackageName(), null);
-                //intent.setData(uri);
+                Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                intent.setData(uri);
                 startActivity(intent);
             }
         });
@@ -288,7 +289,7 @@ public class CargarFotosCanchaFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                //finish();
+                getActivity().finish();
             }
         });
 
