@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -21,17 +22,26 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.widget.ListView;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.santiago.canchaapp.R;
 
@@ -41,6 +51,10 @@ import butterknife.ButterKnife;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import com.github.clans.fab.FloatingActionMenu;
+import com.santiago.canchaapp.app.adapter.page.GridFotosAdapter;
+import com.santiago.canchaapp.dominio.ImageItem;
+import com.squareup.picasso.Picasso;
+
 import android.content.Context;
 import android.os.CountDownTimer;
 
@@ -52,27 +66,27 @@ public class CargarFotosCanchaFragment extends Fragment {
     private final int MY_PERMISSIONS = 100;
     private final int PHOTO_CODE = 200;
     private final int SELECT_PICTURE = 300;
-    /*private final int PHOTO_CODE_DOS = 220;
-    private final int PHOTO_CODE_TRES = 230;
-    private final int PHOTO_CODE_CUATRO = 240;
-    private final int PHOTO_CODE_CINCO = 250;
-    private final int PHOTO_CODE_SEIS = 260;
-    private final int SELECT_PICTURE_UNO = 300;
-    private final int SELECT_PICTURE_DOS = 400;
-    private final int SELECT_PICTURE_TRES = 500;
-    private final int SELECT_PICTURE_CUATRO = 600;
-    private final int SELECT_PICTURE_CINCO = 700;
-    private final int SELECT_PICTURE_SEIS = 800;*/
 
-    private ImageView setImage1, setImage2, setImage3, setImage4, setImage5, setImage6;
-    //private ImageButton optionButton1, optionButton2, optionButton3, optionButton4, optionButton5, optionButton6;
+    private ImageView setImage;
     private LinearLayout mRlView;
-
     private String mPath;
 
-    //ImageView imageView1, imageView2, imageView3, imageView4, imageView5, imageView6, imageView7;*/
+    private GridView gridView;
+    private ArrayList<File> fotosList;
+
+    private ArrayList<ImageView> itemList;
+    ArrayAdapter<ImageView> adapter;
+    EditText itemText;
+    Button addButton;
+    ListView lv;
+    LayoutInflater inflater;
+
+    int i;
+    ViewGroup viewGroup;
+    View view;
+
     FloatingActionMenu actionMenu;
-    com.github.clans.fab.FloatingActionButton fbutton1, fbutton2, fbutton3;
+        com.github.clans.fab.FloatingActionButton fbutton1, fbutton2, fbutton3;
 
     public static CargarFotosCanchaFragment nuevaInstancia() {
         /*CargarFotosCanchaFragment fragment = new CargarFotosCanchaFragment();
@@ -88,13 +102,21 @@ public class CargarFotosCanchaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cargar_fotos_de_cancha, container, false);
         ButterKnife.bind(this, view);
 
-        actionMenu = (FloatingActionMenu) view.findViewById(R.id.fBtnMenu);
+        actionMenu = view.findViewById(R.id.fBtnMenu);
         actionMenu.setClosedOnTouchOutside(true);
 
         fbutton1 = actionMenu.findViewById(R.id.fBtnTomarFoto);
         fbutton2 = actionMenu.findViewById(R.id.fBtnSeleccionarImagen);
         fbutton3 = actionMenu.findViewById(R.id.fBtnGuardar);
-        setImage1 = (ImageView) view.findViewById(R.id.ImageView01);
+        setImage = view.findViewById(R.id.ImageView01);
+        gridView = view.findViewById(R.id.gridViewImages);
+
+        lv = view.findViewById(R.id.ListView);
+        itemText = view.findViewById(R.id.textAIngresar);
+        addButton = view.findViewById(R.id.button);
+        itemList = new ArrayList<>();
+        adapter = new ArrayAdapter<ImageView>(getActivity(), android.R.layout.simple_list_item_multiple_choice, itemList);
+        lv.setAdapter(adapter);
 
         if(mayRequestStoragePermission()){
             fbutton1.setEnabled(true);
@@ -104,14 +126,23 @@ public class CargarFotosCanchaFragment extends Fragment {
             fbutton2.setEnabled(false);
         }
 
-        fbutton1.setOnClickListener(new View.OnClickListener() {
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
-            public void onClick(View view) {
-                //openCamera();
+            public boolean onItemLongClick(AdapterView parent, View view,int position, long id){
+                SparseBooleanArray positionChecker = lv.getCheckedItemPositions();
+                int count = lv.getCount();
+                for(int item = count -1; item >= 0; item--){
+                    if(positionChecker.get(item)){
+                        adapter.remove(itemList.get(item));
+                    }
+                }
+                positionChecker.clear();
+                adapter.notifyDataSetChanged();
+                return false;
             }
         });
 
-        fbutton2.setOnClickListener(new View.OnClickListener() {
+        addButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -119,6 +150,24 @@ public class CargarFotosCanchaFragment extends Fragment {
                 startActivityForResult(intent.createChooser(intent, "Por favor, seleccioná app de imagen:"), SELECT_PICTURE);
             }
         });
+
+        fbutton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //openCamera(PHOTO_CODE);
+            }
+        });
+
+        View.OnClickListener addlistener = new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                startActivityForResult(intent.createChooser(intent, "Por favor, seleccioná app de imagen:"), SELECT_PICTURE);
+            }
+        };
+
+        fbutton2.setOnClickListener(addlistener);
 
         fbutton3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +180,48 @@ public class CargarFotosCanchaFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Cargar fotos de cancha");
 
         return view;
+    }
+
+    class GridAdapter extends BaseAdapter{
+        @Override
+        public int getCount(){
+            return fotosList.size();
+        }
+
+        @Override
+        public Object getItem(int position){
+            return fotosList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position){
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent){
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_foto_cancha, parent, false);
+            ImageView imageView = convertView.findViewById(R.id.foto_cancha_item);
+            imageView.setImageURI(Uri.parse(getItem(position).toString() ));
+            return convertView;
+        }
+    }
+
+    ArrayList<File> imageReader(File root){
+        ArrayList<File> lista= new ArrayList<>();
+
+        File[] archivos= root.listFiles();
+
+        for(int i= 0; i<archivos.length; i++){
+            if(archivos[i].isDirectory()){
+                lista.addAll(imageReader(archivos[i]));
+            }else{
+                if(archivos[i].getName().endsWith(".jpg")){
+                    lista.add(archivos[i]);
+                }
+            }
+        }
+        return lista;
     }
 
     private boolean mayRequestStoragePermission() {
@@ -158,30 +249,7 @@ public class CargarFotosCanchaFragment extends Fragment {
         return false;
     }
 
-    /*private void showOptions(final int opcionSelect, final int opcionCamera) {
-        final CharSequence[] option = {"Tomar foto", "Elegir de galería", "Cancelar"};
-        final AlertDialog.Builder builder = new AlertDialog.Builder(com.santiago.canchaapp.app.fragment.CargarFotosCanchaFragment.this);
-        builder.setTitle("Elegí una opción");
-        builder.setItems(option, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if(option[which] == "Tomar foto"){
-                    openCamera(opcionCamera);
-                }else if(option[which] == "Elegir de galería"){
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intent.setType("image/*");
-                    startActivityForResult(intent.createChooser(intent, "Por favor, seleccioná app de imagen"), opcionSelect);
-                }else {
-                    dialog.dismiss();
-                }
-            }
-        });
-
-        builder.show();
-    }*/
-
-    //private void openCamera(final int opcionCamera) {
-    private void openCamera() {
+    private void openCamera(final int opcionCamera) {
         File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
         boolean isDirectoryCreated = file.exists();
 
@@ -199,9 +267,7 @@ public class CargarFotosCanchaFragment extends Fragment {
 
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
-            startActivityForResult(intent, PHOTO_CODE);
-            setLocationImage(mPath);
-            setImageButton(mPath, setImage1);
+            startActivityForResult(intent, opcionCamera);
         }
     }
 
@@ -225,25 +291,23 @@ public class CargarFotosCanchaFragment extends Fragment {
 
         //onActivityResult(requestCode, resultCode, data);
         //getActivity().onActivityReenter(resultCode, data);
-
         if(resultCode == Activity.RESULT_OK){
             switch (requestCode){
                 case PHOTO_CODE:
                     setLocationImage(mPath);
-                    setImageButton(mPath, setImage1);
-                    //break;
+                    setImageButton(mPath, setImage);
+                    break;
                 case SELECT_PICTURE:
                     Uri path1 = data.getData();
-                    setImage1.setImageURI(path1);
-                    //break;
+                    /*
+                    View fotosView = inflater.inflate(R.layout.item_foto_cancha, lv, false);
+                    ImageView fotoView = fotosView.findViewById(R.id.foto_cancha_item);
+                    fotoView.setImageURI(path1);
+                    lv.addView(fotosView);*/
+                    setImage.setImageURI(path1);
+                    break;
             }
         }
-        /*try {
-            //Setear tiempo en milisegundos
-            Thread.sleep(1000);
-        }catch (Exception e){
-            e.printStackTrace();
-        }*/
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -304,13 +368,12 @@ public class CargarFotosCanchaFragment extends Fragment {
         builder.show();
     }
 
-
     public void clickSubMenuGuardar(){
         Toast.makeText(getActivity().getApplicationContext(),"Tu Cancha ha sido guardada correctamente.", Toast.LENGTH_LONG).show();
     }
 
     private void abrirFragmentSiguiente() {
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit(); //Baja nivel de fragment
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Datos del Club");
     }
