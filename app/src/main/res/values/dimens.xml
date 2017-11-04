@@ -11,6 +11,7 @@
     <dimen name="padding_sides">15dp</dimen>
     <dimen name="padding_top_center">100dp</dimen>
     <dimen name="margin_topBottom_text">16dp</dimen>
+    <dimen name="margin_Left">5dp</dimen>
     <dimen name="width_imageview_add">105dp</dimen>
     <dimen name="height_imageview_add">105dp</dimen>
 </resources>

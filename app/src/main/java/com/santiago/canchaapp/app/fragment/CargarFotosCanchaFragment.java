@@ -50,6 +50,7 @@ import butterknife.ButterKnife;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import com.github.clans.fab.FloatingActionMenu;
 import com.santiago.canchaapp.app.adapter.page.GridFotosAdapter;
 import com.santiago.canchaapp.dominio.ImageItem;
@@ -76,14 +77,7 @@ public class CargarFotosCanchaFragment extends Fragment {
 
     private ArrayList<ImageView> itemList;
     ArrayAdapter<ImageView> adapter;
-    EditText itemText;
-    Button addButton;
     ListView lv;
-    LayoutInflater inflater;
-
-    int i;
-    ViewGroup viewGroup;
-    View view;
 
     FloatingActionMenu actionMenu;
         com.github.clans.fab.FloatingActionButton fbutton1, fbutton2, fbutton3;
@@ -112,8 +106,6 @@ public class CargarFotosCanchaFragment extends Fragment {
         gridView = view.findViewById(R.id.gridViewImages);
 
         lv = view.findViewById(R.id.ListView);
-        itemText = view.findViewById(R.id.textAIngresar);
-        addButton = view.findViewById(R.id.button);
         itemList = new ArrayList<>();
         adapter = new ArrayAdapter<ImageView>(getActivity(), android.R.layout.simple_list_item_multiple_choice, itemList);
         lv.setAdapter(adapter);
@@ -139,15 +131,6 @@ public class CargarFotosCanchaFragment extends Fragment {
                 positionChecker.clear();
                 adapter.notifyDataSetChanged();
                 return false;
-            }
-        });
-
-        addButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                intent.setType("image/*");
-                startActivityForResult(intent.createChooser(intent, "Por favor, seleccioná app de imagen:"), SELECT_PICTURE);
             }
         });
 
@@ -299,11 +282,6 @@ public class CargarFotosCanchaFragment extends Fragment {
                     break;
                 case SELECT_PICTURE:
                     Uri path1 = data.getData();
-                    /*
-                    View fotosView = inflater.inflate(R.layout.item_foto_cancha, lv, false);
-                    ImageView fotoView = fotosView.findViewById(R.id.foto_cancha_item);
-                    fotoView.setImageURI(path1);
-                    lv.addView(fotosView);*/
                     setImage.setImageURI(path1);
                     break;
             }
