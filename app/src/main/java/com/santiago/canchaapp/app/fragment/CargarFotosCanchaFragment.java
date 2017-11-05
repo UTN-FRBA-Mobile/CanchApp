@@ -32,11 +32,15 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.UploadTask;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.FotosCanchaAdapter;
 import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.dominio.DataBase;
 import com.santiago.canchaapp.dominio.Horario;
+import com.santiago.canchaapp.dominio.Storage;
 import com.santiago.canchaapp.dominio.TipoCancha;
 import com.santiago.canchaapp.dominio.TipoSuperficie;
 import com.santiago.canchaapp.servicios.Sesion;
@@ -301,18 +305,65 @@ public class CargarFotosCanchaFragment extends Fragment {
     }
 
     private void abrirFragmentSiguiente() {
-        Cancha cancha = new Cancha(UUID.randomUUID(),
+        subirDatos();
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Datos del Club");
+    }
+
+    private void subirDatos() {
+        // Datos generales
+        final String idCancha = UUID.randomUUID().toString();
+        final String idClub = Sesion.getInstancia().getUsuario().getIdClub();
+        final List<Uri> fotos = fotosCanchaAdapter.getFotos();
+        final int cantidadFotos = fotos.size();
+
+        final boolean[] exito = new boolean[1]; exito[0] = true;
+        final int[] subidas = new int[1]; subidas[0] = 0;
+        final String[] urls = new String[cantidadFotos];
+
+        if (cantidadFotos == 0) {
+            subirCancha(idClub, idCancha, new ArrayList<String>());
+            return;
+        }
+
+        // Subir fotos al storage de Firebase
+        for (int f = 0; f < cantidadFotos; f++) {
+            final int imagenActual = f;
+            UploadTask upload = Storage.getInstancia().subirFotoCancha(idClub, idCancha, fotos.get(f), f);
+            upload.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    if (exito[0]) {
+                        exito[0] = false;
+                        Toast.makeText(getContext(), R.string.txtErrorSubiendoFotos, Toast.LENGTH_LONG).show();
+                    }
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    urls[imagenActual] = downloadUrl.toString();
+                    subidas[0] = subidas[0] + 1;
+                    if (subidas[0] == cantidadFotos) {
+                        // Todas las fotos están cargadas => subir cancha
+                        subirCancha(idClub, idCancha, Arrays.asList(urls));
+                    }
+                }
+            });
+        }
+    }
+
+    private void subirCancha(String idClub, String idCancha, List<String> fotos) {
+        Cancha cancha = new Cancha(UUID.fromString(idCancha),
                 getArguments().getString("nombreCancha"),
                 TipoCancha.deNombre(getArguments().getString("deporte")),
                 TipoSuperficie.deNombre(getArguments().getString("superficie")),
                 getArguments().getBoolean("opcTechada"),
                 getArguments().getInt("precio"),
-                new ArrayList<String>(),
-                UUID.fromString(Sesion.getInstancia().getUsuario().getIdClub()),
-                new Horario(10,20)); // TODO usar horario del club
+                fotos,
+                UUID.fromString(idClub),
+                Sesion.getInstancia().getUsuario().getHorarioClub()); // TODO usar horario del club
         DataBase.getInstancia().insertCancha(cancha.getIdClub(), cancha);
-
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Datos del Club");
     }
+
 }

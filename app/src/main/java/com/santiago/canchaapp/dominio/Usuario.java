@@ -14,6 +14,7 @@ public class Usuario {
     private String nombre;
     private String email;
     private String idClub;
+    private Horario horarioClub; // denormalizado
 
     public Usuario() { }
 
@@ -23,15 +24,22 @@ public class Usuario {
         this.nombre = nombre;
         this.email = email;
         this.idClub = "";
+        this.horarioClub = null;
     }
 
     public String getIdClub(){return idClub;}
+    public Horario getHorarioClub(){
+        return horarioClub;
+    }
     public String getUid(){return uid;}
     public Boolean getEsDuenio(){return esDuenio;}
     public String getNombre(){return nombre;}
     public String getEmail(){return email;}
     public void setIdClub(String idClub){
         this.idClub = idClub;
+    }
+    public void setHorarioClub(Horario horario) {
+        this.horarioClub = horario;
     }
     public Boolean esMiClub(String idClub){
         return Objects.equals(this.idClub, idClub);

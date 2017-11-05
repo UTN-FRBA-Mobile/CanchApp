@@ -29,6 +29,10 @@ public class FotosCanchaAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public List<Uri> getFotos() {
+        return fotos;
+    }
+
     @Override
     public int getCount() {
         return fotos.size();

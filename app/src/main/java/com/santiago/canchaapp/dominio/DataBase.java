@@ -38,6 +38,10 @@ public class DataBase {
     //usuarios/:idUsuario/idClub
     public DatabaseReference getReferenceIdClubUser(String uid){ return getReferenceUser(uid).child("idClub"); }
 
+    //usuarios/:idUsuario/horarioClub
+    public DatabaseReference getReferenceHorarioClubUser(String uid){ return getReferenceUser(uid).child("horarioClub"); }
+
+
     //reservas/:idUsuario
     public DatabaseReference getReferenceReservasUser(String idUsuario) { return mDatabase.child(keyReservas).child(idUsuario); }
 
@@ -89,6 +93,7 @@ public class DataBase {
     //clubes/:idClub
     public void insertClub(Usuario usuario, Club club){
         getReferenceIdClubUser(usuario.getUid()).setValue(club.getUuid());
+        getReferenceHorarioClubUser(usuario.getUid()).setValue(club.getRangoHorario());
         getReferenceClub(club.getUuid()).setValue(club);
     }
 
