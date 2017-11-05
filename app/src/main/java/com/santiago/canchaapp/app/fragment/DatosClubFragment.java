@@ -2,34 +2,25 @@ package com.santiago.canchaapp.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
+import com.google.android.gms.maps.StreetViewPanorama;
+import com.google.android.gms.maps.SupportStreetViewPanoramaFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.santiago.canchaapp.R;
-import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
-import com.santiago.canchaapp.dominio.Horario;
-import com.santiago.canchaapp.servicios.Servidor;
-import com.squareup.picasso.Picasso;
-
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.view.View.GONE;
 
 public class DatosClubFragment extends Fragment {
 
@@ -48,10 +39,11 @@ public class DatosClubFragment extends Fragment {
     @BindView(R.id.horario)
     public TextView textoHorario;
 
-    @BindView(R.id.mapa_club)
-    public ImageView imagenMapa;
+    public SupportStreetViewPanoramaFragment streetView;
 
     private static String ARG_ID_CLUB = "idClub";
+
+    private static final LatLng SYDNEY = new LatLng(-33.87365, 151.20689);
 
     private View rootView;
 
@@ -66,20 +58,23 @@ public class DatosClubFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         rootView = inflater.inflate(R.layout.fragment_datos_club, container, false);
+        streetView = (SupportStreetViewPanoramaFragment) getChildFragmentManager().findFragmentById(R.id.streetviewfragment);
         ButterKnife.bind(this, rootView);
         Bundle arguments = getArguments();
-        getClub(arguments.getString(ARG_ID_CLUB));
+        getClub(arguments.getString(ARG_ID_CLUB), savedInstanceState);
+
         return rootView;
     }
 
-    private void getClub(String idClub){
+    private void getClub(String idClub, final Bundle savedInstanceState){
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() != null){
                     Club club = dataSnapshot.getValue(Club.class);
-                    cargarVista(club);
+                    cargarVista(club, savedInstanceState);
                 }
             }
 
@@ -91,8 +86,7 @@ public class DatosClubFragment extends Fragment {
         referenceClub.addListenerForSingleValueEvent(valueEventListener);
     }
 
-    private void cargarVista(final Club club) {
-        // Setea textos
+    private void cargarVista(final Club club, Bundle savedInstanceState) {
         textoNombre.setText(club.getNombre());
         textoDireccion.setText(club.getDireccion());
         textoTelefono.setText("Teléfono: " + club.getTelefono());
@@ -100,32 +94,18 @@ public class DatosClubFragment extends Fragment {
         textoHorario.setText(
                 "Abierto de " + club.getRangoHorario().getDesde() +
                         " a " + club.getRangoHorario().getHasta() + "hs.");
-        setUbication(club);
+        setUbication(club, savedInstanceState);
     }
 
-    private void setUbication(final Club club) {
-        rootView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener()
-        {
-            @Override
-            public boolean onPreDraw()
-            {
-                rootView.getViewTreeObserver().removeOnPreDrawListener(this);
-                LinearLayout layoutMapa = rootView.findViewById(R.id.layoutMapaClub);
-                double width = layoutMapa.getWidth();
-                double height = layoutMapa.getHeight();
-                double proporcion = (width > height ? width : height) / 640;
-                double finalWidth = width/proporcion;
-                double finalHeight = height/proporcion;
-                String urlMapa =
-                        "https://maps.googleapis.com/maps/api/staticmap?zoom=18&size=" +
-                        (int) finalWidth + "x" + (int) finalHeight +
-                        "&markers=color:red|" +
-                        club.getDireccion().replace(" ", "+") +
-                        "&key=AIzaSyBfbfsDgjD9_U8j1PpzRlkHtqnlDwD1cGI";
-                Picasso.with(rootView.getContext()).load(urlMapa).fit().into(imagenMapa);
-                return false;
-            }
-        });
+    private void setUbication(final Club club, final Bundle savedInstanceState) {
+        streetView.getStreetViewPanoramaAsync(
+                new OnStreetViewPanoramaReadyCallback() {
+                    @Override
+                    public void onStreetViewPanoramaReady(StreetViewPanorama panorama) {
+                        if (savedInstanceState == null) {
+                            panorama.setPosition(SYDNEY);
+                        }
+                    }
+                });
     }
-
 }
