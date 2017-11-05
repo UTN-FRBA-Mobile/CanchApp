@@ -321,6 +321,11 @@ public class CargarFotosCanchaFragment extends Fragment {
         final int[] subidas = new int[1]; subidas[0] = 0;
         final String[] urls = new String[cantidadFotos];
 
+        if (cantidadFotos == 0) {
+            subirCancha(idClub, idCancha, new ArrayList<String>());
+            return;
+        }
+
         // Subir fotos al storage de Firebase
         for (int f = 0; f < cantidadFotos; f++) {
             final int imagenActual = f;
@@ -357,7 +362,7 @@ public class CargarFotosCanchaFragment extends Fragment {
                 getArguments().getInt("precio"),
                 fotos,
                 UUID.fromString(idClub),
-                new Horario(10,20)); // TODO usar horario del club
+                Sesion.getInstancia().getUsuario().getHorarioClub()); // TODO usar horario del club
         DataBase.getInstancia().insertCancha(cancha.getIdClub(), cancha);
     }
 

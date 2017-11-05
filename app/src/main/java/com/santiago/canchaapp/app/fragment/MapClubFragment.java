@@ -267,7 +267,9 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
             try {
                 DataBase.getInstancia().insertClub(usuario, club);
                 changeItemMenuClub(true);
-                Sesion.getInstancia().getUsuario().setIdClub(club.getUuid());
+                usuario = Sesion.getInstancia().getUsuario();
+                usuario.setIdClub(club.getUuid());
+                usuario.setHorarioClub(club.getRangoHorario());
                 showToast("Tu Club ha sido guardado correctamente.");
                 abrirFragmentSiguiente(club.getUuid());
 
