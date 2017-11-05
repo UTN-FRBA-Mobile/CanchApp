@@ -43,8 +43,6 @@ public class DatosClubFragment extends Fragment {
 
     private static String ARG_ID_CLUB = "idClub";
 
-    private static final LatLng SYDNEY = new LatLng(-33.87365, 151.20689);
-
     private View rootView;
 
     public static DatosClubFragment nuevaInstancia(String idClub) {
@@ -94,6 +92,7 @@ public class DatosClubFragment extends Fragment {
         textoHorario.setText(
                 "Abierto de " + club.getRangoHorario().getDesde() +
                         " a " + club.getRangoHorario().getHasta() + "hs.");
+
         setUbication(club, savedInstanceState);
     }
 
@@ -102,9 +101,7 @@ public class DatosClubFragment extends Fragment {
                 new OnStreetViewPanoramaReadyCallback() {
                     @Override
                     public void onStreetViewPanoramaReady(StreetViewPanorama panorama) {
-                        if (savedInstanceState == null) {
-                            panorama.setPosition(SYDNEY);
-                        }
+                        panorama.setPosition(club.getCoordenadas().toLatLng());
                     }
                 });
     }

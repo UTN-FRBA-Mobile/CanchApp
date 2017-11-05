@@ -100,6 +100,7 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
         mMap = googleMap;
         googleMap.setOnMarkerClickListener(this);
         inicializarUbicacion();
+        cargarClubes();
     }
 
     @Override
@@ -217,9 +218,21 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
     }
 
     private void actualizarMapa(LatLng ubicacionLatLng, float zoom, Boolean ubicacionActivada) {
-        mMap.clear();
+        if (ubicacionActivada) {
+            Bitmap miUbicacion = BitmapFactory.decodeResource(getResources(), R.drawable.mi_ubicacion);
 
-        //obtiene clubes
+            mMap.addMarker(
+                    new MarkerOptions()
+                            .position(ubicacionLatLng)
+                            .title("Mi ubicación")
+                            .icon(BitmapDescriptorFactory.fromBitmap(resizearBitmap(miUbicacion, 0.05f))));
+        }
+
+        ubicacion = CAPITAL_FEDERAL;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionLatLng, zoom));
+    }
+
+    private void cargarClubes(){
         DatabaseReference refDatosClubes = DataBase.getInstancia().getReferenceClubes();
 
         refDatosClubes.addListenerForSingleValueEvent(
@@ -234,19 +247,6 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
                         //tengo que overridearlo
                     }
                 });
-
-        if (ubicacionActivada) {
-            Bitmap miUbicacion = BitmapFactory.decodeResource(getResources(), R.drawable.mi_ubicacion);
-
-            mMap.addMarker(
-                    new MarkerOptions()
-                            .position(ubicacionLatLng)
-                            .title("Mi ubicación")
-                            .icon(BitmapDescriptorFactory.fromBitmap(resizearBitmap(miUbicacion, 0.05f))));
-        }
-
-        ubicacion = CAPITAL_FEDERAL;
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionLatLng, zoom));
     }
 
     private void cargarUbicacionDeClubes(Map<String,Object> clubes) {
