@@ -65,4 +65,5 @@
     <string name="txtHorarioPendienteAprobacion">Pendiente</string>
 
     <string name="txtErrorDescargandoInfo">No se pudo obtener la información</string>
+    <string name="txtErrorSubiendoFotos">No se pudieron subir algunas imagenes</string>
 </resources>
