@@ -10,17 +10,26 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.CanchasAdapter;
 import com.santiago.canchaapp.dominio.Cancha;
+import com.santiago.canchaapp.dominio.Club;
+import com.santiago.canchaapp.dominio.DataBase;
 import com.santiago.canchaapp.servicios.Servidor;
+import com.santiago.canchaapp.servicios.Sesion;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.google.firebase.database.DatabaseError.PERMISSION_DENIED;
 import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHA;
 
 public class CanchasFragment extends Fragment {
@@ -59,8 +68,37 @@ public class CanchasFragment extends Fragment {
         canchasRecyclerView.setLayoutManager(layoutManager);
 
         // Adapter
-        adapter = new CanchasAdapter(getContext(), canchas(), esMiClub());
+        adapter = new CanchasAdapter(getContext(), esMiClub());
         canchasRecyclerView.setAdapter(adapter);
+
+        DatabaseReference refCanchasClub = DataBase.getInstancia().getRerenfeCanchasClub(idClub());
+        refCanchasClub.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                actualizarLista(dataSnapshot);
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                actualizarLista(dataSnapshot);
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                if (databaseError.getCode() != PERMISSION_DENIED)
+                    Toast.makeText(getContext(), R.string.txtErrorDescargandoInfo, Toast.LENGTH_LONG).show();
+            }
+
+            private void actualizarLista(DataSnapshot snapshotCancha) {
+                if(snapshotCancha != null && snapshotCancha.getValue() != null) {
+                    Cancha cancha = snapshotCancha.getValue(Cancha.class);
+                    adapter.actualizarLista(cancha);
+                }
+            }
+
+        });
 
         fab.setVisibility(esMiClub() ? View.VISIBLE : View.GONE);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +127,10 @@ public class CanchasFragment extends Fragment {
 
     private boolean esMiClub() {
         return getArguments().getBoolean(ARG_MI_CLUB);
+    }
+
+    private String idClub() {
+        return getArguments().getString(ARG_ID_CLUB);
     }
 
 }

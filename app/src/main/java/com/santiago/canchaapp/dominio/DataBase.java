@@ -56,14 +56,8 @@ public class DataBase {
         return mDatabase.child(keyClubes);
     }
 
-    //canchas
-    public DatabaseReference getReferenceCanchas() {
-        return mDatabase.child(keyCanchas);
-    }
-
     //clubes/:idClub
     public DatabaseReference getReferenceClub(String idClub){ return getReferenceClubes().child(idClub); }
-
 
     //alquileres/:idClub/:idCancha/:fecha
     public Query getReferenceAlquileres(String idClub, String idCancha, Date fecha) { return mDatabase.child(keyAlquileres).child(idClub).child(idCancha).child(dateToStringtoSave(fecha)); }
@@ -73,6 +67,15 @@ public class DataBase {
 
     //alquileresPorUsuario/:idClub/:idAlquiler
     public DatabaseReference getReferenceAlquilerPorClub(String idClub, String idAlquiler) { return ((DatabaseReference) getReferenceAlquileresPorClub(idClub)).child(idAlquiler); }
+
+    //canchas
+    public DatabaseReference getReferenceCanchas() {
+        return mDatabase.child(keyCanchas);
+    }
+    //canchas/:idClub
+    public DatabaseReference getRerenfeCanchasClub(String idClub) {
+        return getReferenceCanchas().child(idClub);
+    }
 
     //usuarios/:idUsuario
     public Usuario insertUser(FirebaseUser user, boolean esDuenio){

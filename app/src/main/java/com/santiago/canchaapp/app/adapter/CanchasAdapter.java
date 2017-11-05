@@ -13,8 +13,11 @@ import com.santiago.canchaapp.app.fragment.CanchaFragment;
 import com.santiago.canchaapp.app.otros.RecyclerViewOnItemClickListener;
 import com.santiago.canchaapp.app.viewholder.CanchaViewHolder;
 import com.santiago.canchaapp.dominio.Cancha;
+import com.santiago.canchaapp.dominio.Club;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.santiago.canchaapp.app.otros.FragmentTags.CANCHA;
 
@@ -26,8 +29,8 @@ public class CanchasAdapter extends RecyclerView.Adapter<CanchaViewHolder> imple
 
     private Context context;
 
-    public CanchasAdapter(Context context, List<Cancha> canchas, boolean esMiClub) {
-        this.canchas = canchas;
+    public CanchasAdapter(Context context, boolean esMiClub) {
+        this.canchas = new ArrayList<>();
         this.context = context;
         this.esMiClub = esMiClub;
     }
@@ -40,6 +43,11 @@ public class CanchasAdapter extends RecyclerView.Adapter<CanchaViewHolder> imple
         );
     }
 
+    public void actualizarLista(Cancha cancha) {
+        actualizarCanchas(cancha);
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(CanchaViewHolder viewHolder, int position) {
         viewHolder.cargarDatosEnVista(canchas.get(position));
@@ -50,7 +58,6 @@ public class CanchasAdapter extends RecyclerView.Adapter<CanchaViewHolder> imple
         return canchas.size();
     }
 
-    // Podría existir una clase que se encargue de esto específicamente
     @Override
     public void onClick(View v, final int posicion) {
         new Handler().postDelayed(new Runnable() {
@@ -62,5 +69,23 @@ public class CanchasAdapter extends RecyclerView.Adapter<CanchaViewHolder> imple
                         .commit();
             }
         }, 250);
+    }
+
+    private void actualizarCanchas(Cancha cancha) {
+        Integer i = indiceDeCancha(cancha);
+        if (i == null) {
+            canchas.add(cancha);
+        } else {
+            canchas.set(i, cancha);
+        }
+    }
+
+    private Integer indiceDeCancha(Cancha cancha) {
+        for (int i = 0; i < canchas.size(); i++) {
+            if (Objects.equals(canchas.get(i).getUuid(), cancha.getUuid())) {
+                return i;
+            }
+        }
+        return null;
     }
 }

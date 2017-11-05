@@ -84,7 +84,6 @@ public class CargarFotosCanchaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_cargar_fotos_de_cancha, container, false);
-        ButterKnife.bind(this, view);
 
         actionMenu = view.findViewById(R.id.fBtnMenu);
         actionMenu.setClosedOnTouchOutside(true);
@@ -97,14 +96,9 @@ public class CargarFotosCanchaFragment extends Fragment {
         fotosCanchaAdapter = new FotosCanchaAdapter(view.getContext());
         gridview.setAdapter(fotosCanchaAdapter);
 
-        if(mayRequestStoragePermission()){
-            fbutton1.setEnabled(true);
-            fbutton2.setEnabled(true);
-        } else{
-            fbutton1.setEnabled(false);
-            fbutton2.setEnabled(false);
-        }
-
+        boolean enabled = mayRequestStoragePermission(view);
+        fbutton1.setEnabled(enabled);
+        fbutton2.setEnabled(enabled);
         fbutton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -156,7 +150,7 @@ public class CargarFotosCanchaFragment extends Fragment {
         return lista;
     }
 
-    private boolean mayRequestStoragePermission() {
+    private boolean mayRequestStoragePermission(View view) {
 
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
             return true;
@@ -166,7 +160,7 @@ public class CargarFotosCanchaFragment extends Fragment {
             return true;
 
         if((shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) || (shouldShowRequestPermissionRationale(CAMERA))){
-            Snackbar.make(mRlView, "@string/txtDialogExplanationPermisos1",
+            Snackbar.make(view, R.string.txtDialogExplanationPermisos1,
                     Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
                 @TargetApi(Build.VERSION_CODES.M)
                 @Override
