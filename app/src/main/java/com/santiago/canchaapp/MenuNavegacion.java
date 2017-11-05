@@ -49,7 +49,6 @@ import static com.santiago.canchaapp.app.otros.FragmentTags.MIS_RESERVAS;
 import static com.santiago.canchaapp.app.otros.FragmentTags.MI_CLUB;
 import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CLUB;
 
-
 public class MenuNavegacion extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
     @BindView(R.id.nav_view)
     public NavigationView navigationView;

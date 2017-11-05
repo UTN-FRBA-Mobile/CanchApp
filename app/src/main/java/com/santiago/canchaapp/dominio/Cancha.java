@@ -38,6 +38,8 @@ public class Cancha implements Serializable {
         this.precio = precio;
     }
 
+    public Cancha() {}
+
     public String getUuid() {
         return uuid;
     }
