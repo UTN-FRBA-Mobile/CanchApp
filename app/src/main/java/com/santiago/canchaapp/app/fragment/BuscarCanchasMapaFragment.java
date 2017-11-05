@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -251,21 +252,25 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
 
     private void cargarUbicacionDeClubes(Map<String,Object> clubes) {
         for (Map.Entry<String, Object> entry : clubes.entrySet()){
+            try {
+                Map club = (Map) entry.getValue();
 
-            Map club = (Map) entry.getValue();
+                LatLng punto = obtenerLocacionDeUnaDireccion(getContext(), (String) club.get("direccion"));
+                String nombre = (String) club.get("nombre");
 
-            LatLng punto = obtenerLocacionDeUnaDireccion(getContext(), (String) club.get("direccion"));
-            String nombre = (String) club.get("nombre");
+                Bitmap ubicacion_club = BitmapFactory.decodeResource(getResources(), R.drawable.ubicacion_club);
 
-            Bitmap ubicacion_club = BitmapFactory.decodeResource(getResources(), R.drawable.ubicacion_club);
+                mMap.addMarker(
+                        new MarkerOptions()
+                                .position(punto)
+                                .title(nombre)
+                                .icon(BitmapDescriptorFactory.fromBitmap(resizearBitmap(ubicacion_club, 0.053f))));
 
-            mMap.addMarker(
-                    new MarkerOptions()
-                            .position(punto)
-                            .title(nombre)
-                            .icon(BitmapDescriptorFactory.fromBitmap(resizearBitmap(ubicacion_club, 0.053f))));
-
-            ubicaciones.put(punto, entry.getKey());
+                ubicaciones.put(punto, entry.getKey());
+            }
+            catch (Exception e) {
+                System.out.println(e.toString());
+            }
         }
     }
 

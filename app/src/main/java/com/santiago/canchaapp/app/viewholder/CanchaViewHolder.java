@@ -65,8 +65,6 @@ public class CanchaViewHolder extends RecyclerView.ViewHolder implements View.On
                     .load(R.drawable.cancha_sin_foto)
                     .fit().centerCrop().into(imagenCancha);
         }
-
-
         // Setea boton
         contenido.setOnClickListener(this);
     }
