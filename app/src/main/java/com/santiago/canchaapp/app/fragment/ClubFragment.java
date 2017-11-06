@@ -8,30 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-import com.santiago.canchaapp.MenuNavegacion;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.page.ClubPageAdapter;
-import com.santiago.canchaapp.dominio.Cancha;
-import com.santiago.canchaapp.dominio.Club;
-import com.santiago.canchaapp.dominio.DataBase;
-import com.santiago.canchaapp.dominio.Horario;
-import com.santiago.canchaapp.servicios.Servidor;
-
-import java.util.List;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.santiago.canchaapp.app.otros.FragmentTags.MI_CLUB;
-import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CLUB;
 
 public class ClubFragment extends Fragment {
 
@@ -45,8 +26,6 @@ public class ClubFragment extends Fragment {
 
     private static String ARG_ID_CLUB = "idClub";
     private static String ARG_MI_CLUB = "esMiClub";
-
-
 
     public static ClubFragment nuevaInstancia(String idClub, Boolean esMiClub) {
         ClubFragment fragment = new ClubFragment();

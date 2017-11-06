@@ -3,9 +3,7 @@ package com.santiago.canchaapp.app.fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Address;
 import android.location.Criteria;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -13,7 +11,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,10 +33,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.otros.FragmentTags;
 import com.santiago.canchaapp.dominio.DataBase;
+import com.santiago.canchaapp.servicios.Sesion;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -84,9 +80,10 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
         btnVerDetalle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                abrirFragment(ClubFragment.nuevaInstancia(clubSeleccionado, true), CLUB);;
-                }
-            });
+                abrirFragment(ClubFragment.nuevaInstancia(clubSeleccionado, false), CLUB);
+            }
+        });
+
         return view;
     }
 
@@ -257,6 +254,7 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
     private void cargarUbicacionDeClubes(Map<String,Object> clubes) {
         for (Map.Entry<String, Object> entry : clubes.entrySet()){
             try {
+
                 Map club = (Map) entry.getValue();
                 Map coordenadas = (Map) club.get("coordenadas");
                 LatLng punto = new LatLng(parseDouble(coordenadas.get("lat").toString()), parseDouble(coordenadas.get("lon").toString()));
@@ -264,13 +262,15 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
 
                 Bitmap ubicacion_club = BitmapFactory.decodeResource(getResources(), R.drawable.ubicacion_club);
 
-                mMap.addMarker(
-                        new MarkerOptions()
-                                .position(punto)
-                                .title(nombre)
-                                .icon(BitmapDescriptorFactory.fromBitmap(resizearBitmap(ubicacion_club, 0.053f))));
+                if(!Sesion.getInstancia().getUsuario().esMiClub((String) club.get("uuid"))){
+                    mMap.addMarker(
+                            new MarkerOptions()
+                                    .position(punto)
+                                    .title(nombre)
+                                    .icon(BitmapDescriptorFactory.fromBitmap(resizearBitmap(ubicacion_club, 0.053f))));
 
-                ubicaciones.put(punto, entry.getKey());
+                    ubicaciones.put(punto, entry.getKey());
+                }
             }
             catch (Exception e) {
                 System.out.println(e.toString());
