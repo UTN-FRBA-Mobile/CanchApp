@@ -49,6 +49,7 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
 import static com.santiago.canchaapp.app.otros.FragmentTags.CLUB;
+import static java.lang.Double.*;
 
 public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCallback, OnMarkerClickListener {
 
@@ -86,7 +87,6 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
                 abrirFragment(ClubFragment.nuevaInstancia(clubSeleccionado, true), CLUB);;
                 }
             });
-
         return view;
     }
 
@@ -109,8 +109,14 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
 
         LatLng ubicacionMarker = marker.getPosition();
 
-        boolean coincideLatitud = ubicacionMarker.latitude == ubicacion.latitude;
-        boolean coincideLongitud = ubicacionMarker.longitude == ubicacion.longitude;
+        boolean coincideLatitud = false;
+        boolean coincideLongitud = false;
+
+        if(ubicacion != null)
+        {
+            coincideLatitud = ubicacionMarker.latitude == ubicacion.latitude;
+            coincideLongitud = ubicacionMarker.longitude == ubicacion.longitude;
+        }
 
         if(coincideLatitud && coincideLongitud) {
             showToast("Tu ubicación");
@@ -124,10 +130,10 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
 
             mMap.setOnInfoWindowCloseListener(
                     new GoogleMap.OnInfoWindowCloseListener() {
-                          @Override
-                          public void onInfoWindowClose(Marker marker) {
-                              verDetalle.setVisibility(View.GONE);
-                          }
+                        @Override
+                        public void onInfoWindowClose(Marker marker) {
+                            verDetalle.setVisibility(View.GONE);
+                        }
                     }
             );
 
@@ -167,8 +173,6 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
 
     public static boolean laLocacionEstaActivada(Context context) {
         int locationMode = 0;
-        String locationProviders;
-
         try {
             locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
         } catch (Settings.SettingNotFoundException e) {
@@ -254,8 +258,8 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
         for (Map.Entry<String, Object> entry : clubes.entrySet()){
             try {
                 Map club = (Map) entry.getValue();
-
-                LatLng punto = obtenerLocacionDeUnaDireccion(getContext(), (String) club.get("direccion"));
+                Map coordenadas = (Map) club.get("coordenadas");
+                LatLng punto = new LatLng(parseDouble(coordenadas.get("lat").toString()), parseDouble(coordenadas.get("lon").toString()));
                 String nombre = (String) club.get("nombre");
 
                 Bitmap ubicacion_club = BitmapFactory.decodeResource(getResources(), R.drawable.ubicacion_club);
@@ -279,31 +283,6 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
                 Math.round(bitmapIn.getWidth() * porcentaje),
                 Math.round(bitmapIn.getHeight() * porcentaje), false);
         return bitmapOut;
-    }
-
-    public LatLng obtenerLocacionDeUnaDireccion(Context context, String strAddress) {
-        Geocoder coder = new Geocoder(context);
-        List<Address> address;
-        LatLng p1 = null;
-
-        try {
-            // May throw an IOException
-            address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
-                return null;
-            }
-            Address location = address.get(0);
-            location.getLatitude();
-            location.getLongitude();
-
-            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
-
-        } catch (IOException ex) {
-
-            ex.printStackTrace();
-        }
-
-        return p1;
     }
 
     private void ponerMapaEnUbicacionDefault() {
