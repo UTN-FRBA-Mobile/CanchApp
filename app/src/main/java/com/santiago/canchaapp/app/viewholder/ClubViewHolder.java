@@ -5,9 +5,17 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.ClubesAdapter;
 import com.santiago.canchaapp.dominio.Club;
+import com.santiago.canchaapp.dominio.DataBase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,7 +55,29 @@ public class ClubViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         textoHorario.setText(
                 "Abierto de " + club.getRangoHorario().getDesde() +
                 " a " + club.getRangoHorario().getHasta() + "hs.");
-        textoCantidadDeCanchas.setText(club.getCanchas().size() + " canchas");
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() != null){
+                    Map<String, Object> canchas = (HashMap<String,Object>) dataSnapshot.getValue();
+
+                    String textoCanchas;
+                    if (canchas.size() == 1)
+                        textoCanchas = " cancha";
+                    else
+                        textoCanchas = " canchas";
+
+                    textoCantidadDeCanchas.setText(canchas.size() + textoCanchas);}
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+
+        DatabaseReference refCanchas = DataBase.getInstancia().getReferenceCanchasClub(club.getUuid());
+        refCanchas.addListenerForSingleValueEvent(valueEventListener);
 
         // Setea boton
         contenido.setOnClickListener(this);

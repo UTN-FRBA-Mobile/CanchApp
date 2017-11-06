@@ -19,10 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.CanchasAdapter;
 import com.santiago.canchaapp.dominio.Cancha;
-import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
 import com.santiago.canchaapp.servicios.Servidor;
-import com.santiago.canchaapp.servicios.Sesion;
 
 import java.util.List;
 
@@ -71,7 +69,7 @@ public class CanchasFragment extends Fragment {
         adapter = new CanchasAdapter(getContext(), esMiClub());
         canchasRecyclerView.setAdapter(adapter);
 
-        DatabaseReference refCanchasClub = DataBase.getInstancia().getRerenfeCanchasClub(idClub());
+        DatabaseReference refCanchasClub = DataBase.getInstancia().getReferenceCanchasClub(idClub());
         refCanchasClub.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {

@@ -72,8 +72,9 @@ public class DataBase {
     public DatabaseReference getReferenceCanchas() {
         return mDatabase.child(keyCanchas);
     }
+
     //canchas/:idClub
-    public DatabaseReference getRerenfeCanchasClub(String idClub) {
+    public DatabaseReference getReferenceCanchasClub(String idClub) {
         return getReferenceCanchas().child(idClub);
     }
 
