@@ -1,16 +1,29 @@
 package com.santiago.canchaapp.app.adapter.page;
 
+import android.content.Context;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.santiago.canchaapp.app.fragment.BuscarCanchasListaFragment;
 import com.santiago.canchaapp.app.fragment.BuscarCanchasMapaFragment;
+
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
 
 public class BuscarCanchasPageAdapter extends FragmentPagerAdapter {
 
     private boolean esMiClub;
+
+    private LatLng locacion;
 
     public BuscarCanchasPageAdapter(FragmentManager fm) {
         super(fm);

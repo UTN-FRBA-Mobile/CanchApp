@@ -1,10 +1,12 @@
 package com.santiago.canchaapp.app.viewholder;
 
+import android.location.Location;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,6 +16,8 @@ import com.santiago.canchaapp.app.adapter.ClubesAdapter;
 import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +41,15 @@ public class ClubViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     @BindView(R.id.item_contenido_club)
     public LinearLayout contenido;
 
+    @BindView(R.id.contenedor_distancia)
+    public LinearLayout contenedor_distancia;
+
+    @BindView(R.id.distancia)
+    public TextView distancia;
+
+    @BindView(R.id.unidad)
+    public TextView unidad;
+
     private View view;
 
     private ClubesAdapter adapter;
@@ -48,14 +61,56 @@ public class ClubViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         this.adapter = adapter;
     }
 
-    public void cargarDatosEnVista(Club club) {
-        // Setea textos
+    public void cargarDatosEnVista(Club club, LatLng locacion) {
+        setearTextos(club);
+        calcularDistancias(club, locacion);
+        cargarClubes(club);
+    }
+
+    public void setearTextos(Club club){
         textoNombre.setText(club.getNombre());
         textoDireccion.setText(club.getDireccion());
         textoHorario.setText(
                 "Abierto de " + club.getRangoHorario().getDesde() +
-                " a " + club.getRangoHorario().getHasta() + "hs.");
+                        " a " + club.getRangoHorario().getHasta() + "hs.");
+    }
 
+    public void calcularDistancias(Club club, LatLng locacion){
+
+        if (locacion.latitude == 0 && locacion.longitude == 0)
+        {
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            contenedor_distancia.setLayoutParams(layoutParams);
+            return;
+        }
+
+        Location locacionClub = new Location("");
+        locacionClub.setLatitude(club.getCoordenadas().getLat());
+        locacionClub.setLongitude(club.getCoordenadas().getLon());
+
+        Location locacionHumano = new Location("");
+        locacionHumano.setLatitude(locacion.latitude);
+        locacionHumano.setLongitude(locacion.longitude);
+
+        float distanceInMeters = locacionClub.distanceTo(locacionHumano);
+
+        if(distanceInMeters > 1000) {
+            DecimalFormat df = new DecimalFormat("#.#");
+            df.setRoundingMode(RoundingMode.CEILING);
+            df.format(distanceInMeters);
+            unidad.setText("km");
+            distanceInMeters = distanceInMeters / 1000;
+            distancia.setText((df.format(distanceInMeters)).toString());
+        } else {
+            DecimalFormat df = new DecimalFormat("#");
+            df.setRoundingMode(RoundingMode.CEILING);
+            df.format(distanceInMeters);
+            unidad.setText("m");
+            distancia.setText(Float.toString(distanceInMeters));
+        }
+    }
+
+    public void cargarClubes(Club club){
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

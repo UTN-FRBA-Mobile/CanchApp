@@ -8,11 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.fragment.ClubFragment;
 import com.santiago.canchaapp.app.otros.RecyclerViewOnItemClickListener;
 import com.santiago.canchaapp.app.viewholder.ClubViewHolder;
-import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.Club;
 
 import java.util.ArrayList;
@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.santiago.canchaapp.app.otros.FragmentTags.CLUB;
-import static com.santiago.canchaapp.dominio.EstadoReserva.CANCELADA;
 
 public class ClubesAdapter extends RecyclerView.Adapter<ClubViewHolder> implements RecyclerViewOnItemClickListener {
 
@@ -28,9 +27,12 @@ public class ClubesAdapter extends RecyclerView.Adapter<ClubViewHolder> implemen
 
     private Context context;
 
-    public ClubesAdapter(Context context) {
+    private LatLng locacion;
+
+    public ClubesAdapter(Context context, LatLng locacion) {
         this.clubes = new ArrayList<>();
         this.context = context;
+        this.locacion = locacion;
     }
 
     @Override
@@ -48,7 +50,7 @@ public class ClubesAdapter extends RecyclerView.Adapter<ClubViewHolder> implemen
 
     @Override
     public void onBindViewHolder(ClubViewHolder viewHolder, int position) {
-        viewHolder.cargarDatosEnVista(clubes.get(position));
+        viewHolder.cargarDatosEnVista(clubes.get(position), locacion);
     }
 
     @Override
