@@ -230,7 +230,6 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
                             .icon(BitmapDescriptorFactory.fromBitmap(resizearBitmap(miUbicacion, 0.05f))));
         }
 
-        ubicacion = CAPITAL_FEDERAL;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionLatLng, zoom));
     }
 
