@@ -53,8 +53,8 @@ public class AgregarCanchaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_agregar_cancha, container, false);
         ButterKnife.bind(this, view);
         setActionFloatingBtn();
-        setSpinner(spinnerDeporte, TipoCancha.nombres());
-        setSpinner(spinnerSuperficie, TipoSuperficie.nombres());
+        setSpinner(spinnerDeporte, TipoCancha.nombres(), view);
+        setSpinner(spinnerSuperficie, TipoSuperficie.nombres(), view);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Agregar cancha");
         return view;
     }
@@ -71,8 +71,8 @@ public class AgregarCanchaFragment extends Fragment {
         });
     }
 
-    private void setSpinner(Spinner spinner, List<String> options) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getView().getContext(), android.R.layout.simple_spinner_item, options);
+    private void setSpinner(Spinner spinner, List<String> options, View view) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, options);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
     }
