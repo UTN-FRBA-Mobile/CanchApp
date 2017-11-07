@@ -22,16 +22,9 @@
         android:orientation="vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        android:paddingTop="16dp"
         tools:context="com.santiago.canchaapp.app.fragment.RegistrarClubFragment">
 
-        <ImageView
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:id="@+id/icono"
-            android:src="@mipmap/ic_launcher"
-            tools:ignore="ContentDescription" />
         <EditText
             android:id="@+id/txtNombre"
             style="@style/editText"
