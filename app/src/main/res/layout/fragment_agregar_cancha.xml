@@ -30,13 +30,15 @@
         <EditText
             android:id="@+id/txtNombreCancha"
             style="@style/editText"
-            android:hint="@string/txtNombreCancha"/>
+            android:hint="@string/txtNombreCancha"
+            android:maxLength="50"/>
 
         <EditText
             android:id="@+id/txtPrecio"
             style="@style/editText"
             android:hint="@string/txtPrecio"
-            android:inputType="number"/>
+            android:inputType="number"
+            android:maxLength="4"/>
 
         <Spinner
             android:id="@+id/spinnerDeporte"
@@ -65,14 +67,7 @@
                     android:textColor="@color/colorText"
                     android:textAlignment="center"
                     android:text="Techada"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="@color/colorAclaracion"
-                    android:text="@string/txtAclaracionTecho"/>
             </LinearLayout>
-
             <Switch
                 android:id="@+id/switchTechada"
                 android:layout_width="wrap_content"

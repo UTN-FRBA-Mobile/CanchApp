@@ -28,19 +28,22 @@
         <EditText
             android:id="@+id/txtNombre"
             style="@style/editText"
-            android:hint="@string/txtNombre" />
+            android:hint="@string/txtNombre"
+            android:maxLength="50"/>
 
         <EditText
             android:id="@+id/txtTelefono"
             style="@style/editText"
             android:hint="@string/txtTelefono"
-            android:inputType="phone" />
+            android:inputType="phone"
+            android:maxLength="15"/>
 
         <EditText
             android:id="@+id/txtEmail"
             style="@style/editText"
             android:hint="@string/txtEmail"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:maxLength="50"/>
 
         <TextView
             android:id="@+id/txtHorario"
