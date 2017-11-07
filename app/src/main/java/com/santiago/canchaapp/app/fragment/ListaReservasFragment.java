@@ -35,7 +35,6 @@ import butterknife.ButterKnife;
 import static com.google.firebase.database.DatabaseError.PERMISSION_DENIED;
 import static com.santiago.canchaapp.app.otros.AccionesSobreReserva.NINGUNA;
 import static com.santiago.canchaapp.app.otros.AccionesSobreReserva.SOLO_CANCELAR;
-import static com.santiago.canchaapp.app.otros.AccionesSobreReserva.TODAS;
 import static com.santiago.canchaapp.app.otros.TipoReservas.APROBADAS;
 import static com.santiago.canchaapp.app.otros.TipoReservas.PENDIENTES;
 import static com.santiago.canchaapp.app.otros.TipoReservas.valueOf;

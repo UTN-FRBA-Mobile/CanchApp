@@ -46,7 +46,10 @@ public class ClubFragment extends Fragment {
         adapter = new ClubPageAdapter(getChildFragmentManager(), idClub, esMiClub);
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Datos del Club");
+        String titulo = "Datos del Club";
+        if(esMiClub)
+            titulo = "Mi Club";
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(titulo);
         return view;
     }
 }

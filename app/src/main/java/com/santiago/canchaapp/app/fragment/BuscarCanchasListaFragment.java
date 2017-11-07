@@ -156,8 +156,8 @@ public class BuscarCanchasListaFragment extends Fragment {
 
     }
 
-    private void actualizarLista(DataSnapshot snapshotAlquiler) {
-        Club club = snapshotAlquiler.getValue(Club.class);
+    private void actualizarLista(DataSnapshot snapshotClub) {
+        Club club = snapshotClub.getValue(Club.class);
         //if(club.tieneCanchas())
         if (!Sesion.getInstancia().getUsuario().esMiClub(club.getUuid()))
             adapter.actualizarLista(club);
