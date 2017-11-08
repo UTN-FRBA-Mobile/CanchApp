@@ -25,16 +25,20 @@
     <string name="notFirebaseAuth">No se pudo autenticar con Firebase.</string>
     <string name="notLogIn">No se pudo iniciar sesión.</string>
     <string name="notLogOut">No se pudo cerrar sesión.</string>
+
     <string name="txtDialogoTengoClub">Tenés cancha? Agregala!</string>
     <string name="txtDialogoAgregarImagen">Elegir imagen de galeria.</string>
     <string name="txtDialogExplanationPermisos1">Los permisos son necesarios para poder usar la aplicación.</string>
     <string name="txtDialogExplanationPermisos2">Para usar las funciones de la app necesitas aceptar los permisos</string>
+
     <string name="txtTituloPermisosKo">Permisos denegados</string>
     <string name="txtTituloPermisosOk">Permisos aceptados</string>
     <string name="txtAbortarPermisos">Cancelar</string>
+
     <string name="txtConfirmacionGuardarClub">Tu Club ha sido guardado correctamente.</string>
     <string name="txtConfirmacionGuardarCancha">Tu Cancha ha sido guardada correctamente.</string>
     <string name="txtAclaracionTecho">Confirmar que la cancha tiene techo.</string>
+
     <string name="txtTechoSwitchOn">Sí es techada.</string>
     <string name="txtTechoSwitchOff">NO es techada.</string>
     <string name="txtSubirFotosCancha">Subi fotos de tu cancha:</string>

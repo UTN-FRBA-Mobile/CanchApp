@@ -3,6 +3,7 @@ package com.santiago.canchaapp.app.fragment;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -39,7 +40,6 @@ import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.FotosCanchaAdapter;
 import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.dominio.DataBase;
-import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.dominio.Storage;
 import com.santiago.canchaapp.dominio.TipoCancha;
 import com.santiago.canchaapp.dominio.TipoSuperficie;
@@ -48,11 +48,8 @@ import com.santiago.canchaapp.servicios.Sesion;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-
-import butterknife.ButterKnife;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -67,7 +64,6 @@ public class CargarFotosCanchaFragment extends Fragment {
     private final int PHOTO_CODE = 200;
     private final int SELECT_PICTURE = 300;
 
-    private LinearLayout mRlView;
     private String mPath;
 
     private GridView gridview;
@@ -99,6 +95,7 @@ public class CargarFotosCanchaFragment extends Fragment {
         boolean enabled = mayRequestStoragePermission(view);
         fbutton1.setEnabled(enabled);
         fbutton2.setEnabled(enabled);
+
         fbutton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,23 +130,6 @@ public class CargarFotosCanchaFragment extends Fragment {
         return view;
     }
 
-    ArrayList<File> imageReader(File root){
-        ArrayList<File> lista= new ArrayList<>();
-
-        File[] archivos= root.listFiles();
-
-        for(int i= 0; i<archivos.length; i++){
-            if(archivos[i].isDirectory()){
-                lista.addAll(imageReader(archivos[i]));
-            }else{
-                if(archivos[i].getName().endsWith(".jpg")){
-                    lista.add(archivos[i]);
-                }
-            }
-        }
-        return lista;
-    }
-
     private boolean mayRequestStoragePermission(View view) {
 
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
@@ -176,11 +156,20 @@ public class CargarFotosCanchaFragment extends Fragment {
     }
 
     private void openCamera(final int opcionCamera) {
+        //Comprueba si existe cámara física.
+        Context context = getActivity();
+        PackageManager packageManager = context.getPackageManager();
+        if(!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+            Toast.makeText(getActivity(), "Este dispositivo no tiene cámara", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
         boolean isDirectoryCreated = file.exists();
 
-        if(!isDirectoryCreated)
+        if(!isDirectoryCreated) {
             isDirectoryCreated = file.mkdirs();
+            Toast.makeText(getActivity(), "La carpeta se ha creado correctamente.", Toast.LENGTH_SHORT).show();}
 
         if(isDirectoryCreated){
             Long timestamp = System.currentTimeMillis() / 1000;
@@ -190,7 +179,6 @@ public class CargarFotosCanchaFragment extends Fragment {
                     + File.separator + imageName;
 
             File newFile = new File(mPath);
-
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
             startActivityForResult(intent, opcionCamera);
@@ -214,9 +202,13 @@ public class CargarFotosCanchaFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == Activity.RESULT_OK){
             switch (requestCode){
-                case PHOTO_CODE:
-                    setLocationImage(mPath);
-                    //setImageButton(mPath, setImage);
+                case PHOTO_CODE: //setLocationImage(mPath); setImage(mPath, imageViewPruebaCamara);
+                    File file = new File(mPath);
+                    Uri uri = Uri.fromFile(file);
+                    List<Uri> selectedImages1 = new ArrayList<>();
+                    selectedImages1.add(uri);
+                    fotosCanchaAdapter.agregarFotos(selectedImages1);
+                    ////fotosCanchaAdapter.agregarFotos(singletonList(uri));
                     break;
                 case SELECT_PICTURE:
                     if (data.getClipData() == null) { // Galería deja seleccionar 1 sola foto
@@ -237,7 +229,7 @@ public class CargarFotosCanchaFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void setLocationImage(String mPath) {
+    private void setLocationImage(String mPath) { //Scan el archivo y loggeo de la ubicacion y la URL en el dispositivo.
         MediaScannerConnection.scanFile(getActivity().getApplicationContext(),
                 new String[]{mPath}, null,
                 new MediaScannerConnection.OnScanCompletedListener() {
@@ -249,7 +241,7 @@ public class CargarFotosCanchaFragment extends Fragment {
                 });
     }
 
-    private void setImageButton(String mPath, ImageView unaImageView) {
+    private void setImage(String mPath, ImageView unaImageView) {
         Bitmap bitmap = BitmapFactory.decodeFile(mPath);
         unaImageView.setImageBitmap(bitmap);
     }
