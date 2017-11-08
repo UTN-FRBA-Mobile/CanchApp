@@ -3,6 +3,7 @@ package com.santiago.canchaapp.app.fragment;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -65,6 +66,7 @@ public class CargarFotosCanchaFragment extends Fragment {
     private final int SELECT_PICTURE = 300;
 
     private String mPath;
+    private Uri mCameraTempUri;
 
     private GridView gridview;
     private FotosCanchaAdapter fotosCanchaAdapter;
@@ -99,7 +101,7 @@ public class CargarFotosCanchaFragment extends Fragment {
         fbutton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //openCamera(PHOTO_CODE);
+                openCamera(PHOTO_CODE);
             }
         });
 
@@ -178,9 +180,16 @@ public class CargarFotosCanchaFragment extends Fragment {
             mPath = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY
                     + File.separator + imageName;
 
+            ContentValues values = new ContentValues(1);
+            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg");
+            mCameraTempUri = getActivity().getContentResolver()
+                    .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
             File newFile = new File(mPath);
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
+            //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, mCameraTempUri);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             startActivityForResult(intent, opcionCamera);
         }
     }
@@ -201,35 +210,35 @@ public class CargarFotosCanchaFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == Activity.RESULT_OK){
+            List<Uri> selectedImages = new ArrayList<>();
             switch (requestCode){
-                case PHOTO_CODE: //setLocationImage(mPath); setImage(mPath, imageViewPruebaCamara);
-                    File file = new File(mPath);
-                    Uri uri = Uri.fromFile(file);
-                    List<Uri> selectedImages1 = new ArrayList<>();
-                    selectedImages1.add(uri);
-                    fotosCanchaAdapter.agregarFotos(selectedImages1);
-                    ////fotosCanchaAdapter.agregarFotos(singletonList(uri));
+                case PHOTO_CODE:
+                    //setLocationImage(mPath);
+                    //setImage(mPath, imageViewPruebaCamara);
+                    //File file = new File(mPath);
+                    //Uri uri = Uri.fromFile(file);
+                    selectedImages.add(mCameraTempUri);
+                    fotosCanchaAdapter.agregarFotos(selectedImages);
                     break;
                 case SELECT_PICTURE:
                     if (data.getClipData() == null) { // Galería deja seleccionar 1 sola foto
                         fotosCanchaAdapter.agregarFotos(singletonList(data.getData()));
                     } else { // Galería deja seleccionar más de una foto
                         ClipData clipData = data.getClipData();
-                        List<Uri> selectedImages = new ArrayList<>();
+
                         for (int image = 0; image < clipData.getItemCount(); image++) {
                             Uri path = clipData.getItemAt(image).getUri();
                             selectedImages.add(path);
                         }
                         fotosCanchaAdapter.agregarFotos(selectedImages);
                     }
-
                     break;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void setLocationImage(String mPath) { //Scan el archivo y loggeo de la ubicacion y la URL en el dispositivo.
+    private void setLocationImage(String mPath) { //Scan el archivo en la ubicacion y log la URL en el dispositivo.
         MediaScannerConnection.scanFile(getActivity().getApplicationContext(),
                 new String[]{mPath}, null,
                 new MediaScannerConnection.OnScanCompletedListener() {
