@@ -8,7 +8,7 @@
     <dimen name="perfil_image_size">64dp</dimen>
     <dimen name="header_left_padding">16dp</dimen>
     <dimen name="header_height">192dp</dimen>
-    <dimen name="padding_sides">15dp</dimen>
+    <dimen name="padding_sides">16dp</dimen>
     <dimen name="padding_top_center">100dp</dimen>
     <dimen name="margin_topBottom_text">16dp</dimen>
     <dimen name="margin_Left">5dp</dimen>

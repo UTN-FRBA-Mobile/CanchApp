@@ -87,7 +87,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { //quito las validaciones por ahora
+            public void onClick(View view) {
             if (ubicacion != null)
                 insertClub();
             else

@@ -22,7 +22,7 @@
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/padding_sides"
         android:paddingRight="@dimen/padding_sides"
-        android:paddingTop="10dp"
+        android:paddingTop="@dimen/padding_sides"
         android:background="@color/colorBlanco"
         android:clickable="true"
         tools:context="com.santiago.canchaapp.app.fragment.AgregarCanchaFragment">
@@ -38,41 +38,68 @@
             style="@style/editText"
             android:hint="@string/txtPrecio"
             android:inputType="number"
-            android:maxLength="4"/>
-
-        <Spinner
-            android:id="@+id/spinnerDeporte"
-            style="@style/spinner" />
-
-        <Spinner
-            android:id="@+id/spinnerSuperficie"
-            style="@style/spinner" />
+            android:maxLength="4"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dip"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:layout_width="0dp"
+            android:layout_marginTop="15dp">
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="3">
-                <TextView
+                android:layout_marginStart="4dp"
+                android:text="Deporte:"
+                android:layout_marginLeft="4dp"
+                android:textSize="18sp"
+                android:textColor="@color/colorText"
+                />
+            <Spinner
+                android:id="@+id/spinnerDeporte"
+                android:layout_marginStart="25dp"
+                android:layout_marginLeft="25dp"
+                style="@style/spinner" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="18dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Superficie:"
+                android:layout_marginLeft="4dp"
+                android:textSize="18sp"
+                android:textColor="@color/colorText"/>
+            <Spinner
+                android:id="@+id/spinnerSuperficie"
+                style="@style/spinner" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_marginTop="18dp">
+            <TextView
                     android:id="@+id/txtTechada"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:textColor="@color/colorText"
-                    android:textAlignment="center"
-                    android:text="Techada"/>
-            </LinearLayout>
+                    android:text="Techada"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp" />
             <Switch
                 android:id="@+id/switchTechada"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_gravity="right"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
         </LinearLayout>
     </LinearLayout>
-
 </FrameLayout>

@@ -121,13 +121,7 @@ public class ClubViewHolder extends RecyclerView.ViewHolder implements View.OnCl
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() != null){
                     Map<String, Object> canchas = (HashMap<String,Object>) dataSnapshot.getValue();
-
-                    String textoCanchas;
-                    if (canchas.size() == 1)
-                        textoCanchas = " cancha";
-                    else
-                        textoCanchas = " canchas";
-
+                    String textoCanchas = " cancha" + (canchas.size() == 1 ? "" : "s");
                     textoCantidadDeCanchas.setText(canchas.size() + textoCanchas);}
             }
 
