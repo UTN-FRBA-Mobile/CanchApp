@@ -95,12 +95,17 @@ public class ClubViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         float distanceInMeters = locacionClub.distanceTo(locacionHumano);
 
         if(distanceInMeters > 1000) {
-            DecimalFormat df = new DecimalFormat("#.#");
-            df.setRoundingMode(RoundingMode.CEILING);
-            df.format(distanceInMeters);
             unidad.setText("km");
-            distanceInMeters = distanceInMeters / 1000;
-            distancia.setText((df.format(distanceInMeters)).toString());
+
+            if (distanceInMeters > 99000)
+                distancia.setText(">99");
+            else {
+                DecimalFormat df = new DecimalFormat("#.#");
+                 df.setRoundingMode(RoundingMode.CEILING);
+                df.format(distanceInMeters);
+                distanceInMeters = distanceInMeters / 1000;
+                distancia.setText((df.format(distanceInMeters)).toString());
+            }
         } else {
             DecimalFormat df = new DecimalFormat("#");
             df.setRoundingMode(RoundingMode.CEILING);
