@@ -67,6 +67,11 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.boton_reservar)
     public Button botonReservar;
 
+    // Bloqueo (hora pasada)
+
+    @BindView(R.id.bloqueo)
+    public LinearLayout layoutBloqueo;
+
     private View view;
 
     private Cancha cancha;
@@ -87,12 +92,16 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, v);
     }
 
-    public void cargarDatosEnVista(SlotHorarioAlquiler slotHorarioAlquiler) {
+    public void cargarDatosEnVista(SlotHorarioAlquiler slotHorarioAlquiler, boolean primerDia, int horaActual) {
         horario.setText(textoHorario(slotHorarioAlquiler.getHorario()));
         if (slotHorarioAlquiler.estaLibre()) {
             cargarHorarioLibre(slotHorarioAlquiler.getHorario());
         } else {
             cargarHorarioReservado(slotHorarioAlquiler.getAlquiler());
+        }
+        if (primerDia && horaActual >= slotHorarioAlquiler.getHorario().getDesde()) {
+            layoutBloqueo.setVisibility(VISIBLE);
+            deshabilitarBotones(botonAprobar, botonCancelar, botonReservar);
         }
     }
 
@@ -210,6 +219,12 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
     private void ocultarBotones(Button... botones) {
         for(Button boton : botones) {
             boton.setVisibility(GONE);
+        }
+    }
+
+    private void deshabilitarBotones(Button... botones) {
+        for(Button boton : botones) {
+            boton.setOnClickListener(null);
         }
     }
 

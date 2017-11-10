@@ -1,7 +1,5 @@
 package com.santiago.canchaapp.dominio;
 
-import java.util.Date;
-
 import static com.santiago.canchaapp.dominio.EstadoReserva.PENDIENTE;
 
 public class SlotHorarioAlquiler {
@@ -13,10 +11,6 @@ public class SlotHorarioAlquiler {
     public SlotHorarioAlquiler(Horario horario, Alquiler alquiler) {
         this.horario = horario;
         this.alquiler = alquiler;
-    }
-
-    public SlotHorarioAlquiler(Date fecha, Horario horario) {
-        this(horario, null);
     }
 
     public Horario getHorario() {

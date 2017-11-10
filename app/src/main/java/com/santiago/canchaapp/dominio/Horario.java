@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Horario implements Serializable {
 
-    public static int HORA_MIN = 9;
+    public static int HORA_MIN = 7;
 
     public static int HORA_MAX = 24;
 
@@ -34,6 +34,10 @@ public class Horario implements Serializable {
 
     public static Horario horaDesde(int hora) {
         return new Horario(hora, hora +1);
+    }
+
+    public boolean contiene(int hora) {
+        return hora >= desde && hora <= hasta;
     }
 
     @Override

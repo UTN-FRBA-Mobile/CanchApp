@@ -16,4 +16,5 @@
     <color name="colorBar">#C8E6C9</color>
     <color name="colorAclaracion">#949292</color>
     <color name="colorGris">#dfdcdc</color>
+    <color name="colorBloqueoTransparente">#60b1b1b1</color>
 </resources>

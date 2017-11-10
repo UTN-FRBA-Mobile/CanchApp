@@ -25,6 +25,7 @@ import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
+import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.servicios.Servidor;
 
 import java.io.Serializable;
@@ -37,6 +38,7 @@ import butterknife.ButterKnife;
 
 import static android.view.View.INVISIBLE;
 import static com.google.firebase.database.DatabaseError.PERMISSION_DENIED;
+import static com.santiago.canchaapp.app.otros.DateUtils.hora;
 import static com.santiago.canchaapp.app.otros.DateUtils.textoDia;
 
 public class ListaHorariosFragment extends Fragment {
@@ -167,7 +169,8 @@ public class ListaHorariosFragment extends Fragment {
                 if(dataSnapshot.getValue() != null){
                     Club club = dataSnapshot.getValue(Club.class);
                     Cancha cancha = getCancha();
-                    HorariosAdapter horariosAdapter = new HorariosAdapter(cancha, club, getFecha(), esMiCancha(), cancha.getRangoHorario());
+                    HorariosAdapter horariosAdapter = new HorariosAdapter(cancha, club, getFecha(),
+                            esMiCancha(), cancha.getRangoHorario(), hora(getFecha()), primerDia());
                     horariosRecyclerView.setAdapter(horariosAdapter);
                     adapter = horariosAdapter;
                 }

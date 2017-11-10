@@ -39,17 +39,26 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
 
     private Horario rangoHorario;
 
-    public HorariosAdapter(Cancha cancha, Club club, Date fecha, boolean esMiCancha, Horario rangoHorario) {
+    private int horaActual;
+
+    private boolean primerDia;
+
+    public HorariosAdapter(Cancha cancha, Club club, Date fecha, boolean esMiCancha, Horario rangoHorario, int horaActual, boolean primerDia) {
         this.cancha = cancha;
         this.club = club;
         this.esMiCancha = esMiCancha;
         this.fecha = fecha;
         this.rangoHorario = rangoHorario;
         this.alquileres = new ArrayList<>();
+        this.horaActual = horaActual;
+        this.primerDia = primerDia;
         this.horarios = generarListaDeHorarios(cancha.getRangoHorario(), new ArrayList<Alquiler>());
     }
 
     public void actualizarLista(Alquiler alquilerActualizado) {
+        if (!rangoHorario.contiene(alquilerActualizado.getHora())) {
+             return; // El alquiler ya no debe mostrarse (ej.: pasó la hora)
+        }
         actualizarAlquileres(alquilerActualizado);
         horarios.clear();
         horarios.addAll(generarListaDeHorarios(rangoHorario, alquileres));
@@ -69,7 +78,7 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
 
     @Override
     public void onBindViewHolder(HorarioViewHolder viewHolder, final int position) {
-        viewHolder.cargarDatosEnVista(horarios.get(position));
+        viewHolder.cargarDatosEnVista(horarios.get(position), primerDia, horaActual);
     }
 
     @Override
