@@ -1,5 +1,6 @@
 package com.santiago.canchaapp.app.adapter;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ import static com.santiago.canchaapp.dominio.Horario.horaDesde;
 
 public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
 
+    private Activity activity;
+
     private List<SlotHorarioAlquiler> horarios;
 
     private List<Alquiler> alquileres;
@@ -43,7 +46,8 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
 
     private boolean primerDia;
 
-    public HorariosAdapter(Cancha cancha, Club club, Date fecha, boolean esMiCancha, Horario rangoHorario, int horaActual, boolean primerDia) {
+    public HorariosAdapter(Activity activity, Cancha cancha, Club club, Date fecha, boolean esMiCancha, Horario rangoHorario, int horaActual, boolean primerDia) {
+        this.activity = activity;
         this.cancha = cancha;
         this.club = club;
         this.esMiCancha = esMiCancha;
@@ -68,6 +72,7 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
     @Override
     public HorarioViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         return new HorarioViewHolder(
+                activity,
                 LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_horario, viewGroup, false),
                 cancha,
                 club,

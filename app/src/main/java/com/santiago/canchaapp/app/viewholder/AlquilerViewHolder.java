@@ -1,8 +1,13 @@
 package com.santiago.canchaapp.app.viewholder;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
@@ -12,8 +17,10 @@ import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
 import com.santiago.canchaapp.app.otros.DateUtils;
 import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.DataBase;
+import com.santiago.canchaapp.dominio.EstadoReserva;
 import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.dominio.Reserva;
+import com.santiago.canchaapp.servicios.Preferencias;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,9 +56,12 @@ public class AlquilerViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.texto_alquiler)
     public LinearLayout textoAlquiler;
 
-    public AlquilerViewHolder(View v) {
+    private final Activity activity;
+
+    public AlquilerViewHolder(View v, Activity activity) {
         super(v);
         ButterKnife.bind(this, v);
+        this.activity = activity;
     }
 
     public void cargarDatosEnVista(Alquiler alquiler, AccionesSobreReserva acciones) {
@@ -84,10 +94,11 @@ public class AlquilerViewHolder extends RecyclerView.ViewHolder {
         botonCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataBase.getInstancia().updateEstadoReserva(alquiler.getIdUsuario(), alquiler.getIdReserva(), CANCELADA);
-                DataBase.getInstancia().updateEstadoAlquiler(alquiler.getIdClub(), alquiler.getIdCancha(), stringToDateToSave(alquiler.getFecha()), alquiler.getUuid(), CANCELADA);
-                DataBase.getInstancia().updateEstadoAlquilerPorClub(alquiler.getIdClub(), alquiler.getUuid(), CANCELADA);
-
+                if (Preferencias.getInstancia().confirmacionHabilitada(activity)) {
+                    confirmarAccion(activity, alquiler, CANCELADA);
+                } else {
+                    actualizarAlquiler(alquiler, CANCELADA);
+                }
             }
         });
     }
@@ -96,12 +107,44 @@ public class AlquilerViewHolder extends RecyclerView.ViewHolder {
         botonAprobar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataBase.getInstancia().updateEstadoReserva(alquiler.getIdUsuario(), alquiler.getIdReserva(), APROBADA);
-                DataBase.getInstancia().updateEstadoAlquiler(alquiler.getIdClub(), alquiler.getIdCancha(), stringToDateToSave(alquiler.getFecha()), alquiler.getUuid(), APROBADA);
-                DataBase.getInstancia().updateEstadoAlquilerPorClub(alquiler.getIdClub(), alquiler.getUuid(), APROBADA);
-
+                if (Preferencias.getInstancia().confirmacionHabilitada(activity)) {
+                    confirmarAccion(activity, alquiler, APROBADA);
+                } else {
+                    actualizarAlquiler(alquiler, APROBADA);
+                }
             }
         });
+    }
+
+    private void actualizarAlquiler(final Alquiler alquiler, final EstadoReserva nuevoEstado) {
+        DataBase.getInstancia().updateEstadoReserva(alquiler.getIdUsuario(), alquiler.getIdReserva(), nuevoEstado);
+        DataBase.getInstancia().updateEstadoAlquiler(alquiler.getIdClub(), alquiler.getIdCancha(), stringToDateToSave(alquiler.getFecha()), alquiler.getUuid(), nuevoEstado);
+        DataBase.getInstancia().updateEstadoAlquilerPorClub(alquiler.getIdClub(), alquiler.getUuid(), nuevoEstado);
+    }
+
+    private void confirmarAccion(Context context, final Alquiler alquiler, final EstadoReserva nuevoEstado) {
+        final CheckBox checkBox = new CheckBox(context);
+        checkBox.setText("No volver a mostrar");
+        final AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle("Confirmar acción")
+                .setMessage("¿Estás seguro que deseas " +
+                        (nuevoEstado == APROBADA ? "aprobar" : "cancelar") + " este alquiler?" )
+                .setView(checkBox)
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        actualizarAlquiler(alquiler, nuevoEstado);
+                        if (checkBox.isChecked()) {
+                            Preferencias.getInstancia().deshabilitarConfirmacionReservas(activity);
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Nada
+                    }
+                })
+                .create();
+        dialog.show();
     }
 
 }

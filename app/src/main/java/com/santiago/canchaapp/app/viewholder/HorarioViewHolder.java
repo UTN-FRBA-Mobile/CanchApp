@@ -1,5 +1,6 @@
 package com.santiago.canchaapp.app.viewholder;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +10,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -21,10 +23,12 @@ import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
+import com.santiago.canchaapp.dominio.EstadoReserva;
 import com.santiago.canchaapp.dominio.Horario;
 import com.santiago.canchaapp.dominio.Reserva;
 import com.santiago.canchaapp.dominio.SlotHorarioAlquiler;
 import com.santiago.canchaapp.dominio.Usuario;
+import com.santiago.canchaapp.servicios.Preferencias;
 import com.santiago.canchaapp.servicios.Sesion;
 
 import java.util.Date;
@@ -91,8 +95,11 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
 
     private final Date fecha;
 
-    public HorarioViewHolder(View v, Cancha cancha, Club club, boolean esMiCancha, Date fecha) {
+    private final Activity activity;
+
+    public HorarioViewHolder(Activity activity, View v, Cancha cancha, Club club, boolean esMiCancha, Date fecha) {
         super(v);
+        this.activity = activity;
         this.view = v;
         this.cancha = cancha;
         this.club = club;
@@ -142,8 +149,8 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
     private void abrirAlertaReservaDuenio(Context context, final Horario horario) {
         final EditText textInput = new EditText(context);
         final AlertDialog dialog = new AlertDialog.Builder(context)
-                .setMessage("Ingresa nombre de quien reserva")
                 .setTitle("Nueva reserva")
+                .setMessage("Ingresa nombre de quien reserva")
                 .setView(textInput)
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -174,15 +181,31 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
                 }
             }
         });
-
     }
 
-    private void insertarEnFirebase(Usuario usuario, Alquiler alquiler, Reserva reserva) {
-        DataBase.getInstancia().insertAlquiler(cancha.getIdClub(), cancha.getUuid(), fecha, alquiler);
-        DataBase.getInstancia().insertAlquilerPorClub(cancha.getIdClub(), alquiler);
-        if (reserva != null) {
-            DataBase.getInstancia().insertReserva(usuario.getUid(), reserva);
-        }
+    private void confirmarAccion(Context context, final Alquiler alquiler, final EstadoReserva nuevoEstado) {
+        final CheckBox checkBox = new CheckBox(context);
+        checkBox.setText("No volver a mostrar");
+        final AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle("Confirmar acción")
+                .setMessage("¿Estás seguro que deseas " +
+                        (nuevoEstado == APROBADA ? "aprobar" : "cancelar") + " esta reserva?" )
+                .setView(checkBox)
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        actualizarReserva(alquiler, nuevoEstado);
+                        if (checkBox.isChecked()) {
+                            Preferencias.getInstancia().deshabilitarConfirmacionReservas(activity);
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Nada
+                    }
+                })
+                .create();
+        dialog.show();
     }
 
     private void cargarHorarioReservado(Alquiler alquiler) {
@@ -230,13 +253,11 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         botonCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataBase.getInstancia().updateEstadoAlquiler(cancha.getIdClub(), cancha.getUuid(), fecha, alquiler.getUuid(), CANCELADA);
-                DataBase.getInstancia().updateEstadoAlquilerPorClub(cancha.getIdClub(), alquiler.getUuid(), CANCELADA);
-                if (alquiler.alquiladaPorUsuario()) {
-                    DataBase.getInstancia().updateEstadoReserva(alquiler.getIdUsuario(), alquiler.getIdReserva(), CANCELADA);
-
+                if (esMiCancha && Preferencias.getInstancia().confirmacionHabilitada(activity)) {
+                    confirmarAccion(view.getContext(), alquiler, CANCELADA);
+                } else {
+                    actualizarReserva(alquiler, CANCELADA);
                 }
-                ocultarBotones(botonAprobar, botonCancelar);
             }
         });
     }
@@ -245,16 +266,18 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         botonAprobar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataBase.getInstancia().updateEstadoAlquiler(cancha.getIdClub(), cancha.getUuid(), fecha, alquiler.getUuid(), APROBADA);
-                DataBase.getInstancia().updateEstadoAlquilerPorClub(cancha.getIdClub(), alquiler.getUuid(), APROBADA);
-                if (alquiler.alquiladaPorUsuario()) {
-                    DataBase.getInstancia().updateEstadoReserva(
-                            alquiler.getIdUsuario(), alquiler.getIdReserva(), APROBADA);
-
+                if (esMiCancha && Preferencias.getInstancia().confirmacionHabilitada(activity)) {
+                    confirmarAccion(view.getContext(), alquiler, APROBADA);
+                } else {
+                    actualizarReserva(alquiler, APROBADA);
                 }
-                ocultarBotones(botonAprobar, botonCancelar);
             }
         });
+    }
+
+    private void actualizarReserva(final Alquiler alquiler, EstadoReserva nuevoEstado) {
+        actualizarEnFirebase(alquiler, nuevoEstado);
+        ocultarBotones(botonAprobar, botonCancelar);
     }
 
     private void mostrarBotones(float tamanioLayout, Button... botones) {
@@ -274,6 +297,22 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
     private void deshabilitarBotones(Button... botones) {
         for(Button boton : botones) {
             boton.setOnClickListener(null);
+        }
+    }
+
+    private void insertarEnFirebase(Usuario usuario, Alquiler alquiler, Reserva reserva) {
+        DataBase.getInstancia().insertAlquiler(cancha.getIdClub(), cancha.getUuid(), fecha, alquiler);
+        DataBase.getInstancia().insertAlquilerPorClub(cancha.getIdClub(), alquiler);
+        if (reserva != null) {
+            DataBase.getInstancia().insertReserva(usuario.getUid(), reserva);
+        }
+    }
+
+    private void actualizarEnFirebase(Alquiler alquiler, EstadoReserva nuevoEstado) {
+        DataBase.getInstancia().updateEstadoAlquiler(cancha.getIdClub(), cancha.getUuid(), fecha, alquiler.getUuid(), nuevoEstado);
+        DataBase.getInstancia().updateEstadoAlquilerPorClub(cancha.getIdClub(), alquiler.getUuid(), nuevoEstado);
+        if (alquiler.alquiladaPorUsuario()) {
+            DataBase.getInstancia().updateEstadoReserva(alquiler.getIdUsuario(), alquiler.getIdReserva(), nuevoEstado);
         }
     }
 

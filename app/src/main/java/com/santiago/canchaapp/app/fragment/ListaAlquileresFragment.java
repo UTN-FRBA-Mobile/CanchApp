@@ -80,7 +80,7 @@ public class ListaAlquileresFragment extends Fragment {
         alquileresRecyclerView.setLayoutManager(layoutManager);
 
         // Adapter
-        adapter = new AlquileresAdapter(tipoReservas(), accionesSobreReservas());
+        adapter = new AlquileresAdapter(tipoReservas(), accionesSobreReservas(), getActivity());
         alquileresRecyclerView.setAdapter(adapter);
 
         // Datos

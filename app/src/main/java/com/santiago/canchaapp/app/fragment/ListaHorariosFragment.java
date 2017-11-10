@@ -169,7 +169,7 @@ public class ListaHorariosFragment extends Fragment {
                 if(dataSnapshot.getValue() != null){
                     Club club = dataSnapshot.getValue(Club.class);
                     Cancha cancha = getCancha();
-                    HorariosAdapter horariosAdapter = new HorariosAdapter(cancha, club, getFecha(),
+                    HorariosAdapter horariosAdapter = new HorariosAdapter(getActivity(), cancha, club, getFecha(),
                             esMiCancha(), cancha.getRangoHorario(), hora(getFecha()), primerDia());
                     horariosRecyclerView.setAdapter(horariosAdapter);
                     adapter = horariosAdapter;
