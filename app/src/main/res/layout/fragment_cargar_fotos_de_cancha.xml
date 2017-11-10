@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     android:id="@+id/cargaFotos_Layout">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fBtnGuardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_next"
+        app:backgroundTint="@color/colorAzul" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -55,13 +64,13 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="0dp"
-            android:layout_marginBottom="0dp"
+            android:layout_marginBottom="60dp"
             android:layout_marginLeft="0dp"
             app:menu_fab_size="normal"
             app:menu_showShadow="true"
             app:menu_shadowColor="#66cfcfcf"
             app:menu_shadowRadius="0.3dp"
-            app:menu_shadowXOffset="4dp"
+            app:menu_shadowXOffset="3.5dp"
             app:menu_shadowYOffset="4dp"
             app:menu_colorNormal="@color/colorAzul"
             app:menu_colorPressed="@color/colorAzulOscuro"
@@ -112,16 +121,6 @@
                 app:fab_colorNormal="@color/colorAzulClaro"
                 app:fab_colorPressed="@color/colorAzul"
                 app:fab_label="Seleccionar de la galeria" />
-
-            <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/fBtnGuardar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/fab_save"
-                app:fab_size="mini"
-                app:fab_colorNormal="@color/colorAzulClaro"
-                app:fab_colorPressed="@color/colorAzul"
-                app:fab_label="Guardar" />
 
         </com.github.clans.fab.FloatingActionMenu>
     </RelativeLayout>

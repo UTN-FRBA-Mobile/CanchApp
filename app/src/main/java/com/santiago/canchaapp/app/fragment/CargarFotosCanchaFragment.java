@@ -34,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
+import android.support.design.widget.FloatingActionButton;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.UploadTask;
@@ -52,13 +53,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static java.util.Collections.singletonList;
 
 public class CargarFotosCanchaFragment extends Fragment {
 
-    private static String APP_DIRECTORY = "MyPictureApp/";
+    private static String APP_DIRECTORY = "Pictures/";
     private static String MEDIA_DIRECTORY = APP_DIRECTORY + "PictureApp";
 
     private final int MY_PERMISSIONS = 100;
@@ -72,7 +76,10 @@ public class CargarFotosCanchaFragment extends Fragment {
     private FotosCanchaAdapter fotosCanchaAdapter;
 
     FloatingActionMenu actionMenu;
-        com.github.clans.fab.FloatingActionButton fbutton1, fbutton2, fbutton3;
+        com.github.clans.fab.FloatingActionButton fbutton1, fbutton2;
+
+    @BindView(R.id.fBtnGuardar)
+    public FloatingActionButton fbuttonGuardar;
 
     public static CargarFotosCanchaFragment nuevaInstancia() {
         return new CargarFotosCanchaFragment();
@@ -88,11 +95,19 @@ public class CargarFotosCanchaFragment extends Fragment {
 
         fbutton1 = actionMenu.findViewById(R.id.fBtnTomarFoto);
         fbutton2 = actionMenu.findViewById(R.id.fBtnSeleccionarImagen);
-        fbutton3 = actionMenu.findViewById(R.id.fBtnGuardar);
 
         gridview = view.findViewById(R.id.grid_view_fotos_cancha);
         fotosCanchaAdapter = new FotosCanchaAdapter(view.getContext());
         gridview.setAdapter(fotosCanchaAdapter);
+
+        ButterKnife.bind(this, view);
+        fbuttonGuardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickSubMenuGuardar();
+                abrirFragmentSiguiente();
+            }
+        });
 
         boolean enabled = mayRequestStoragePermission(view);
         fbutton1.setEnabled(enabled);
@@ -118,14 +133,6 @@ public class CargarFotosCanchaFragment extends Fragment {
         };
 
         fbutton2.setOnClickListener(addlistener);
-
-        fbutton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickSubMenuGuardar();
-                abrirFragmentSiguiente();
-            }
-        });
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Cargar fotos de cancha");
 
@@ -166,26 +173,26 @@ public class CargarFotosCanchaFragment extends Fragment {
             return;
         }
 
-        File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
-        boolean isDirectoryCreated = file.exists();
+        File folder = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
+        boolean isDirectoryCreated = folder.exists();
 
         if(!isDirectoryCreated) {
-            isDirectoryCreated = file.mkdirs();
+            isDirectoryCreated = folder.mkdirs();
             Toast.makeText(getActivity(), "La carpeta se ha creado correctamente.", Toast.LENGTH_SHORT).show();}
 
         if(isDirectoryCreated){
             Long timestamp = System.currentTimeMillis() / 1000;
             String imageName = timestamp.toString() + ".jpg";
 
-            mPath = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY
-                    + File.separator + imageName;
+            //mPath = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY
+              //      + File.separator + imageName;
 
             ContentValues values = new ContentValues(1);
-            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg");
+            //values.put(MediaStore.Images.Media.MIME_TYPE, imageName);
             mCameraTempUri = getActivity().getContentResolver()
                     .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
-            File newFile = new File(mPath);
+            //File newFile = new File(mPath);
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
             intent.putExtra(MediaStore.EXTRA_OUTPUT, mCameraTempUri);
