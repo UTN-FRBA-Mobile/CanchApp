@@ -70,7 +70,14 @@ public class DateUtils {
         } catch (ParseException e) {
             throw new RuntimeException("La fecha está mal cargada");
         }
+    }
 
+    public static Date stringToDate(String fecha) {
+        try {
+            return FORMATO_DIA_COMPLETO.parse(fecha);
+        } catch (ParseException e) {
+            throw new RuntimeException("La fecha está mal cargada");
+        }
     }
 
     public static int hora(Date fecha) {

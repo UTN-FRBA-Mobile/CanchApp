@@ -135,7 +135,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
                     if (status.isSuccess())
                         goLogInScreen();
                     else
-                        Toast.makeText(getApplicationContext(), R.string.notLogOut, Toast.LENGTH_SHORT).show();
+                         Toast.makeText(getApplicationContext(), R.string.notLogOut, Toast.LENGTH_SHORT).show();
                 }
             });
         }
