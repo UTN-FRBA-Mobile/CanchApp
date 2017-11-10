@@ -59,6 +59,7 @@ public class LoginActivity extends AppCompatActivity
     public SignInButton btnGoogleLogin;
     @BindView(R.id.progressBar)
     public ProgressBar progressBar;
+    final boolean[] gotResult = new boolean[1];
 
 
     @Override
@@ -85,16 +86,6 @@ public class LoginActivity extends AppCompatActivity
     }
 
     private void showActivityFinal(FirebaseUser user) {
-        if (DataBase.getInstancia().isOnline(context))
-            getInfoUsuario(user);
-        else {
-            changeVisibilityLoadToButton();
-            Toast.makeText(this, R.string.txtSinConexion, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void getInfoUsuario(FirebaseUser user) {
-        final boolean[] gotResult = new boolean[1];
         gotResult[0] = false;
         valueEventListener = new ValueEventListener() {
             @Override
@@ -117,11 +108,13 @@ public class LoginActivity extends AppCompatActivity
         };
         referenceUser = DataBase.getInstancia().getReferenceUser(user.getUid());
         if(DataBase.getInstancia().isOnline(context)) {
-            DataBase.getInstancia().setTimeoutFirebase(gotResult[0], referenceUser, valueEventListener, LoginActivity.this, new Runnable() {
+            DataBase.getInstancia().setTimeoutFirebase(referenceUser, valueEventListener, LoginActivity.this, new Runnable() {
                 @Override
                 public void run() {
-                    changeVisibilityLoadToButton();
-                    showText(R.string.txtMalaConexion);
+                    if(!gotResult[0]) {
+                        changeVisibilityLoadToButton();
+                        showText(R.string.txtMalaConexion);
+                    }
                 }
             });
         }
@@ -162,16 +155,16 @@ public class LoginActivity extends AppCompatActivity
             Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
                 @Override
                 public void onResult(@NonNull Status status) {
+                    changeVisibilityLoadToButton();
                     if (!status.isSuccess()) {
                         Toast.makeText(getApplicationContext(), R.string.notLogOut, Toast.LENGTH_SHORT).show();
                     }
-                    changeVisibilityLoadToButton();
                 }
             });
         }
         catch(Exception e) {
-            Toast.makeText(getApplicationContext(), R.string.notLogOut, Toast.LENGTH_SHORT).show();
             changeVisibilityLoadToButton();
+            Toast.makeText(getApplicationContext(), R.string.notLogOut, Toast.LENGTH_SHORT).show();
         }
     }
 

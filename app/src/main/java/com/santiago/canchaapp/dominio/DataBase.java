@@ -126,17 +126,15 @@ public class DataBase {
         return networkInfo != null && networkInfo.isAvailable() && networkInfo.isConnected();
     }
 
-    public void setTimeoutFirebase(final boolean esTimeout, final DatabaseReference referenceUser, final ValueEventListener valueEventListener, final AppCompatActivity activity, final Runnable task) {
+    public void setTimeoutFirebase(final DatabaseReference referenceUser, final ValueEventListener valueEventListener, final AppCompatActivity activity, final Runnable task) {
         referenceUser.addListenerForSingleValueEvent(valueEventListener);
         final Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
                 timer.cancel();
-                if (!esTimeout) { //  Timeout
-                    referenceUser.removeEventListener(valueEventListener);
-                    activity.runOnUiThread(task);
-                }
+                referenceUser.removeEventListener(valueEventListener);
+                activity.runOnUiThread(task);
             }
         };
         timer.schedule(timerTask, 30000L);
