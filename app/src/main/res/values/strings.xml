@@ -25,6 +25,8 @@
     <string name="notFirebaseAuth">No se pudo autenticar con Firebase.</string>
     <string name="notLogIn">No se pudo iniciar sesión.</string>
     <string name="notLogOut">No se pudo cerrar sesión.</string>
+    <string name="txtSinConexion">No se tiene acceso a internet</string>
+    <string name="txtMalaConexion">Por favor compruebe su conexión a internet</string>
 
     <string name="txtDialogoTengoClub">Tenés cancha? Agregala!</string>
     <string name="txtDialogoAgregarImagen">Elegir imagen de galeria.</string>

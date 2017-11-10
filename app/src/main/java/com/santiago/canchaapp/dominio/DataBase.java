@@ -1,15 +1,20 @@
 package com.santiago.canchaapp.dominio;
 
-import android.provider.ContactsContract;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import static com.santiago.canchaapp.app.otros.DateUtils.dateToString;
 import static com.santiago.canchaapp.app.otros.DateUtils.dateToStringtoSave;
 
 public class DataBase {
@@ -115,5 +120,26 @@ public class DataBase {
         getReferenceCanchas().child(idClub).child(cancha.getUuid()).setValue(cancha);
     }
 
+    public boolean isOnline(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isAvailable() && networkInfo.isConnected();
+    }
+
+    public void setTimeoutFirebase(final boolean esTimeout, final DatabaseReference referenceUser, final ValueEventListener valueEventListener, final AppCompatActivity activity, final Runnable task) {
+        referenceUser.addListenerForSingleValueEvent(valueEventListener);
+        final Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                timer.cancel();
+                if (!esTimeout) { //  Timeout
+                    referenceUser.removeEventListener(valueEventListener);
+                    activity.runOnUiThread(task);
+                }
+            }
+        };
+        timer.schedule(timerTask, 30000L);
+    }
 
 }

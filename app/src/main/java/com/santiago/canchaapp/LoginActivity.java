@@ -1,9 +1,14 @@
 package com.santiago.canchaapp;
 
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -35,6 +40,9 @@ import com.santiago.canchaapp.dominio.DataBase;
 import com.santiago.canchaapp.dominio.Usuario;
 import com.santiago.canchaapp.servicios.Sesion;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -46,16 +54,19 @@ public class LoginActivity extends AppCompatActivity
     private GoogleApiClient googleApiClient;
     private DatabaseReference referenceUser;
     private ValueEventListener valueEventListener;
+    private Context context;
     @BindView(R.id.btnLogin)
     public SignInButton btnGoogleLogin;
     @BindView(R.id.progressBar)
     public ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        context = getApplicationContext();
         setGoogleApiClient();
         setBtnLogin();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -63,36 +74,61 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user != null){
+                if(user != null) {
                     showActivityFinal(user);
                 }
-                else
+                else {
                     changeVisibilityLoadToButton();
+                }
             }
         };
     }
 
     private void showActivityFinal(FirebaseUser user) {
+        if (DataBase.getInstancia().isOnline(context))
+            getInfoUsuario(user);
+        else {
+            changeVisibilityLoadToButton();
+            Toast.makeText(this, R.string.txtSinConexion, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void getInfoUsuario(FirebaseUser user) {
+        final boolean[] gotResult = new boolean[1];
+        gotResult[0] = false;
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() != null) {
+                gotResult[0] = true;
+                if (dataSnapshot.getValue() != null) {
                     Usuario usuario = dataSnapshot.getValue(Usuario.class);
                     setearUsuarioEnSesion(usuario);
                     goMainScreen(usuario.getEsDuenio());
-                }
-                else {
+                } else {
                     showDialog();
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                gotResult[0] = true;
                 changeVisibilityLoadToButton();
-                Toast.makeText(LoginActivity.this, R.string.txtErrorLogin, Toast.LENGTH_LONG).show();
             }
         };
         referenceUser = DataBase.getInstancia().getReferenceUser(user.getUid());
-        referenceUser.addListenerForSingleValueEvent(valueEventListener);
+        if(DataBase.getInstancia().isOnline(context)) {
+            DataBase.getInstancia().setTimeoutFirebase(gotResult[0], referenceUser, valueEventListener, LoginActivity.this, new Runnable() {
+                @Override
+                public void run() {
+                    changeVisibilityLoadToButton();
+                    showText(R.string.txtMalaConexion);
+                }
+            });
+        }
+        else{
+            changeVisibilityLoadToButton();
+            showText(R.string.txtSinConexion);
+        }
     }
 
     private void setGoogleApiClient() {
@@ -126,8 +162,9 @@ public class LoginActivity extends AppCompatActivity
             Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
                 @Override
                 public void onResult(@NonNull Status status) {
-                    if (!status.isSuccess())
+                    if (!status.isSuccess()) {
                         Toast.makeText(getApplicationContext(), R.string.notLogOut, Toast.LENGTH_SHORT).show();
+                    }
                     changeVisibilityLoadToButton();
                 }
             });
@@ -154,25 +191,30 @@ public class LoginActivity extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-        if (firebaseAuthListener != null)
+        if (firebaseAuthListener != null) {
             firebaseAuth.removeAuthStateListener(firebaseAuthListener);
-        if (referenceUser != null)
+        }
+        if (referenceUser != null) {
             referenceUser.removeEventListener(valueEventListener);
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnLogin:
-                signIn();
-                break;
+            case R.id.btnLogin: signIn(); break;
         }
     }
 
     private void signIn() {
-        changeVisibilityButtonToLoad();
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        if(DataBase.getInstancia().isOnline(context)) {
+            changeVisibilityButtonToLoad();
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+        }
+        else {
+            showText(R.string.txtSinConexion);
+        }
     }
 
     @Override
@@ -184,17 +226,19 @@ public class LoginActivity extends AppCompatActivity
         }
         else {
             changeVisibilityLoadToButton();
-            Toast.makeText(LoginActivity.this, R.string.txtErrorLogin, Toast.LENGTH_LONG).show();
-
+            showText(R.string.txtErrorLogin);
         }
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        if (result.isSuccess())
+        int mensaje = R.string.notLogIn;
+        if (result.isSuccess() && DataBase.getInstancia().isOnline(context))
             firebaseAuthWithGoogle(result.getSignInAccount());
         else {
             changeVisibilityLoadToButton();
-            Toast.makeText(this, R.string.notLogIn, Toast.LENGTH_SHORT).show();
+            if(!DataBase.getInstancia().isOnline(context))
+                mensaje = R.string.txtSinConexion;
+            showText(mensaje);
         }
     }
 
@@ -210,15 +254,21 @@ public class LoginActivity extends AppCompatActivity
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount signInAccount) {
         AuthCredential credential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
-        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isSuccessful()) {
-                    changeVisibilityLoadToButton();
-                    Toast.makeText(getApplicationContext(), R.string.notFirebaseAuth, Toast.LENGTH_SHORT).show();
+        if(DataBase.getInstancia().isOnline(context)) {
+            firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (!task.isSuccessful()) {
+                        changeVisibilityLoadToButton();
+                        Toast.makeText(getApplicationContext(), R.string.notLogIn, Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        }
+        else {
+            changeVisibilityLoadToButton();
+            showText(R.string.txtSinConexion);
+        }
     }
 
     private void goMainScreen(boolean mostrarSeccionClub) {
@@ -231,6 +281,11 @@ public class LoginActivity extends AppCompatActivity
         Sesion.getInstancia().setDatosUsuario(usuario);
     }
 
+    private void showText(int idTxt){
+        Toast.makeText(this, idTxt, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
+
 }
