@@ -173,6 +173,9 @@ public class ListaHorariosFragment extends Fragment {
                             esMiCancha(), cancha.getRangoHorario(), hora(getFecha()), primerDia());
                     horariosRecyclerView.setAdapter(horariosAdapter);
                     adapter = horariosAdapter;
+                    for (Alquiler alquiler : alquileresCargados) {
+                        adapter.actualizarLista(alquiler);
+                    }
                 }
             }
 

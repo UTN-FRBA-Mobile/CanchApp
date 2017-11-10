@@ -1,13 +1,22 @@
 package com.santiago.canchaapp.app.viewholder;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.santiago.canchaapp.R;
+import com.santiago.canchaapp.app.otros.TextUtils;
 import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.dominio.Club;
@@ -111,29 +120,69 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         botonReservar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Alquiler alquiler;
-                Reserva reserva = null;
-                Usuario usuario = Sesion.getInstancia().getUsuario();
                 if (esMiCancha) {
-                    // Pedir nombre de persona para la cual se reserva
-                    alquiler = new Alquiler(UUID.randomUUID(), fecha, horario, null, "<alguien>",
-                            cancha, APROBADA, null);
+                    abrirAlertaReservaDuenio(view.getContext(), horario);
                 } else {
                     // Tomar nombre de usuario de la persona
+                    Usuario usuario = Sesion.getInstancia().getUsuario();
                     UUID idAlquiler = UUID.randomUUID();
                     UUID idReserva = UUID.randomUUID();
-                    alquiler = new Alquiler(idAlquiler, fecha, horario, usuario.getUid(), usuario.getNombre(),
+                    Alquiler alquiler = new Alquiler(idAlquiler, fecha, horario, usuario.getUid(), usuario.getNombre(),
                             cancha, PENDIENTE, idReserva);
                     // Además se debe insertar una reserva para luego consultar en mis reservas
-                    reserva = new Reserva(idReserva, usuario, cancha, club, fecha, horario, PENDIENTE, idAlquiler);
+                    Reserva reserva = new Reserva(idReserva, usuario, cancha, club, fecha, horario, PENDIENTE, idAlquiler);
+                    insertarEnFirebase(usuario, alquiler, reserva);
                 }
-                DataBase.getInstancia().insertAlquiler(cancha.getIdClub(), cancha.getUuid(), fecha, alquiler);
-                DataBase.getInstancia().insertAlquilerPorClub(cancha.getIdClub(), alquiler);
-                if (reserva != null) {
-                    DataBase.getInstancia().insertReserva(usuario.getUid(), reserva);
+
+            }
+        });
+    }
+
+    // Pedir nombre de persona para la cual se reserva
+    private void abrirAlertaReservaDuenio(Context context, final Horario horario) {
+        final EditText textInput = new EditText(context);
+        final AlertDialog dialog = new AlertDialog.Builder(context)
+                .setMessage("Ingresa nombre de quien reserva")
+                .setTitle("Nueva reserva")
+                .setView(textInput)
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Nada
+                    }
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Nada
+                    }
+                })
+                .create();
+        dialog.show();
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (TextUtils.estaVacio(textInput.getText().toString())) {
+                    Toast.makeText(view.getContext(), R.string.txtCompletarNombre, Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Alquiler alquiler = new Alquiler(UUID.randomUUID(), fecha, horario, null, textInput.getText().toString(),
+                            cancha, APROBADA, null);
+                    insertarEnFirebase(null, alquiler, null);
+                    dialog.dismiss();
                 }
             }
         });
+
+    }
+
+    private void insertarEnFirebase(Usuario usuario, Alquiler alquiler, Reserva reserva) {
+        DataBase.getInstancia().insertAlquiler(cancha.getIdClub(), cancha.getUuid(), fecha, alquiler);
+        DataBase.getInstancia().insertAlquilerPorClub(cancha.getIdClub(), alquiler);
+        if (reserva != null) {
+            DataBase.getInstancia().insertReserva(usuario.getUid(), reserva);
+        }
     }
 
     private void cargarHorarioReservado(Alquiler alquiler) {

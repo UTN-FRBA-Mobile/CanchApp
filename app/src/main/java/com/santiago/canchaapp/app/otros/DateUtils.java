@@ -76,7 +76,7 @@ public class DateUtils {
     public static int hora(Date fecha) {
         Calendar cal = calendario();
         cal.setTime(fecha);
-        return cal.get(Calendar.HOUR);
+        return cal.get(Calendar.HOUR_OF_DAY);
     }
 
 }
