@@ -11,10 +11,6 @@
             android:icon="@drawable/ic_compras"
             android:title="@string/txtMisReservas" />
         <item
-            android:id="@+id/navMiPerfil"
-            android:icon="@drawable/ic_mi_perfil"
-            android:title="@string/txtMiPerfil" />
-        <item
             android:title="Complejo"
             android:id="@+id/menuComplejo">
             <menu>
