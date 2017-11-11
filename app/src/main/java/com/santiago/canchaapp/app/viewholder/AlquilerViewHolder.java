@@ -142,7 +142,7 @@ public class AlquilerViewHolder extends RecyclerView.ViewHolder {
 
     private void actualizarAlquiler(final Alquiler alquiler, final EstadoReserva nuevoEstado) {
         DataBase.getInstancia().updateEstadoReserva(alquiler.getIdUsuario(), alquiler.getIdReserva(), nuevoEstado);
-        DataBase.getInstancia().updateEstadoAlquiler(alquiler.getIdClub(), alquiler.getIdCancha(), stringToDateToSave(alquiler.getFecha()), alquiler.getUuid(), nuevoEstado);
+        DataBase.getInstancia().updateEstadoAlquiler(alquiler.getIdClub(), alquiler.getIdCancha(), stringToDate(alquiler.getFecha()), alquiler.getUuid(), nuevoEstado);
         DataBase.getInstancia().updateEstadoAlquilerPorClub(alquiler.getIdClub(), alquiler.getUuid(), nuevoEstado);
     }
 
