@@ -169,7 +169,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
 
     private void getInfoClub() {
         Usuario user = Sesion.getInstancia().getUsuario();
-        Boolean tieneClub = user.getIdClub() != null;
+        Boolean tieneClub = user.tieneClub();
         changeItemMenuClub(tieneClub);
         if(!tieneClub) {
             abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB);
