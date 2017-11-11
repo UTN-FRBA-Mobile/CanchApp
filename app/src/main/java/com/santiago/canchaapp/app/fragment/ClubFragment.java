@@ -16,16 +16,14 @@ import butterknife.ButterKnife;
 
 public class ClubFragment extends Fragment {
 
-    @BindView(R.id.container_club)
-    public ViewPager viewPager;
-
-    @BindView(R.id.tabs_club)
-    public TabLayout tabs;
-
     private ClubPageAdapter adapter;
-
     private static String ARG_ID_CLUB = "idClub";
     private static String ARG_MI_CLUB = "esMiClub";
+
+    @BindView(R.id.container_club)
+    public ViewPager viewPager;
+    @BindView(R.id.tabs_club)
+    public TabLayout tabs;
 
     public static ClubFragment nuevaInstancia(String idClub, Boolean esMiClub) {
         ClubFragment fragment = new ClubFragment();
@@ -47,8 +45,9 @@ public class ClubFragment extends Fragment {
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
         String titulo = "Datos del Club";
-        if(esMiClub)
+        if(esMiClub) {
             titulo = "Mi Club";
+        }
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(titulo);
         return view;
     }

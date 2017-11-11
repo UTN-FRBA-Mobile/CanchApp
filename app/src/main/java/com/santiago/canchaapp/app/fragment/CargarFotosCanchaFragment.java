@@ -61,20 +61,15 @@ import static java.util.Collections.singletonList;
 public class CargarFotosCanchaFragment extends Fragment {
 
     private static String APP_DIRECTORY = "Pictures/";
-    private static String MEDIA_DIRECTORY = APP_DIRECTORY + "PictureApp";
-
     private final int MY_PERMISSIONS = 100;
     private final int PHOTO_CODE = 200;
     private final int SELECT_PICTURE = 300;
-
     private String mPath;
     private Uri mCameraTempUri;
-
     private GridView gridview;
     private FotosCanchaAdapter fotosCanchaAdapter;
-
     FloatingActionMenu actionMenu;
-        com.github.clans.fab.FloatingActionButton fbutton1, fbutton2;
+    com.github.clans.fab.FloatingActionButton fbutton1, fbutton2;
 
     @BindView(R.id.fBtnGuardar)
     public FloatingActionButton fbuttonGuardar;
@@ -191,13 +186,6 @@ public class CargarFotosCanchaFragment extends Fragment {
         outState.putString("file_path", mPath);
     }
 
-    //@Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-
-        mPath = savedInstanceState.getString("file_path");
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == Activity.RESULT_OK){
@@ -223,23 +211,6 @@ public class CargarFotosCanchaFragment extends Fragment {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void setLocationImage(String mPath) { //Scan el archivo en la ubicacion y log la URL en el dispositivo.
-        MediaScannerConnection.scanFile(getActivity().getApplicationContext(),
-                new String[]{mPath}, null,
-                new MediaScannerConnection.OnScanCompletedListener() {
-                    @Override
-                    public void onScanCompleted(String path, Uri uri) {
-                        Log.i("ExternalStorage", "Scanned " + path + ":");
-                        Log.i("ExternalStorage", "-> Uri = " + uri);
-                    }
-                });
-    }
-
-    private void setImage(String mPath, ImageView unaImageView) {
-        Bitmap bitmap = BitmapFactory.decodeFile(mPath);
-        unaImageView.setImageBitmap(bitmap);
     }
 
     @Override

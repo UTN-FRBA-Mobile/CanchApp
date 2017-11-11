@@ -74,9 +74,8 @@ public class CanchasFragment extends Fragment {
     }
 
     private void getCanchasClub() {
-        //TODO agregarSpinner
         DatabaseReference refCanchasClub = DataBase.getInstancia().getReferenceCanchasClub(idClub());
-        refCanchasClub.addChildEventListener(new ChildEventListener() {
+        ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 actualizarLista(dataSnapshot);
@@ -91,18 +90,27 @@ public class CanchasFragment extends Fragment {
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                if (databaseError.getCode() != PERMISSION_DENIED)
+                //TODO sacarSpinner
+                if (databaseError.getCode() != PERMISSION_DENIED) {
                     Toast.makeText(getContext(), R.string.txtErrorDescargandoInfo, Toast.LENGTH_LONG).show();
+                }
             }
 
             private void actualizarLista(DataSnapshot snapshotCancha) {
+                //TODO sacarSpinner
                 if(snapshotCancha != null && snapshotCancha.getValue() != null) {
                     Cancha cancha = snapshotCancha.getValue(Cancha.class);
                     adapter.actualizarLista(cancha);
                 }
             }
 
-        });
+        };
+        if(DataBase.getInstancia().isOnline(context)) {
+            //TODO agregarSpinner
+            refCanchasClub.addChildEventListener(childEventListener);
+        } else {
+            showToast(R.string.txtSinConexion);
+        }
     }
 
     private void setAgregarCancha() {
@@ -110,16 +118,18 @@ public class CanchasFragment extends Fragment {
         agregarCancha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(DataBase.getInstancia().isOnline(context))
+                if(DataBase.getInstancia().isOnline(context)) {
                     abrirFragmentSiguiente();
-                else
+                }
+                else {
                     showToast(R.string.txtSinConexion);
+                }
             }
         });
     }
 
     private void showToast(int idTxt) {
-        Toast.makeText(context, idTxt, Toast.LENGTH_SHORT);
+        Toast.makeText(context, idTxt, Toast.LENGTH_SHORT).show();
     }
 
     private void abrirFragmentSiguiente() {

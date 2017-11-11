@@ -51,15 +51,18 @@ import static com.santiago.canchaapp.app.otros.FragmentTags.MI_CLUB;
 import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CLUB;
 
 public class MenuNavegacion extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
+
+    private FirebaseAuth firebaseAuth;
+    private GoogleApiClient googleApiClient;
+    public ActionBarDrawerToggle toggle;
+
     @BindView(R.id.nav_view)
     public NavigationView navigationView;
     @BindView(R.id.drawer_layout)
     public DrawerLayout drawer;
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
-    private FirebaseAuth firebaseAuth;
-    private GoogleApiClient googleApiClient;
-    public ActionBarDrawerToggle toggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,8 +121,6 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
         }
         return true;
     }
-
-
 
     private void abrirFragment(Fragment fragment, FragmentTags tag) {
         getSupportFragmentManager()
