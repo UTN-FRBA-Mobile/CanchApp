@@ -102,7 +102,7 @@ public class CargarFotosCanchaFragment extends Fragment {
                     clickSubMenuGuardar();
                 }
                 else {
-                    Toast.makeText(getActivity().getApplicationContext(), R.string.txtSinConexion, Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.txtSinConexion, Toast.LENGTH_SHORT).show();
                 }
             }
         });

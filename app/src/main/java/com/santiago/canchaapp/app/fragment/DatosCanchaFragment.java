@@ -82,9 +82,6 @@ public class DatosCanchaFragment extends Fragment {
                     .load(R.drawable.cancha_sin_foto)
                     .fit().centerCrop().into(fotoPrincipal);
         }
-
-
-
     }
 
     private Cancha cancha() {
