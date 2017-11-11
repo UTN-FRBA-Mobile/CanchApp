@@ -55,13 +55,13 @@ public class RegistrarClubFragment extends Fragment{
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_registrar_club, container, false);
         ButterKnife.bind(this, view);
-        rangoHorario.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
-            @Override
-            public void valueChanged(Number minValue, Number maxValue) {
-                valorMinimo.setText(String.valueOf(minValue));
-                valorMaximo.setText(String.valueOf(maxValue));
-            }
-        });
+        setRangoHorario();
+        setBtnContinuar();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Registrar club");
+        return view;
+    }
+
+    private void setBtnContinuar() {
         continuar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,13 +70,19 @@ public class RegistrarClubFragment extends Fragment{
                 }
             }
         });
-
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Registrar club");
-
-        return view;
     }
 
-    private boolean validarCampos(Context context) { //quito las validaciones por ahora
+    private void setRangoHorario() {
+        rangoHorario.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
+            @Override
+            public void valueChanged(Number minValue, Number maxValue) {
+                valorMinimo.setText(String.valueOf(minValue));
+                valorMaximo.setText(String.valueOf(maxValue));
+            }
+        });
+    }
+
+    private boolean validarCampos(Context context) {
         if (estaVacio(nombre()) || estaVacio(telefono()) || estaVacio(email())) {
             Toast.makeText(context, R.string.txtCompletarTodosLosCampos, LENGTH_SHORT).show();
             return false;
@@ -90,7 +96,6 @@ public class RegistrarClubFragment extends Fragment{
     private void abrirFragmentSiguiente() {
         Bundle args = getParameters();
         mapClubFragment.setArguments(args);
-
         mapClubFragment.setEnterTransition(new Slide(Gravity.RIGHT));
         mapClubFragment.setExitTransition(new Slide(Gravity.LEFT));
 
@@ -111,7 +116,6 @@ public class RegistrarClubFragment extends Fragment{
     }
 
     // Utils
-
     private String nombre() {
         return txtNombre.getText().toString();
     }
