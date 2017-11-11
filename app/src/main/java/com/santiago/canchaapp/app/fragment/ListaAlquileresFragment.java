@@ -12,33 +12,21 @@ import android.widget.Toast;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.AlquileresAdapter;
-import com.santiago.canchaapp.app.adapter.ReservasAdapter;
 import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
-import com.santiago.canchaapp.app.otros.DateUtils;
 import com.santiago.canchaapp.app.otros.TipoReservas;
 import com.santiago.canchaapp.dominio.Alquiler;
-import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
-import com.santiago.canchaapp.dominio.Reserva;
-import com.santiago.canchaapp.servicios.Servidor;
 import com.santiago.canchaapp.servicios.Sesion;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.google.firebase.database.DatabaseError.PERMISSION_DENIED;
 import static com.santiago.canchaapp.app.otros.AccionesSobreReserva.NINGUNA;
-import static com.santiago.canchaapp.app.otros.AccionesSobreReserva.SOLO_CANCELAR;
 import static com.santiago.canchaapp.app.otros.AccionesSobreReserva.TODAS;
-import static com.santiago.canchaapp.app.otros.TipoReservas.APROBADAS;
 import static com.santiago.canchaapp.app.otros.TipoReservas.PENDIENTES;
 import static com.santiago.canchaapp.app.otros.TipoReservas.valueOf;
 

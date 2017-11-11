@@ -22,7 +22,6 @@ import com.santiago.canchaapp.app.otros.TipoReservas;
 import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
 import com.santiago.canchaapp.dominio.Reserva;
-import com.santiago.canchaapp.servicios.Servidor;
 import com.santiago.canchaapp.servicios.Sesion;
 
 import java.io.Serializable;

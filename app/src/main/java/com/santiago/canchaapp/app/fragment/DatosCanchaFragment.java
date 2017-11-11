@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.dominio.Cancha;
-import com.santiago.canchaapp.servicios.Servidor;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;

@@ -21,9 +21,6 @@ import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.CanchasAdapter;
 import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.dominio.DataBase;
-import com.santiago.canchaapp.servicios.Servidor;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

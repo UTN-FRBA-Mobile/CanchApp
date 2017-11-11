@@ -17,18 +17,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.santiago.canchaapp.LoginActivity;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.HorariosAdapter;
-import com.santiago.canchaapp.app.otros.DateUtils;
 import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
-import com.santiago.canchaapp.dominio.Horario;
-import com.santiago.canchaapp.servicios.Servidor;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
