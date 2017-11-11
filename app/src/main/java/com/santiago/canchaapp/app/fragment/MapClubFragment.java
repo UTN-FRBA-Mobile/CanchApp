@@ -257,6 +257,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
                 .replace(R.id.content_frame, miClub, MI_CLUB.toString())
                 .addToBackStack(null)
                 .commit();
+
     }
 
     private void insertClub() {
@@ -272,7 +273,6 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
                 usuario.setHorarioClub(club.getRangoHorario());
                 showToast("Tu Club ha sido guardado correctamente.");
                 abrirFragmentSiguiente(club.getUuid());
-
             }
             catch (Exception e){
                 showToast("Se produjo un problema al guardar el club.");

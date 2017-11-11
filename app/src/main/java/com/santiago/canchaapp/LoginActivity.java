@@ -222,6 +222,7 @@ public class LoginActivity extends AppCompatActivity
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
+        changeVisibilityButtonToLoad();
         int mensaje = R.string.notLogIn;
         if (result.isSuccess() && DataBase.getInstancia().isOnline(context))
             firebaseAuthWithGoogle(result.getSignInAccount());
@@ -245,6 +246,7 @@ public class LoginActivity extends AppCompatActivity
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount signInAccount) {
         AuthCredential credential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
+        changeVisibilityButtonToLoad();
         if(DataBase.getInstancia().isOnline(context)) {
             firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
