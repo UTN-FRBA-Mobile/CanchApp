@@ -1,5 +1,6 @@
 package com.santiago.canchaapp.app.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -33,18 +34,15 @@ import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHA;
 public class CanchasFragment extends Fragment {
 
     private static String ARG_ID_CLUB = "idClub";
-
     private static String ARG_MI_CLUB = "esMiClub";
-
+    private RecyclerView.LayoutManager layoutManager;
+    private CanchasAdapter adapter;
+    private Context context;
     @BindView(R.id.recycler_view_canchas)
     public RecyclerView canchasRecyclerView;
-
     @BindView(R.id.fab)
-    public FloatingActionButton fab;
+    public FloatingActionButton agregarCancha;
 
-    private RecyclerView.LayoutManager layoutManager;
-
-    private CanchasAdapter adapter;
 
     public static CanchasFragment nuevaInstancia(String idClub, Boolean esMiClub) {
         CanchasFragment fragment = new CanchasFragment();
@@ -60,6 +58,7 @@ public class CanchasFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_canchas, container, false);
         ButterKnife.bind(this, rootView);
+        context = getActivity().getApplicationContext();
 
         // Recycler view
         layoutManager = new LinearLayoutManager(getActivity());
@@ -69,6 +68,13 @@ public class CanchasFragment extends Fragment {
         adapter = new CanchasAdapter(getContext(), esMiClub());
         canchasRecyclerView.setAdapter(adapter);
 
+        getCanchasClub();
+        setAgregarCancha();
+        return rootView;
+    }
+
+    private void getCanchasClub() {
+        //TODO agregarSpinner
         DatabaseReference refCanchasClub = DataBase.getInstancia().getReferenceCanchasClub(idClub());
         refCanchasClub.addChildEventListener(new ChildEventListener() {
             @Override
@@ -97,16 +103,23 @@ public class CanchasFragment extends Fragment {
             }
 
         });
+    }
 
-        fab.setVisibility(esMiClub() ? View.VISIBLE : View.GONE);
-        fab.setOnClickListener(new View.OnClickListener() {
+    private void setAgregarCancha() {
+        agregarCancha.setVisibility(esMiClub() ? View.VISIBLE : View.GONE);
+        agregarCancha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                abrirFragmentSiguiente();
+                if(DataBase.getInstancia().isOnline(context))
+                    abrirFragmentSiguiente();
+                else
+                    showToast(R.string.txtSinConexion);
             }
         });
+    }
 
-        return rootView;
+    private void showToast(int idTxt) {
+        Toast.makeText(context, idTxt, Toast.LENGTH_SHORT);
     }
 
     private void abrirFragmentSiguiente() {
@@ -117,10 +130,6 @@ public class CanchasFragment extends Fragment {
                 .replace(R.id.club_layout, agregarCanchaFragment, REGISTRAR_CANCHA.toString())
                 .addToBackStack(null)
                 .commit();
-    }
-
-    private List<Cancha> canchas() {
-        return Servidor.instancia().getCanchasPrueba(getArguments().getString(ARG_ID_CLUB));
     }
 
     private boolean esMiClub() {

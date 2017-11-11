@@ -22,22 +22,16 @@ import static android.view.View.GONE;
 public class DatosCanchaFragment extends Fragment {
 
     private static String ARG_CANCHA = "cancha";
-
     @BindView(R.id.foto_principal)
     public ImageView fotoPrincipal;
-
     @BindView(R.id.nombre)
     public TextView textoNombre;
-
     @BindView(R.id.tipo)
     public TextView textoTipo;
-
     @BindView(R.id.superficie)
     public TextView textoSuperficie;
-
     @BindView(R.id.extra)
     public TextView textoExtra;
-
     @BindView(R.id.fotos)
     public LinearLayout fotos;
 
@@ -59,7 +53,6 @@ public class DatosCanchaFragment extends Fragment {
     }
 
     private void cargarVista(LayoutInflater inflater, View view, Cancha cancha) {
-        // Setea textos
         textoNombre.setText(cancha.getNombre());
         textoTipo.setText(cancha.getTipoCancha().nombre);
         textoSuperficie.setText(view.getResources().getString(R.string.txtCanchaSuperficie, cancha.getSuperficie().nombre));
@@ -69,7 +62,6 @@ public class DatosCanchaFragment extends Fragment {
             textoExtra.setVisibility(GONE);
         }
 
-        // Setea imagen
         if (cancha.tieneFotos()) {
             Picasso.with(view.getContext())
                     .load(cancha.getFotoPrincipalUrl())
@@ -81,7 +73,6 @@ public class DatosCanchaFragment extends Fragment {
                     .fit().centerCrop().into(fotoPrincipal);
         }
 
-        // Setea resto de las imagenes
         for (String foto : cancha.getFotosUrls()) {
             View fotosView = inflater.inflate(R.layout.item_foto_cancha, fotos, false);
             ImageView fotoView = fotosView.findViewById(R.id.foto_cancha_item);
