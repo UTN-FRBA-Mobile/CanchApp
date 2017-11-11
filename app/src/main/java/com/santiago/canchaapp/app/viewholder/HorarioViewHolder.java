@@ -1,6 +1,7 @@
 package com.santiago.canchaapp.app.viewholder;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +14,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +44,6 @@ import static android.support.v7.app.AlertDialog.Builder;
 import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.santiago.canchaapp.app.otros.DateUtils.textoHorario;
 import static com.santiago.canchaapp.dominio.EstadoReserva.APROBADA;
 import static com.santiago.canchaapp.dominio.EstadoReserva.CANCELADA;
@@ -52,57 +51,47 @@ import static com.santiago.canchaapp.dominio.EstadoReserva.PENDIENTE;
 
 public class HorarioViewHolder extends RecyclerView.ViewHolder {
 
+    private View view;
+    private Cancha cancha;
+    private Club club;
+    private boolean esMiCancha;
+    private final Date fecha;
+    private final Activity activity;
+    private final Context context;
+
     @BindView(R.id.horario)
     public TextView horario;
 
     // Horario reservado
-
     @BindView(R.id.layout_horario_reservado)
     public LinearLayout layoutHorarioReservado;
-
     @BindView(R.id.estado_reserva)
     public TextView estadoReserva;
-
     @BindView(R.id.usuario_reserva)
     public TextView usuarioReserva;
-
     @BindView(R.id.boton_aprobar_reserva)
     public ImageView botonAprobar;
-
     @BindView(R.id.boton_cancelar_reserva)
     public ImageView botonCancelar;
-
     @BindView(R.id.layout_texto_reserva)
     public LinearLayout layoutTextoReserva;
 
     // Horario Libre
-
     @BindView(R.id.layout_horario_libre)
     public LinearLayout layoutHorarioLibre;
-
     @BindView(R.id.boton_reservar)
     public Button botonReservar;
 
     // Bloqueo (hora pasada)
-
     @BindView(R.id.bloqueo)
     public LinearLayout layoutBloqueo;
 
-    private View view;
 
-    private Cancha cancha;
-
-    private Club club;
-
-    private boolean esMiCancha;
-
-    private final Date fecha;
-
-    private final Activity activity;
 
     public HorarioViewHolder(Activity activity, View v, Cancha cancha, Club club, boolean esMiCancha, Date fecha) {
         super(v);
         this.activity = activity;
+        this.context = activity.getApplicationContext();
         this.view = v;
         this.cancha = cancha;
         this.club = club;
@@ -130,18 +119,23 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         botonReservar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (esMiCancha) {
-                    abrirAlertaReservaDuenio(activity, horario);
-                } else {
-                    // Tomar nombre de usuario de la persona
-                    Usuario usuario = Sesion.getInstancia().getUsuario();
-                    UUID idAlquiler = UUID.randomUUID();
-                    UUID idReserva = UUID.randomUUID();
-                    Alquiler alquiler = new Alquiler(idAlquiler, fecha, horario, usuario.getUid(), usuario.getNombre(),
-                            cancha, PENDIENTE, idReserva);
-                    // Además se debe insertar una reserva para luego consultar en mis reservas
-                    Reserva reserva = new Reserva(idReserva, usuario, cancha, club, fecha, horario, PENDIENTE, idAlquiler);
-                    insertarEnFirebase(usuario, alquiler, reserva);
+                if(DataBase.getInstancia().isOnline(context)) {
+                    if (esMiCancha) {
+                        abrirAlertaReservaDuenio(activity, horario);
+                    } else {
+                        // Tomar nombre de usuario de la persona
+                        Usuario usuario = Sesion.getInstancia().getUsuario();
+                        UUID idAlquiler = UUID.randomUUID();
+                        UUID idReserva = UUID.randomUUID();
+                        Alquiler alquiler = new Alquiler(idAlquiler, fecha, horario, usuario.getUid(), usuario.getNombre(),
+                                cancha, PENDIENTE, idReserva);
+                        // Además se debe insertar una reserva para luego consultar en mis reservas
+                        Reserva reserva = new Reserva(idReserva, usuario, cancha, club, fecha, horario, PENDIENTE, idAlquiler);
+                        insertarEnFirebase(usuario, alquiler, reserva);
+                    }
+                }
+                else {
+                    Toast.makeText(context, R.string.txtSinConexion, Toast.LENGTH_SHORT);
                 }
 
             }

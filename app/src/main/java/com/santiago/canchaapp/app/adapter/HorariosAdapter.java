@@ -27,23 +27,14 @@ import static com.santiago.canchaapp.dominio.Horario.horaDesde;
 public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
 
     private Activity activity;
-
     private List<SlotHorarioAlquiler> horarios;
-
     private List<Alquiler> alquileres;
-
     private Cancha cancha;
-
     private Club club;
-
     private Date fecha;
-
     private boolean esMiCancha;
-
     private Horario rangoHorario;
-
     private int horaActual;
-
     private boolean primerDia;
 
     public HorariosAdapter(Activity activity, Cancha cancha, Club club, Date fecha, boolean esMiCancha, Horario rangoHorario, int horaActual, boolean primerDia) {
@@ -61,7 +52,7 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
 
     public void actualizarLista(Alquiler alquilerActualizado) {
         if (!rangoHorario.contiene(alquilerActualizado.getHora())) {
-             return; // El alquiler ya no debe mostrarse (ej.: pasó la hora)
+             return;
         }
         actualizarAlquileres(alquilerActualizado);
         horarios.clear();
@@ -91,7 +82,6 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
         return horarios.size();
     }
 
-    // Para prevenir bug de items duplicados al scrollear
     @Override
     public long getItemId(int position) {
         return position;
@@ -103,7 +93,6 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
     }
 
     // Auxiliar
-
     private List<SlotHorarioAlquiler> generarListaDeHorarios(Horario rangoHorario, List<Alquiler> alquileres) {
         List<SlotHorarioAlquiler> horarios = new ArrayList<>();
         for (int h = rangoHorario.getDesde(); h < rangoHorario.getHasta(); h++) {

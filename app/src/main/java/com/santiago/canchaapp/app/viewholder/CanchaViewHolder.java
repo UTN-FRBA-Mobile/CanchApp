@@ -18,24 +18,19 @@ import static android.view.View.GONE;
 
 public class CanchaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+    private View view;
+    private CanchasAdapter adapter;
+
     @BindView(R.id.cancha_foto)
     public ImageView imagenCancha;
-
     @BindView(R.id.cancha_nombre)
     public TextView textoNombre;
-
     @BindView(R.id.cancha_superficie)
     public TextView textoSuperficie;
-
     @BindView(R.id.cancha_extra)
     public TextView textoExtra;
-
     @BindView(R.id.item_contenido_cancha)
     public LinearLayout contenido;
-
-    private View view;
-
-    private CanchasAdapter adapter;
 
     public CanchaViewHolder(View v, CanchasAdapter adapter) {
         super(v);
