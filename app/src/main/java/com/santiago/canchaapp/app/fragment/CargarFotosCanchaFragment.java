@@ -14,8 +14,6 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -30,7 +28,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import android.support.design.widget.FloatingActionButton;
@@ -47,9 +44,10 @@ import com.santiago.canchaapp.dominio.TipoCancha;
 import com.santiago.canchaapp.dominio.TipoSuperficie;
 import com.santiago.canchaapp.servicios.Sesion;
 
-import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -173,32 +171,18 @@ public class CargarFotosCanchaFragment extends Fragment {
             return;
         }
 
-        File folder = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
-        boolean isDirectoryCreated = folder.exists();
+          SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss", java.util.Locale.getDefault());
+          String date = dateFormat.format(new Date());
+          String imageName = date + ".jpg";
 
-        if(!isDirectoryCreated) {
-            isDirectoryCreated = folder.mkdirs();
-            Toast.makeText(getActivity(), "La carpeta se ha creado correctamente.", Toast.LENGTH_SHORT).show();}
+          ContentValues values = new ContentValues(1);
+          values.put(MediaStore.Images.Media.MIME_TYPE, imageName);
+          mCameraTempUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
-        if(isDirectoryCreated){
-            Long timestamp = System.currentTimeMillis() / 1000;
-            String imageName = timestamp.toString() + ".jpg";
-
-            //mPath = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY
-              //      + File.separator + imageName;
-
-            ContentValues values = new ContentValues(1);
-            //values.put(MediaStore.Images.Media.MIME_TYPE, imageName);
-            mCameraTempUri = getActivity().getContentResolver()
-                    .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-            //File newFile = new File(mPath);
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, mCameraTempUri);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            startActivityForResult(intent, opcionCamera);
-        }
+          Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+          intent.putExtra(MediaStore.EXTRA_OUTPUT, mCameraTempUri);
+          intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+          startActivityForResult(intent, opcionCamera);
     }
 
     @Override
@@ -220,10 +204,6 @@ public class CargarFotosCanchaFragment extends Fragment {
             List<Uri> selectedImages = new ArrayList<>();
             switch (requestCode){
                 case PHOTO_CODE:
-                    //setLocationImage(mPath);
-                    //setImage(mPath, imageViewPruebaCamara);
-                    //File file = new File(mPath);
-                    //Uri uri = Uri.fromFile(file);
                     selectedImages.add(mCameraTempUri);
                     fotosCanchaAdapter.agregarFotos(selectedImages);
                     break;
