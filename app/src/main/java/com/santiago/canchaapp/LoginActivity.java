@@ -200,14 +200,22 @@ public class LoginActivity extends AppCompatActivity
     }
 
     private void signIn() {
-        if(DataBase.getInstancia().isOnline(context)) {
-            changeVisibilityButtonToLoad();
-            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-            startActivityForResult(signInIntent, RC_SIGN_IN);
-        }
-        else {
+        changeVisibilityButtonToLoad();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (DataBase.getInstancia().isOnline(context)) {
+            if(user != null) {
+                showActivityFinal(user);
+            }
+            else {
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            }
+        } else {
+            changeVisibilityLoadToButton();
             showText(R.string.txtSinConexion);
         }
+
+
     }
 
     @Override

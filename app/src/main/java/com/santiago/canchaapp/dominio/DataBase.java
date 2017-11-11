@@ -137,7 +137,7 @@ public class DataBase {
                 activity.runOnUiThread(task);
             }
         };
-        timer.schedule(timerTask, 30000L);
+        timer.schedule(timerTask, 60000L);
     }
 
 }
