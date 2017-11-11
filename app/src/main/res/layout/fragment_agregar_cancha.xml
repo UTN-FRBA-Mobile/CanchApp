@@ -59,7 +59,8 @@
                 android:id="@+id/spinnerDeporte"
                 android:layout_marginStart="25dp"
                 android:layout_marginLeft="25dp"
-                style="@style/spinner" />
+                style="@style/spinner"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -93,7 +94,8 @@
                     android:textColor="@color/colorText"
                     android:text="Techada"
                     android:layout_marginStart="4dp"
-                    android:layout_marginLeft="4dp" />
+                    android:layout_marginLeft="4dp"
+                />
             <Switch
                 android:id="@+id/switchTechada"
                 android:layout_gravity="right"

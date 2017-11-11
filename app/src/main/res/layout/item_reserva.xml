@@ -17,7 +17,8 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/texto_reserva"
             android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:layout_weight="0.85"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center_vertical">
 
@@ -52,32 +53,18 @@
 
         </LinearLayout>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="horizontal"
-            android:layout_weight="0.5"
+        <ImageView
+            android:id="@+id/boton_cancelar_reserva"
+            android:layout_height="wrap_content"
+            android:maxHeight="40dp"
+            android:layout_weight="0.15"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical">
-
-            <Button
-                android:id="@+id/boton_aprobar_reserva"
-                style="@style/btnAprobarReserva"
-                android:text="@string/btnAprobarReserva"
-                android:layout_margin="3dp"
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
-                android:visibility="gone"/>
-
-            <Button
-                android:id="@+id/boton_cancelar_reserva"
-                style="@style/btnCancelarReserva"
-                android:text="@string/btnCancelarReserva"
-                android:layout_margin="3dp"
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
-                android:visibility="gone"/>
-
-        </LinearLayout>
+            android:adjustViewBounds="true"
+            android:src="@drawable/cancelar_reserva"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

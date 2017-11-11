@@ -38,6 +38,7 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.support.v7.app.AlertDialog.*;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -128,7 +129,7 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 if (esMiCancha) {
-                    abrirAlertaReservaDuenio(view.getContext(), horario);
+                    abrirAlertaReservaDuenio(activity, horario);
                 } else {
                     // Tomar nombre de usuario de la persona
                     Usuario usuario = Sesion.getInstancia().getUsuario();
@@ -146,12 +147,12 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
     }
 
     // Pedir nombre de persona para la cual se reserva
-    private void abrirAlertaReservaDuenio(Context context, final Horario horario) {
-        final EditText textInput = new EditText(context);
-        final AlertDialog dialog = new AlertDialog.Builder(context)
+    private void abrirAlertaReservaDuenio(Activity activity, final Horario horario) {
+        final View viewDialogo = activity.getLayoutInflater().inflate(R.layout.dialogo_ingresar_nombre, null);
+        final AlertDialog dialog = new Builder(activity)
                 .setTitle("Nueva reserva")
-                .setMessage("Ingresa nombre de quien reserva")
-                .setView(textInput)
+                .setMessage("Ingresá el nombre de quien reserva")
+                .setView(viewDialogo)
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // Nada
@@ -164,12 +165,13 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
                 })
                 .create();
         dialog.show();
-        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        Button positiveButton = dialog.getButton(BUTTON_POSITIVE);
         positiveButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
+                EditText textInput = viewDialogo.findViewById(R.id.txtNombre);
                 if (TextUtils.estaVacio(textInput.getText().toString())) {
                     Toast.makeText(view.getContext(), R.string.txtCompletarNombre, Toast.LENGTH_LONG).show();
                 }
@@ -183,17 +185,17 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    private void confirmarAccion(Context context, final Alquiler alquiler, final EstadoReserva nuevoEstado) {
-        final CheckBox checkBox = new CheckBox(context);
-        checkBox.setText("No volver a mostrar");
-        final AlertDialog dialog = new AlertDialog.Builder(context)
+    private void confirmarAccion(final Activity activity, final Alquiler alquiler, final EstadoReserva nuevoEstado) {
+        final View viewDialogo = activity.getLayoutInflater().inflate(R.layout.dialogo_confirmar_reserva, null);
+        final AlertDialog dialog = new Builder(activity)
                 .setTitle("Confirmar acción")
-                .setMessage("¿Estás seguro que deseas " +
+                .setMessage("¿Estás seguro que querés " +
                         (nuevoEstado == APROBADA ? "aprobar" : "cancelar") + " esta reserva?" )
-                .setView(checkBox)
+                .setView(viewDialogo)
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         actualizarReserva(alquiler, nuevoEstado);
+                        CheckBox checkBox = viewDialogo.findViewById(R.id.checkboxNoMostrar);
                         if (checkBox.isChecked()) {
                             Preferencias.getInstancia().deshabilitarConfirmacionReservas(activity);
                         }
@@ -254,7 +256,7 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 if (esMiCancha && Preferencias.getInstancia().confirmacionHabilitada(activity)) {
-                    confirmarAccion(view.getContext(), alquiler, CANCELADA);
+                    confirmarAccion(activity, alquiler, CANCELADA);
                 } else {
                     actualizarReserva(alquiler, CANCELADA);
                 }
@@ -267,7 +269,7 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 if (esMiCancha && Preferencias.getInstancia().confirmacionHabilitada(activity)) {
-                    confirmarAccion(view.getContext(), alquiler, APROBADA);
+                    confirmarAccion(activity, alquiler, APROBADA);
                 } else {
                     actualizarReserva(alquiler, APROBADA);
                 }

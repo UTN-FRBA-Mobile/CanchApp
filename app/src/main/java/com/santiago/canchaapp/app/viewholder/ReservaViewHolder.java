@@ -3,6 +3,7 @@ package com.santiago.canchaapp.app.viewholder;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
@@ -17,7 +18,9 @@ import butterknife.ButterKnife;
 
 import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static com.santiago.canchaapp.app.otros.DateUtils.stringToDate;
 import static com.santiago.canchaapp.app.otros.DateUtils.stringToDateToSave;
+import static com.santiago.canchaapp.app.otros.DateUtils.textoDia;
 import static com.santiago.canchaapp.dominio.EstadoReserva.CANCELADA;
 import static com.santiago.canchaapp.dominio.Horario.*;
 
@@ -35,11 +38,8 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.reserva_motivo_cancelacion)
     public TextView textMotivoCancelacion;
 
-    @BindView(R.id.boton_aprobar_reserva)
-    public Button botonAprobar;
-
     @BindView(R.id.boton_cancelar_reserva)
-    public Button botonCancelar;
+    public ImageView botonCancelar;
 
     @BindView(R.id.texto_reserva)
     public LinearLayout textoReserva;
@@ -51,27 +51,24 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
 
     public void cargarDatosEnVista(Reserva reserva, AccionesSobreReserva acciones) {
         // Setear textos
-        textoClub.setText(reserva.getTipoCancha().nombre + " - " + reserva.getNombreClub());
+        textoClub.setText(reserva.getNombreCancha() + ", " + reserva.getNombreClub() + " (" +
+                reserva.getTipoCancha().nombre + ")");
+        textoHora.setText(textoDia(stringToDateToSave(reserva.getFecha())) + ", " + horaDesde(reserva.getHora()));
         textoDireccion.setText(reserva.getDireccionClub());
-        textoHora.setText(reserva.getFecha() + ", " + horaDesde(reserva.getHora()));
         // Setear botones
         switch (acciones) {
             case SOLO_CANCELAR:
-                mostrarBotones(1.25f, botonCancelar);
-                setearListenerCancelacion(reserva);
-                break;
-            case TODAS: mostrarBotones(0.5f, botonAprobar, botonCancelar);
+                mostrarBotones(botonCancelar);
                 setearListenerCancelacion(reserva);
                 break;
         }
     }
 
-    private void mostrarBotones(float tamanioLayout, Button... botones) {
-        for(Button boton : botones) {
+    private void mostrarBotones(ImageView... botones) {
+        for(ImageView boton : botones) {
             boton.setVisibility(VISIBLE);
         }
-        textoReserva.setLayoutParams(
-                new LayoutParams(0, WRAP_CONTENT, tamanioLayout));
+        textoReserva.setLayoutParams(new LayoutParams(0, WRAP_CONTENT, 1));
     }
 
     private void setearListenerCancelacion(final Reserva reserva) {

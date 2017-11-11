@@ -1,5 +1,7 @@
 package com.santiago.canchaapp.app.otros;
 
+import android.text.*;
+
 import com.santiago.canchaapp.dominio.Horario;
 
 import java.text.DateFormat;
@@ -34,7 +36,9 @@ public class DateUtils {
     }
 
     public static String textoDia(Date dia) {
-        return FORMATO_SEMANA.format(dia) + " " + FORMATO_DIA.format(dia);
+        String texto = FORMATO_SEMANA.format(dia) + " " + FORMATO_DIA.format(dia);
+        String letraInicial = android.text.TextUtils.substring(texto, 0, 1).toUpperCase();
+        return texto.replaceFirst(letraInicial.toLowerCase(), letraInicial);
     }
 
     public static String dateToString(Date dia) {
@@ -70,7 +74,14 @@ public class DateUtils {
         } catch (ParseException e) {
             throw new RuntimeException("La fecha está mal cargada");
         }
+    }
 
+    public static Date stringToDate(String fecha) {
+        try {
+            return FORMATO_DIA_COMPLETO.parse(fecha);
+        } catch (ParseException e) {
+            throw new RuntimeException("La fecha está mal cargada");
+        }
     }
 
     public static int hora(Date fecha) {
