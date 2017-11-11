@@ -77,15 +77,14 @@ public class AlquilerViewHolder extends RecyclerView.ViewHolder {
         // Setear textos
         textoClub.setText(alquiler.getNombreCancha() + " (" + alquiler.getTipoCancha().nombre + ")");
         textoHora.setText(textoDia(stringToDate(alquiler.getFecha())) + ", " + horaDesde(alquiler.getHora()));
-
         textoNombreUsuario.setText(textoUsuario(alquiler));
         // Setear botones
         switch (acciones) {
             case SOLO_CANCELAR:
-                mostrarBotones(1.25f, botonCancelar);
+                mostrarBotones(botonCancelar);
                 setearListenerCancelacion(alquiler);
                 break;
-            case TODAS: mostrarBotones(1f, botonAprobar, botonCancelar);
+            case TODAS: mostrarBotones(botonAprobar, botonCancelar);
                 setearListenerCancelacion(alquiler);
                 setearListenerAprobacion(alquiler);
                 break;
@@ -96,15 +95,16 @@ public class AlquilerViewHolder extends RecyclerView.ViewHolder {
         SpannableString nombre = new SpannableString(alquiler.getNombreUsuario());
         nombre.setSpan(new StyleSpan(BOLD), 0, nombre.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
         SpannableStringBuilder builder = new SpannableStringBuilder()
-                .append((alquiler.esUsuarioRegistrado() ? "por " : "para "))
+                .append((alquiler.esUsuarioRegistrado() ? "Por " : "Para "))
                 .append(nombre);
         return builder;
     }
 
-    private void mostrarBotones(float tamanioLayout, ImageView... botones) {
+    private void mostrarBotones(ImageView... botones) {
         for(ImageView boton : botones) {
             boton.setVisibility(VISIBLE);
         }
+        textoAlquiler.setLayoutParams(new LayoutParams(0, WRAP_CONTENT, 1));
     }
 
     private void setearListenerCancelacion(final Alquiler alquiler) {
