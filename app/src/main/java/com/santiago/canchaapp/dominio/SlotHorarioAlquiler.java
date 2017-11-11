@@ -1,7 +1,5 @@
 package com.santiago.canchaapp.dominio;
 
-import static com.santiago.canchaapp.dominio.EstadoReserva.PENDIENTE;
-
 public class SlotHorarioAlquiler {
 
     private Horario horario;
@@ -23,10 +21,6 @@ public class SlotHorarioAlquiler {
 
     public boolean estaLibre() {
         return alquiler == null;
-    }
-
-    public boolean estaPendienteDeAprobacion() {
-        return alquiler.getEstado() == PENDIENTE;
     }
 
 }

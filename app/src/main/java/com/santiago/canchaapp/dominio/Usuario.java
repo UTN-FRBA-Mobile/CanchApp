@@ -44,8 +44,5 @@ public class Usuario {
     public Boolean esMiClub(String idClub){
         return Objects.equals(this.idClub, idClub);
     }
-
-    public boolean tieneClub() {
-        return idClub != null && !idClub.isEmpty();
-    }
+    public boolean tieneClub() { return idClub != null && !idClub.isEmpty(); }
 }
