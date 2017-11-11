@@ -1,6 +1,5 @@
 package com.santiago.canchaapp.app.fragment;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.location.Address;
@@ -14,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Slide;
 import android.view.Gravity;
@@ -34,8 +32,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
@@ -54,7 +50,6 @@ import butterknife.ButterKnife;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
-import static android.widget.Toast.LENGTH_SHORT;
 import static com.google.android.gms.location.places.AutocompleteFilter.TYPE_FILTER_ADDRESS;
 import static com.santiago.canchaapp.app.otros.FragmentTags.MI_CLUB;
 import static com.santiago.canchaapp.app.otros.TextUtils.textoOVacio;
@@ -65,16 +60,13 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static final int ZOOM_PUNTO_INICIAL = 11;
     private static final int ZOOM = 15;
-
     private Activity activity;
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
     private PlaceAutocompleteFragment autocompleteFragment;
-
     private LatLng ubicacion;
-
     @BindView(R.id.fab)
-    public FloatingActionButton fab;
+    public FloatingActionButton guardar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,20 +76,33 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         inicializarBuscador();
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_club);
         ButterKnife.bind(this, view);
+        setGuardar();
+        ((AppCompatActivity) activity).getSupportActionBar().setTitle("Seleccionar ubicación");
+        return view;
+    }
 
-        fab.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onStart() {
+        super.onStart();
+        mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        inicializarUbicacion();
+    }
+    private void setGuardar() {
+        guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            if (ubicacion != null)
-                insertClub();
-            else
-                Toast.makeText(activity.getApplicationContext(), R.string.txtSeleccionarClub, Toast.LENGTH_SHORT).show();
+                if (ubicacion != null) {
+                    insertClub();
+                } else {
+                    Toast.makeText(activity.getApplicationContext(), R.string.txtSeleccionarClub, Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Seleccionar ubicación");
-
-        return view;
     }
 
     private void inicializarBuscador() {
@@ -115,27 +120,16 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
             }
 
             @Override
-            public void onError(Status status) {
-                Toast.makeText(activity.getApplicationContext(), status.toString(), LENGTH_SHORT).show();
-            }
+            public void onError(Status status) { showToast(status.toString()); }
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mapFragment.getMapAsync(this);
-    }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        inicializarUbicacion();
-    }
 
     private void inicializarUbicacion() {
-        if(ubicacion == null)
+        if(ubicacion == null) {
             pedirUbicacionActual();
+        }
         else {
             setearUbicacion(ubicacion, ZOOM);
         }
@@ -149,8 +143,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
 
     private void actualizarMapa(LatLng ubicacionLatLng, float zoom) {
         mMap.clear();
-        mMap.addMarker(new MarkerOptions().position(ubicacionLatLng)
-                .title(getResources().getString(R.string.txtTituloMarcadorMapaClub)));
+        mMap.addMarker(new MarkerOptions().position(ubicacionLatLng).title(getResources().getString(R.string.txtTituloMarcadorMapaClub)));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionLatLng, zoom));
     }
 
@@ -158,7 +151,6 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         if (autocompleteFragment.isVisible()) {
             autocompleteFragment.setText(direccion);
         }
-
     }
 
     private void ponerMapaEnUbicacionDefault() {
@@ -244,7 +236,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
                 else {
                     ponerMapaEnUbicacionDefault();
                 }
-            break;
+                break;
             default: ponerMapaEnUbicacionDefault(); break;
         }
     }
@@ -282,7 +274,6 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
 
     private void showToast(String mensaje){
         Toast.makeText(getActivity().getApplicationContext(),mensaje, Toast.LENGTH_LONG).show();
-
     }
 
     @NonNull

@@ -98,7 +98,6 @@ public class RegistrarClubFragment extends Fragment{
         mapClubFragment.setArguments(args);
         mapClubFragment.setEnterTransition(new Slide(Gravity.RIGHT));
         mapClubFragment.setExitTransition(new Slide(Gravity.LEFT));
-
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_frame, mapClubFragment, MAP_CLUB.toString())
