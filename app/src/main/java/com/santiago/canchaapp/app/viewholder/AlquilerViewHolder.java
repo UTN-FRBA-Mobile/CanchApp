@@ -11,6 +11,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.StyleSpan;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -139,17 +140,18 @@ public class AlquilerViewHolder extends RecyclerView.ViewHolder {
         DataBase.getInstancia().updateEstadoAlquilerPorClub(alquiler.getIdClub(), alquiler.getUuid(), nuevoEstado);
     }
 
-    private void confirmarAccion(Context context, final Alquiler alquiler, final EstadoReserva nuevoEstado) {
-        final CheckBox checkBox = new CheckBox(context);
-        checkBox.setText("No volver a mostrar");
-        final AlertDialog dialog = new AlertDialog.Builder(context)
+    private void confirmarAccion(final Activity activity, final Alquiler alquiler, final EstadoReserva nuevoEstado) {
+        final View viewDialogo = activity.getLayoutInflater().inflate(R.layout.dialogo_confirmar_reserva, null);
+        // Set diálogo
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
                 .setTitle("Confirmar acción")
-                .setMessage("¿Estás seguro que deseas " +
+                .setMessage("¿Estás seguro que querés " +
                         (nuevoEstado == APROBADA ? "aprobar" : "cancelar") + " este alquiler?" )
-                .setView(checkBox)
+                .setView(viewDialogo)
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         actualizarAlquiler(alquiler, nuevoEstado);
+                        CheckBox checkBox = viewDialogo.findViewById(R.id.checkboxNoMostrar);
                         if (checkBox.isChecked()) {
                             Preferencias.getInstancia().deshabilitarConfirmacionReservas(activity);
                         }
