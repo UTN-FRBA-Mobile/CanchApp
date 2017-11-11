@@ -3,16 +3,11 @@ package com.santiago.canchaapp;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -24,7 +19,6 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.common.data.BitmapTeleporter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -39,9 +33,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.santiago.canchaapp.dominio.DataBase;
 import com.santiago.canchaapp.dominio.Usuario;
 import com.santiago.canchaapp.servicios.Sesion;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -113,14 +104,14 @@ public class LoginActivity extends AppCompatActivity
                 public void run() {
                     if(!gotResult[0]) {
                         changeVisibilityLoadToButton();
-                        showText(R.string.txtMalaConexion);
+                        showToast(R.string.txtMalaConexion);
                     }
                 }
             });
         }
         else{
             changeVisibilityLoadToButton();
-            showText(R.string.txtSinConexion);
+            showToast(R.string.txtSinConexion);
         }
     }
 
@@ -212,7 +203,7 @@ public class LoginActivity extends AppCompatActivity
             }
         } else {
             changeVisibilityLoadToButton();
-            showText(R.string.txtSinConexion);
+            showToast(R.string.txtSinConexion);
         }
 
 
@@ -227,7 +218,7 @@ public class LoginActivity extends AppCompatActivity
         }
         else {
             changeVisibilityLoadToButton();
-            showText(R.string.txtErrorLogin);
+            showToast(R.string.txtErrorLogin);
         }
     }
 
@@ -239,7 +230,7 @@ public class LoginActivity extends AppCompatActivity
             changeVisibilityLoadToButton();
             if(!DataBase.getInstancia().isOnline(context))
                 mensaje = R.string.txtSinConexion;
-            showText(mensaje);
+            showToast(mensaje);
         }
     }
 
@@ -268,7 +259,7 @@ public class LoginActivity extends AppCompatActivity
         }
         else {
             changeVisibilityLoadToButton();
-            showText(R.string.txtSinConexion);
+            showToast(R.string.txtSinConexion);
         }
     }
 
@@ -282,7 +273,7 @@ public class LoginActivity extends AppCompatActivity
         Sesion.getInstancia().setDatosUsuario(usuario);
     }
 
-    private void showText(int idTxt){
+    private void showToast(int idTxt){
         Toast.makeText(this, idTxt, Toast.LENGTH_SHORT).show();
     }
 

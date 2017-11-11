@@ -3,6 +3,7 @@ package com.santiago.canchaapp.dominio;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -126,14 +127,28 @@ public class DataBase {
         return networkInfo != null && networkInfo.isAvailable() && networkInfo.isConnected();
     }
 
-    public void setTimeoutFirebase(final DatabaseReference referenceUser, final ValueEventListener valueEventListener, final AppCompatActivity activity, final Runnable task) {
-        referenceUser.addListenerForSingleValueEvent(valueEventListener);
+    public void setTimeoutFirebase(final DatabaseReference reference, final ValueEventListener valueEventListener, final AppCompatActivity activity, final Runnable task) {
+        reference.addListenerForSingleValueEvent(valueEventListener);
         final Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
                 timer.cancel();
-                referenceUser.removeEventListener(valueEventListener);
+                reference.removeEventListener(valueEventListener);
+                activity.runOnUiThread(task);
+            }
+        };
+        timer.schedule(timerTask, 60000L);
+    }
+
+    public void setTimeoutFirebase(final DatabaseReference reference, final ValueEventListener valueEventListener, final FragmentActivity activity, final Runnable task) {
+        reference.addListenerForSingleValueEvent(valueEventListener);
+        final Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                timer.cancel();
+                reference.removeEventListener(valueEventListener);
                 activity.runOnUiThread(task);
             }
         };

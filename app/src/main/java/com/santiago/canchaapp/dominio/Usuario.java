@@ -27,14 +27,14 @@ public class Usuario {
         this.horarioClub = null;
     }
 
-    public String getIdClub(){return idClub;}
+    public String getIdClub() { return idClub; }
     public Horario getHorarioClub(){
         return horarioClub;
     }
-    public String getUid(){return uid;}
-    public Boolean getEsDuenio(){return esDuenio;}
-    public String getNombre(){return nombre;}
-    public String getEmail(){return email;}
+    public String getUid() { return uid; }
+    public Boolean getEsDuenio() { return esDuenio; }
+    public String getNombre() { return nombre; }
+    public String getEmail() { return email; }
     public void setIdClub(String idClub){
         this.idClub = idClub;
     }

@@ -35,6 +35,7 @@ import com.santiago.canchaapp.app.fragment.RegistrarClubFragment;
 import com.santiago.canchaapp.app.fragment.ReservasFragment;
 import com.santiago.canchaapp.app.otros.FragmentTags;
 import com.santiago.canchaapp.dominio.DataBase;
+import com.santiago.canchaapp.dominio.Usuario;
 import com.santiago.canchaapp.servicios.Sesion;
 import com.squareup.picasso.Picasso;
 
@@ -68,6 +69,12 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        setGoogleSignIn();
+        setUserData();
+        changeVisibleMenu();
+    }
+
+    private void setGoogleSignIn() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -75,9 +82,6 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        firebaseAuth = FirebaseAuth.getInstance();
-        setUserData(firebaseAuth.getCurrentUser());
-        changeVisibleMenu();
     }
 
     @Override
@@ -132,15 +136,17 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
             Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
                 @Override
                 public void onResult(@NonNull Status status) {
-                    if (status.isSuccess())
+                    if (status.isSuccess()) {
                         goLogInScreen();
-                    else
-                        Toast.makeText(getApplicationContext(), R.string.notLogOut, Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        showToast(R.string.notLogOut);
+                    }
                 }
             });
         }
         catch(Exception e) {
-            Toast.makeText(getApplicationContext(), R.string.notLogOut, Toast.LENGTH_SHORT).show();
+            showToast(R.string.notLogOut);
         }
     }
 
@@ -153,42 +159,36 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
         Bundle parametros = this.getIntent().getExtras();
         Boolean mostrarSeccionClub = parametros.getBoolean("mostrarSeccionClub");
         navigationView.getMenu().findItem(R.id.menuComplejo).setVisible(mostrarSeccionClub);
-        if(mostrarSeccionClub)
+        if(mostrarSeccionClub) {
             getInfoClub();
-        else
+        }
+        else {
             abrirFragment(ReservasFragment.nuevaInstancia(), MIS_RESERVAS);
+        }
     }
 
     private void getInfoClub() {
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Boolean tieneClub = !Objects.equals(dataSnapshot.getValue().toString(), "");
-                changeItemMenuClub(tieneClub);
-                if(!tieneClub) {
-                    abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB);
-                }
-                else{
-                    abrirFragment(ClubFragment.nuevaInstancia(Sesion.getInstancia().getUsuario().getIdClub(), true), MI_CLUB);
-                }
-            }
+        Usuario user = Sesion.getInstancia().getUsuario();
+        Boolean tieneClub = user.getIdClub() != null;
+        changeItemMenuClub(tieneClub);
+        if(!tieneClub) {
+            abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB);
+        }
+        else{
+            abrirFragment(ClubFragment.nuevaInstancia(Sesion.getInstancia().getUsuario().getIdClub(), true), MI_CLUB);
+        }
 
-            private void changeItemMenuClub(boolean mostrar) {
-                navigationView.getMenu().findItem(R.id.navMisAlquileres).setVisible(mostrar);
-                navigationView.getMenu().findItem(R.id.navMiClub).setVisible(mostrar);
-                navigationView.getMenu().findItem(R.id.navRegistrarClub).setVisible(!mostrar);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(MenuNavegacion.this, R.string.txtErrorLogin, Toast.LENGTH_LONG).show();
-            }
-        };
-        DatabaseReference referenceIdClubUser = DataBase.getInstancia().getReferenceIdClubUser(Sesion.getInstancia().getUsuario().getUid());
-        referenceIdClubUser.addListenerForSingleValueEvent(valueEventListener);
     }
 
-    private void setUserData(FirebaseUser user) {
+    private void changeItemMenuClub(boolean mostrar) {
+        navigationView.getMenu().findItem(R.id.navMisAlquileres).setVisible(mostrar);
+        navigationView.getMenu().findItem(R.id.navMiClub).setVisible(mostrar);
+        navigationView.getMenu().findItem(R.id.navRegistrarClub).setVisible(!mostrar);
+    }
+
+    private void setUserData() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
         View headerLayout = navigationView.getHeaderView(0);
         ImageView imgPerfil = headerLayout.findViewById(R.id.imgPerfilGmail);
         TextView txtNombre = headerLayout.findViewById(R.id.txtNombreGmail);
@@ -196,6 +196,10 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
         txtNombre.setText(user.getDisplayName());
         txtEmail.setText(user.getEmail());
         Picasso.with(getApplicationContext()).load(user.getPhotoUrl()).into(imgPerfil);
+    }
+
+    private void showToast(int idTxt) {
+        Toast.makeText(getApplicationContext(), idTxt, Toast.LENGTH_SHORT).show();
     }
 
     @Override

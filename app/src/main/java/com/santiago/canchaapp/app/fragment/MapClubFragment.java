@@ -293,5 +293,4 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         navigationView.getMenu().findItem(R.id.navMiClub).setVisible(mostrar);
         navigationView.getMenu().findItem(R.id.navRegistrarClub).setVisible(!mostrar);
     }
-
 }
