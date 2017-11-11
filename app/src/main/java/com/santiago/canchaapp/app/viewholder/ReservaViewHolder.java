@@ -53,11 +53,12 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void cargarDatosEnVista(Reserva reserva, AccionesSobreReserva acciones) {
+    public void cargarDatosEnVista(Reserva reserva, AccionesSobreReserva acciones, String hoy) {
         // Setear textos
         textoClub.setText(reserva.getNombreCancha() + ", " + reserva.getNombreClub() + " (" +
                 reserva.getTipoCancha().nombre + ")");
-        textoHora.setText(textoDia(stringToDateToSave(reserva.getFecha())) + ", " + horaDesde(reserva.getHora()));
+        String textoDia = reserva.getFecha().equals(hoy) ? "Hoy" : textoDia(stringToDateToSave(reserva.getFecha()));
+        textoHora.setText(textoDia + ", " + horaDesde(reserva.getHora()));
         textoDireccion.setText(reserva.getDireccionClub());
         // Setear botones
         switch (acciones) {

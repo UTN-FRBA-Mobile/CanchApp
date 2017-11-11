@@ -7,14 +7,18 @@ import android.view.ViewGroup;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
+import com.santiago.canchaapp.app.otros.DateUtils;
 import com.santiago.canchaapp.app.otros.TipoReservas;
 import com.santiago.canchaapp.app.viewholder.AlquilerViewHolder;
 import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.Reserva;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
+import static com.santiago.canchaapp.app.otros.DateUtils.*;
 
 public class AlquileresAdapter extends RecyclerView.Adapter<AlquilerViewHolder> {
 
@@ -26,11 +30,18 @@ public class AlquileresAdapter extends RecyclerView.Adapter<AlquilerViewHolder> 
 
     private Activity activity;
 
+    private String hoy;
+
+    private int horaActual;
+
     public AlquileresAdapter(TipoReservas tipoReservas, AccionesSobreReserva accionesSobreAlquiler, Activity activity) {
         this.alquileres = new ArrayList<>();
         this.tipoReservas = tipoReservas;
         this.accionesSobreAlquiler = accionesSobreAlquiler;
         this.activity = activity;
+        Date dia = hoy();
+        this.hoy = dateToString(dia);
+        this.horaActual = hora(dia);
     }
 
     public void actualizarLista(Alquiler alquiler) {
@@ -49,7 +60,7 @@ public class AlquileresAdapter extends RecyclerView.Adapter<AlquilerViewHolder> 
 
     @Override
     public void onBindViewHolder(AlquilerViewHolder viewHolder, final int position) {
-        viewHolder.cargarDatosEnVista(alquileres.get(position), accionesSobreAlquiler);
+        viewHolder.cargarDatosEnVista(alquileres.get(position), accionesSobreAlquiler, hoy);
     }
 
     @Override
@@ -60,6 +71,9 @@ public class AlquileresAdapter extends RecyclerView.Adapter<AlquilerViewHolder> 
     // Auxiliar
 
     private boolean actualizarAlquileres(Alquiler alquilerActualizado) {
+        if (alquilerActualizado.getFecha().equals(hoy) && alquilerActualizado.getHora() <= horaActual) {
+            return false; // Alquiler de hoy, pero en hora pasada
+        }
         Integer i = indiceDeAlquiler(alquilerActualizado);
         if (i == null) {
             // Sólo se debe agregar una reserva nueva si es de este estado

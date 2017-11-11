@@ -12,8 +12,14 @@ import com.santiago.canchaapp.app.viewholder.ReservaViewHolder;
 import com.santiago.canchaapp.dominio.Reserva;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
+import static com.santiago.canchaapp.app.otros.DateUtils.dateToString;
+import static com.santiago.canchaapp.app.otros.DateUtils.dateToStringtoSave;
+import static com.santiago.canchaapp.app.otros.DateUtils.hora;
+import static com.santiago.canchaapp.app.otros.DateUtils.hoy;
 
 public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
 
@@ -21,12 +27,17 @@ public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
     private TipoReservas tipoReservas;
     private AccionesSobreReserva accionesSobreReserva;
     private final Activity activity;
+    private String hoy;
+    private int horaActual;
 
     public ReservasAdapter(Activity activity, TipoReservas tipoReservas, AccionesSobreReserva accionesSobreReserva) {
         this.reservas = new ArrayList<>();
         this.tipoReservas = tipoReservas;
         this.accionesSobreReserva = accionesSobreReserva;
         this.activity = activity;
+        Date dia = hoy();
+        this.hoy = dateToStringtoSave(dia);
+        this.horaActual = hora(dia);
     }
 
     public void actualizarLista(Reserva reserva) {
@@ -45,7 +56,7 @@ public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
 
     @Override
     public void onBindViewHolder(ReservaViewHolder viewHolder, final int position) {
-        viewHolder.cargarDatosEnVista(reservas.get(position), accionesSobreReserva);
+        viewHolder.cargarDatosEnVista(reservas.get(position), accionesSobreReserva, hoy);
     }
 
     @Override
@@ -56,6 +67,9 @@ public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
     // Auxiliar
 
     private boolean actualizarReservas(Reserva reservaActualizada) {
+        if (reservaActualizada.getFecha().equals(hoy) && reservaActualizada.getHora() <= horaActual) {
+            return false; // Alquiler de hoy, pero en hora pasada
+        }
         Integer i = indiceDeReserva(reservaActualizada);
         if (i == null) {
             // Sólo se debe agregar una reserva nueva si es de este estado

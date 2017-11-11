@@ -71,10 +71,11 @@ public class AlquilerViewHolder extends RecyclerView.ViewHolder {
         this.context = activity.getApplicationContext();
     }
 
-    public void cargarDatosEnVista(Alquiler alquiler, AccionesSobreReserva acciones) {
+    public void cargarDatosEnVista(Alquiler alquiler, AccionesSobreReserva acciones, String hoy) {
         // Setear textos
         textoClub.setText(alquiler.getNombreCancha() + " (" + alquiler.getTipoCancha().nombre + ")");
-        textoHora.setText(textoDia(stringToDate(alquiler.getFecha())) + ", " + horaDesde(alquiler.getHora()));
+        String textoFecha = alquiler.getFecha().equals(hoy) ? "Hoy" : textoDia(stringToDate(alquiler.getFecha()));
+        textoHora.setText(textoFecha + ", " + horaDesde(alquiler.getHora()));
         textoNombreUsuario.setText(textoUsuario(alquiler));
         // Setear botones
         switch (acciones) {
