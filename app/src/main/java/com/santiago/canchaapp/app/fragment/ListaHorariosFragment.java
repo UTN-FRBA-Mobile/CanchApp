@@ -169,13 +169,16 @@ public class ListaHorariosFragment extends Fragment {
                 if(dataSnapshot.getValue() != null){
                     Club club = dataSnapshot.getValue(Club.class);
                     Cancha cancha = getCancha();
-                    HorariosAdapter horariosAdapter = new HorariosAdapter(getActivity(), cancha, club, getFecha(),
-                            esMiCancha(), cancha.getRangoHorario(), hora(getFecha()), primerDia());
-                    horariosRecyclerView.setAdapter(horariosAdapter);
-                    adapter = horariosAdapter;
+                    if (adapter == null) {
+                        HorariosAdapter horariosAdapter = new HorariosAdapter(getActivity(), cancha, club, getFecha(),
+                                esMiCancha(), cancha.getRangoHorario(), hora(getFecha()), primerDia());
+                        adapter = horariosAdapter;
+                    }
+                    horariosRecyclerView.setAdapter(adapter);
                     for (Alquiler alquiler : alquileresCargados) {
                         adapter.actualizarLista(alquiler);
                     }
+                    alquileresCargados.clear();
                 }
             }
 
