@@ -28,19 +28,14 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.reserva_club)
     public TextView textoClub;
-
     @BindView(R.id.reserva_direccion)
     public TextView textoDireccion;
-
     @BindView(R.id.reserva_hora)
     public TextView textoHora;
-
     @BindView(R.id.reserva_motivo_cancelacion)
     public TextView textMotivoCancelacion;
-
     @BindView(R.id.boton_cancelar_reserva)
     public ImageView botonCancelar;
-
     @BindView(R.id.texto_reserva)
     public LinearLayout textoReserva;
 
@@ -78,7 +73,6 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
                 DataBase.getInstancia().updateEstadoReserva(reserva.getIdUsuario(), reserva.getUuid(), CANCELADA);
                 DataBase.getInstancia().updateEstadoAlquiler(reserva.getIdClub(), reserva.getIdCancha(), stringToDateToSave(reserva.getFecha()), reserva.getIdAlquiler(), CANCELADA);
                 DataBase.getInstancia().updateEstadoAlquilerPorClub(reserva.getIdClub(), reserva.getIdAlquiler(), CANCELADA);
-
             }
         });
     }

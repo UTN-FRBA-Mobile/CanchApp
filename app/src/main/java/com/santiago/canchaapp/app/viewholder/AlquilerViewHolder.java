@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
@@ -45,33 +46,29 @@ import static com.santiago.canchaapp.dominio.Horario.*;
 
 public class AlquilerViewHolder extends RecyclerView.ViewHolder {
 
+    private final Activity activity;
+    private final Context context;
+
     @BindView(R.id.alquiler_cancha)
     public TextView textoClub;
-
     @BindView(R.id.alquiler_nombreUsuario)
     public TextView textoNombreUsuario;
-
     @BindView(R.id.alquiler_hora)
     public TextView textoHora;
-
     @BindView(R.id.alquiler_motivo_cancelacion)
     public TextView textMotivoCancelacion;
-
     @BindView(R.id.boton_aprobar_alquiler)
     public ImageView botonAprobar;
-
     @BindView(R.id.boton_cancelar_alquiler)
     public ImageView botonCancelar;
-
     @BindView(R.id.texto_alquiler)
     public LinearLayout textoAlquiler;
-
-    private final Activity activity;
 
     public AlquilerViewHolder(View v, Activity activity) {
         super(v);
         ButterKnife.bind(this, v);
         this.activity = activity;
+        this.context = activity.getApplicationContext();
     }
 
     public void cargarDatosEnVista(Alquiler alquiler, AccionesSobreReserva acciones) {
@@ -112,11 +109,7 @@ public class AlquilerViewHolder extends RecyclerView.ViewHolder {
         botonCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Preferencias.getInstancia().confirmacionHabilitada(activity)) {
-                    confirmarAccion(activity, alquiler, CANCELADA);
-                } else {
-                    actualizarAlquiler(alquiler, CANCELADA);
-                }
+                accion(alquiler, CANCELADA);
             }
         });
     }
@@ -125,13 +118,25 @@ public class AlquilerViewHolder extends RecyclerView.ViewHolder {
         botonAprobar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Preferencias.getInstancia().confirmacionHabilitada(activity)) {
-                    confirmarAccion(activity, alquiler, APROBADA);
-                } else {
-                    actualizarAlquiler(alquiler, APROBADA);
-                }
+                accion(alquiler, APROBADA);
             }
         });
+    }
+
+    private void accion(Alquiler alquiler, final EstadoReserva nuevoEstado) {
+        if(DataBase.getInstancia().isOnline(context)) {
+            if (Preferencias.getInstancia().confirmacionHabilitada(activity)) {
+                confirmarAccion(activity, alquiler, nuevoEstado);
+            } else {
+                actualizarAlquiler(alquiler, nuevoEstado);
+            }
+        } else {
+            showToast(R.string.txtSinConexion);
+        }
+    }
+
+    private void showToast(int idTxt) {
+        Toast.makeText(context, idTxt, Toast.LENGTH_SHORT).show();
     }
 
     private void actualizarAlquiler(final Alquiler alquiler, final EstadoReserva nuevoEstado) {

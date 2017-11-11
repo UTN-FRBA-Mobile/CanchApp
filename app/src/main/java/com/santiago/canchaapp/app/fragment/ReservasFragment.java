@@ -19,7 +19,6 @@ public class ReservasFragment extends Fragment {
 
     @BindView(R.id.container_reservas)
     public ViewPager viewPager;
-
     @BindView(R.id.tabs_reservas)
     public TabLayout tabs;
 
