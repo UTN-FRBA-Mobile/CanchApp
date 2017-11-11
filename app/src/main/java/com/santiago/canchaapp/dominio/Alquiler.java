@@ -50,7 +50,7 @@ public class Alquiler implements Serializable {
     }
 
     public boolean esUsuarioRegistrado() {
-        return uuid != null;
+        return uuid != null && !uuid.isEmpty();
     }
 
     public boolean alquiladaPorUsuario() {

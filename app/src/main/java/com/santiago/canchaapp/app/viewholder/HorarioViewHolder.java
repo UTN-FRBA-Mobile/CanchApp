@@ -1,17 +1,17 @@
 package com.santiago.canchaapp.app.viewholder;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
@@ -38,7 +38,10 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.support.v7.app.AlertDialog.*;
+import static android.graphics.Typeface.BOLD;
+import static android.support.v7.app.AlertDialog.BUTTON_POSITIVE;
+import static android.support.v7.app.AlertDialog.Builder;
+import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -46,7 +49,6 @@ import static com.santiago.canchaapp.app.otros.DateUtils.textoHorario;
 import static com.santiago.canchaapp.dominio.EstadoReserva.APROBADA;
 import static com.santiago.canchaapp.dominio.EstadoReserva.CANCELADA;
 import static com.santiago.canchaapp.dominio.EstadoReserva.PENDIENTE;
-import static java.util.UUID.fromString;
 
 public class HorarioViewHolder extends RecyclerView.ViewHolder {
 
@@ -65,10 +67,10 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
     public TextView usuarioReserva;
 
     @BindView(R.id.boton_aprobar_reserva)
-    public Button botonAprobar;
+    public ImageView botonAprobar;
 
     @BindView(R.id.boton_cancelar_reserva)
-    public Button botonCancelar;
+    public ImageView botonCancelar;
 
     @BindView(R.id.layout_texto_reserva)
     public LinearLayout layoutTextoReserva;
@@ -123,8 +125,8 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void cargarHorarioLibre(final Horario horario) {
-        layoutHorarioLibre.setVisibility(VISIBLE);
         layoutHorarioReservado.setVisibility(GONE);
+        layoutHorarioLibre.setVisibility(VISIBLE);
         botonReservar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -211,18 +213,14 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void cargarHorarioReservado(Alquiler alquiler) {
-        layoutHorarioReservado.setVisibility(VISIBLE);
         layoutHorarioLibre.setVisibility(GONE);
+        layoutHorarioReservado.setVisibility(VISIBLE);
 
         // Setear textos
         if (esMiCancha) {
-            if (alquiler.alquiladaPorUsuario()) {
-                usuarioReserva.setText("por " + alquiler.getNombreUsuario());
-            } else {
-                usuarioReserva.setText("para " + alquiler.getNombreUsuario());
-            }
+            usuarioReserva.setText(textoUsuarioComoDuenio(alquiler));
         } else if (esMiReserva(alquiler)) {
-            usuarioReserva.setText("por mi");
+            usuarioReserva.setText("Por mi");
         } else {
             usuarioReserva.setVisibility(GONE);
         }
@@ -233,22 +231,37 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
             // Sólo el dueño puede aprobar una reserva pendiente
             // El usuario la puede cancelar si es propia
             if (esMiCancha) {
-                mostrarBotones(0.5f, botonAprobar, botonCancelar);
+                mostrarBotones(botonAprobar, botonCancelar);
                 setearListenerCancelacion(alquiler);
                 setearListenerAprobacion(alquiler);
             } else if (esMiReserva(alquiler)) {
-                mostrarBotones(0.5f, botonCancelar);
+                mostrarBotones(botonCancelar);
+                noMostrarBotones(botonAprobar);
                 setearListenerCancelacion(alquiler);
+            } else {
+                ocultarBotones(botonAprobar, botonCancelar);
             }
         } else {
             estadoReserva.setText(view.getResources().getString(R.string.txtHorarioReservado));
             // Sólo se puede cancelar una reserva aprobada si la estoy viendo como usuario
             // y es mi propia reserva
             if (!esMiCancha && esMiReserva(alquiler)) {
-                mostrarBotones(0.5f, botonCancelar);
+                mostrarBotones(botonCancelar);
+                noMostrarBotones(botonAprobar);
                 setearListenerCancelacion(alquiler);
+            } else {
+                ocultarBotones(botonAprobar, botonCancelar);
             }
         }
+    }
+
+    private SpannableStringBuilder textoUsuarioComoDuenio(Alquiler alquiler) {
+        SpannableString nombre = new SpannableString(alquiler.getNombreUsuario());
+        nombre.setSpan(new StyleSpan(BOLD), 0, nombre.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableStringBuilder builder = new SpannableStringBuilder()
+                .append((alquiler.esUsuarioRegistrado() ? "Por " : "Para "))
+                .append(nombre);
+        return builder;
     }
 
     private void setearListenerCancelacion(final Alquiler alquiler) {
@@ -282,22 +295,26 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         ocultarBotones(botonAprobar, botonCancelar);
     }
 
-    private void mostrarBotones(float tamanioLayout, Button... botones) {
-        for(Button boton : botones) {
+    private void mostrarBotones(View... botones) {
+        for(View boton : botones) {
             boton.setVisibility(VISIBLE);
         }
-        layoutTextoReserva.setLayoutParams(
-                new LayoutParams(0, WRAP_CONTENT, tamanioLayout));
     }
 
-    private void ocultarBotones(Button... botones) {
-        for(Button boton : botones) {
+    private void ocultarBotones(View... botones) {
+        for(View boton : botones) {
             boton.setVisibility(GONE);
         }
     }
 
-    private void deshabilitarBotones(Button... botones) {
-        for(Button boton : botones) {
+    private void noMostrarBotones(View... botones) {
+        for(View boton : botones) {
+            boton.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void deshabilitarBotones(View... botones) {
+        for(View boton : botones) {
             boton.setOnClickListener(null);
         }
     }

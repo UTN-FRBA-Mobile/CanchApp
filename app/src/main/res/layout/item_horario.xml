@@ -41,7 +41,8 @@
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/layout_texto_reserva"
                     android:orientation="vertical"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.6"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:gravity="center_vertical">
@@ -63,27 +64,31 @@
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:orientation="horizontal"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.4"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical">
 
-                    <Button
+                    <ImageView
                         android:id="@+id/boton_aprobar_reserva"
-                        style="@style/btnAprobarReserva"
-                        android:text="@string/btnAprobarReserva"
-                        android:layout_margin="3dp"
-                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:maxHeight="40dp"
                         android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/aprobar_reserva"
+                        android:layout_marginRight="3dp"
                         android:visibility="gone"/>
 
-                    <Button
+                    <ImageView
                         android:id="@+id/boton_cancelar_reserva"
-                        style="@style/btnCancelarReserva"
-                        android:text="@string/btnCancelarReserva"
-                        android:layout_margin="3dp"
-                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:maxHeight="40dp"
                         android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/cancelar_reserva"
+                        android:layout_marginLeft="3dp"
                         android:visibility="gone"/>
 
                 </LinearLayout>
@@ -99,15 +104,15 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
                 android:visibility="gone">
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:orientation="vertical"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.6"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:gravity="center_vertical">
+                    android:layout_marginLeft="15dp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -124,7 +129,7 @@
                     android:text="@string/btnReservar"
                     android:layout_margin="3dp"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5" />
+                    android:layout_weight="0.4" />
 
             </LinearLayout>
 
