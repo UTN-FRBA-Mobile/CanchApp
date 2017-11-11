@@ -13,7 +13,7 @@ public class TextUtils {
     }
 
     public static String textoOVacio(String texto) {
-        return texto.isEmpty() ? "" : texto;
+        return (texto == null || texto.isEmpty()) ? "" : texto;
     }
 
 }
