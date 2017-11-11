@@ -60,6 +60,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static final int ZOOM_PUNTO_INICIAL = 11;
     private static final int ZOOM = 15;
+    private Context context;
     private Activity activity;
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
@@ -73,6 +74,7 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_map_club, container, false);
         activity = getActivity();
+        context = activity.getApplicationContext();
         inicializarBuscador();
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_club);
         ButterKnife.bind(this, view);
@@ -92,14 +94,20 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
         mMap = googleMap;
         inicializarUbicacion();
     }
+
     private void setGuardar() {
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ubicacion != null) {
-                    insertClub();
-                } else {
-                    Toast.makeText(activity.getApplicationContext(), R.string.txtSeleccionarClub, Toast.LENGTH_SHORT).show();
+                if(DataBase.getInstancia().isOnline(context)) {
+                    if (ubicacion != null) {
+                        insertClub();
+                    } else {
+                        showToast(R.string.txtSeleccionarClub);
+                    }
+                }
+                else {
+                    showToast(R.string.txtSinConexion);
                 }
             }
         });
@@ -274,6 +282,10 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
 
     private void showToast(String mensaje){
         Toast.makeText(getActivity().getApplicationContext(),mensaje, Toast.LENGTH_LONG).show();
+    }
+
+    private void showToast(int idTxt) {
+        Toast.makeText(context, idTxt, Toast.LENGTH_SHORT).show();
     }
 
     @NonNull
