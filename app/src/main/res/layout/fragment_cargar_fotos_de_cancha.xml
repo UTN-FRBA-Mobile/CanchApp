@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_next"
+        app:srcCompat="@drawable/ic_done_generico"
         app:backgroundTint="@color/colorAzul" />
 
     <RelativeLayout
@@ -41,7 +41,8 @@
                 android:layout_marginTop="@dimen/margin_topBottom_text"
                 android:layout_marginBottom="@dimen/margin_topBottom_text"
                 android:textColor="@color/colorText"
-                android:text="@string/txtSubirFotosCancha" />
+                android:text="@string/txtSubirFotosCancha"
+                />
 
             <GridView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/grid_view_fotos_cancha"
@@ -108,8 +109,7 @@
                 android:src="@drawable/fab_camera"
                 app:fab_size="mini"
                 app:fab_colorNormal="@color/colorAzulClaro"
-                app:fab_colorPressed="@color/colorAzul"
-                app:fab_label="Tomar foto de cámara" />
+                app:fab_colorPressed="@color/colorAzul" />
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/fBtnSeleccionarImagen"
@@ -118,8 +118,7 @@
                 android:src="@drawable/fab_image"
                 app:fab_size="mini"
                 app:fab_colorNormal="@color/colorAzulClaro"
-                app:fab_colorPressed="@color/colorAzul"
-                app:fab_label="Seleccionar de la galeria" />
+                app:fab_colorPressed="@color/colorAzul" />
 
         </com.github.clans.fab.FloatingActionMenu>
     </RelativeLayout>
