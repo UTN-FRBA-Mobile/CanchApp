@@ -76,7 +76,7 @@ public class ListaReservasFragment extends Fragment {
         reservasRecyclerView.setLayoutManager(layoutManager);
 
         // Adapter
-        adapter = new ReservasAdapter(tipoReservas(), accionesSobreReservas());
+        adapter = new ReservasAdapter(getActivity(), tipoReservas(), accionesSobreReservas());
         reservasRecyclerView.setAdapter(adapter);
 
         // Datos

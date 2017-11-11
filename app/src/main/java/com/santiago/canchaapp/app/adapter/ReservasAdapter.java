@@ -1,5 +1,6 @@
 package com.santiago.canchaapp.app.adapter;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -17,15 +18,15 @@ import java.util.Objects;
 public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
 
     private List<Reserva> reservas;
-
     private TipoReservas tipoReservas;
-
     private AccionesSobreReserva accionesSobreReserva;
+    private final Activity activity;
 
-    public ReservasAdapter(TipoReservas tipoReservas, AccionesSobreReserva accionesSobreReserva) {
+    public ReservasAdapter(Activity activity, TipoReservas tipoReservas, AccionesSobreReserva accionesSobreReserva) {
         this.reservas = new ArrayList<>();
         this.tipoReservas = tipoReservas;
         this.accionesSobreReserva = accionesSobreReserva;
+        this.activity = activity;
     }
 
     public void actualizarLista(Reserva reserva) {
@@ -37,7 +38,8 @@ public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
     @Override
     public ReservaViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         return new ReservaViewHolder(
-                LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_reserva, viewGroup, false)
+                LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_reserva, viewGroup, false),
+                activity
         );
     }
 

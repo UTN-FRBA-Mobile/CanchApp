@@ -1,5 +1,8 @@
 package com.santiago.canchaapp.app.viewholder;
 
+import android.app.Activity;
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -7,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
@@ -17,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.view.View.VISIBLE;
+import static android.view.View.combineMeasuredStates;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.santiago.canchaapp.app.otros.DateUtils.stringToDate;
 import static com.santiago.canchaapp.app.otros.DateUtils.stringToDateToSave;
@@ -25,6 +30,8 @@ import static com.santiago.canchaapp.dominio.EstadoReserva.CANCELADA;
 import static com.santiago.canchaapp.dominio.Horario.*;
 
 public class ReservaViewHolder extends RecyclerView.ViewHolder {
+
+    private final Context context;
 
     @BindView(R.id.reserva_club)
     public TextView textoClub;
@@ -39,9 +46,11 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.texto_reserva)
     public LinearLayout textoReserva;
 
-    public ReservaViewHolder(View v) {
+    public ReservaViewHolder(View v, Activity activity) {
         super(v);
         ButterKnife.bind(this, v);
+        this.context = activity.getApplicationContext();
+
     }
 
     public void cargarDatosEnVista(Reserva reserva, AccionesSobreReserva acciones) {
@@ -70,9 +79,13 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
         botonCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataBase.getInstancia().updateEstadoReserva(reserva.getIdUsuario(), reserva.getUuid(), CANCELADA);
-                DataBase.getInstancia().updateEstadoAlquiler(reserva.getIdClub(), reserva.getIdCancha(), stringToDateToSave(reserva.getFecha()), reserva.getIdAlquiler(), CANCELADA);
-                DataBase.getInstancia().updateEstadoAlquilerPorClub(reserva.getIdClub(), reserva.getIdAlquiler(), CANCELADA);
+                if(DataBase.getInstancia().isOnline(context)) {
+                    DataBase.getInstancia().updateEstadoReserva(reserva.getIdUsuario(), reserva.getUuid(), CANCELADA);
+                    DataBase.getInstancia().updateEstadoAlquiler(reserva.getIdClub(), reserva.getIdCancha(), stringToDateToSave(reserva.getFecha()), reserva.getIdAlquiler(), CANCELADA);
+                    DataBase.getInstancia().updateEstadoAlquilerPorClub(reserva.getIdClub(), reserva.getIdAlquiler(), CANCELADA);
+                } else {
+                    Toast.makeText(context, R.string.txtSinConexion, Toast.LENGTH_SHORT);
+                }
             }
         });
     }
