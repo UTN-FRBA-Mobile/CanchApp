@@ -74,6 +74,7 @@ public class CanchasFragment extends Fragment {
     }
 
     private void getCanchasClub() {
+        //TODO agregarSpinner
         DatabaseReference refCanchasClub = DataBase.getInstancia().getReferenceCanchasClub(idClub());
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
@@ -105,12 +106,7 @@ public class CanchasFragment extends Fragment {
             }
 
         };
-        if(DataBase.getInstancia().isOnline(context)) {
-            //TODO agregarSpinner
-            refCanchasClub.addChildEventListener(childEventListener);
-        } else {
-            showToast(R.string.txtSinConexion);
-        }
+        refCanchasClub.addChildEventListener(childEventListener);
     }
 
     private void setAgregarCancha() {

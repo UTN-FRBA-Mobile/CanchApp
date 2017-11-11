@@ -53,14 +53,12 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static final int ZOOM_PUNTO_INICIAL = 11;
     private static final int ZOOM = 15;
-
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
-
     private Map<LatLng, String> ubicaciones = new HashMap<>();
-
     private LatLng ubicacion;
     private String clubSeleccionado;
+    final boolean[] gotResult = new boolean[1];
 
     @BindView(R.id.verDetalle)
     public Button btnVerDetalle;
@@ -235,25 +233,37 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
 
     private void cargarClubes(){
         DatabaseReference refDatosClubes = DataBase.getInstancia().getReferenceClubes();
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //TODO ocultarSpinner
+                gotResult[0] = true;
+                cargarUbicacionDeClubes((Map<String, Object>) dataSnapshot.getValue());
+            }
 
-        refDatosClubes.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        cargarUbicacionDeClubes((Map<String, Object>) dataSnapshot.getValue());
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //tengo que overridearlo
-                    }
-                });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //TODO ocultarSpinner
+                gotResult[0] = true;
+            }
+        };
+        if(DataBase.getInstancia().isOnline(getActivity().getApplicationContext())) {
+            //TODO mostrarSpinner
+            DataBase.getInstancia().setTimeoutFirebase(refDatosClubes, valueEventListener, getActivity(), new Runnable() {
+                @Override
+                public void run() {
+                    //TODO ocultarSpinner
+                    showToast(R.string.txtMalaConexion);
+                }
+            });
+        } else {
+            showToast(R.string.txtSinConexion);
+        }
     }
 
     private void cargarUbicacionDeClubes(Map<String,Object> clubes) {
         for (Map.Entry<String, Object> entry : clubes.entrySet()){
             try {
-
                 Map club = (Map) entry.getValue();
                 Map coordenadas = (Map) club.get("coordenadas");
                 LatLng punto = new LatLng(parseDouble(coordenadas.get("lat").toString()), parseDouble(coordenadas.get("lon").toString()));
@@ -315,8 +325,11 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
     }
 
     private void showToast(String mensaje){
-        Toast.makeText(getActivity().getApplicationContext(),mensaje, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity().getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
+    }
 
+    private void showToast(int idTxt){
+        Toast.makeText(getActivity().getApplicationContext(), idTxt, Toast.LENGTH_LONG).show();
     }
 }
 

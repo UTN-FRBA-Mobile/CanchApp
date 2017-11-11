@@ -46,12 +46,11 @@ public class LoginActivity extends AppCompatActivity
     private DatabaseReference referenceUser;
     private ValueEventListener valueEventListener;
     private Context context;
+    final boolean[] gotResult = new boolean[1];
     @BindView(R.id.btnLogin)
     public SignInButton btnGoogleLogin;
     @BindView(R.id.progressBar)
     public ProgressBar progressBar;
-    final boolean[] gotResult = new boolean[1];
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

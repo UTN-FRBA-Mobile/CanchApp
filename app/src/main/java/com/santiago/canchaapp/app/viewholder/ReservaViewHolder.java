@@ -84,7 +84,7 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
                     DataBase.getInstancia().updateEstadoAlquiler(reserva.getIdClub(), reserva.getIdCancha(), stringToDateToSave(reserva.getFecha()), reserva.getIdAlquiler(), CANCELADA);
                     DataBase.getInstancia().updateEstadoAlquilerPorClub(reserva.getIdClub(), reserva.getIdAlquiler(), CANCELADA);
                 } else {
-                    Toast.makeText(context, R.string.txtSinConexion, Toast.LENGTH_SHORT);
+                    Toast.makeText(context, R.string.txtSinConexion, Toast.LENGTH_SHORT).show();
                 }
             }
         });

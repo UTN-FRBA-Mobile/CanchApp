@@ -86,8 +86,6 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.bloqueo)
     public LinearLayout layoutBloqueo;
 
-
-
     public HorarioViewHolder(Activity activity, View v, Cancha cancha, Club club, boolean esMiCancha, Date fecha) {
         super(v);
         this.activity = activity;
@@ -135,9 +133,8 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
                     }
                 }
                 else {
-                    Toast.makeText(context, R.string.txtSinConexion, Toast.LENGTH_SHORT);
+                    showToast(R.string.txtSinConexion);
                 }
-
             }
         });
     }
@@ -262,24 +259,32 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
         botonCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (esMiCancha && Preferencias.getInstancia().confirmacionHabilitada(activity)) {
-                    confirmarAccion(activity, alquiler, CANCELADA);
-                } else {
-                    actualizarReserva(alquiler, CANCELADA);
-                }
+                accion(alquiler, CANCELADA);
             }
         });
+    }
+
+    private void accion(final Alquiler alquiler, EstadoReserva estadoReserva) {
+        if(DataBase.getInstancia().isOnline(context)) {
+            if (esMiCancha && Preferencias.getInstancia().confirmacionHabilitada(activity)) {
+                confirmarAccion(activity, alquiler, estadoReserva);
+            } else {
+                actualizarReserva(alquiler, estadoReserva);
+            }
+        } else {
+            showToast(R.string.txtSinConexion);
+        }
+    }
+
+    private void showToast(int idTxt) {
+        Toast.makeText(context, idTxt, Toast.LENGTH_SHORT).show();
     }
 
     private void setearListenerAprobacion(final Alquiler alquiler) {
         botonAprobar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (esMiCancha && Preferencias.getInstancia().confirmacionHabilitada(activity)) {
-                    confirmarAccion(activity, alquiler, APROBADA);
-                } else {
-                    actualizarReserva(alquiler, APROBADA);
-                }
+                accion(alquiler, APROBADA);
             }
         });
     }
