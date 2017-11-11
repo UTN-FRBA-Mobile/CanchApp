@@ -2,7 +2,10 @@ package com.santiago.canchaapp.app.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ActionProvider;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +35,8 @@ public class DatosClubFragment extends Fragment {
     private View rootView;
     private final boolean[] gotResult = new boolean[1];
     private Context context;
+    private DatabaseReference referenceClub;
+    private ValueEventListener valueEventListener;
     @BindView(R.id.nombre)
     public TextView textoNombre;
     @BindView(R.id.direccion)
@@ -57,6 +62,7 @@ public class DatosClubFragment extends Fragment {
         super.onCreate(savedInstanceState);
         rootView = inflater.inflate(R.layout.fragment_datos_club, container, false);
         streetView = (SupportStreetViewPanoramaFragment) getChildFragmentManager().findFragmentById(R.id.streetviewfragment);
+        streetView.getView().setVisibility(View.GONE);
         context = getActivity().getApplicationContext();
         ButterKnife.bind(this, rootView);
         Bundle arguments = getArguments();
@@ -67,7 +73,7 @@ public class DatosClubFragment extends Fragment {
     private void getClub(String idClub){
         //TODO mostrarSpinner
         gotResult[0] = false;
-        ValueEventListener valueEventListener = new ValueEventListener() {
+        valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //TODO sacarSpinner
@@ -85,7 +91,7 @@ public class DatosClubFragment extends Fragment {
                 showToast(R.string.txtMalaConexion);
             }
         };
-        DatabaseReference referenceClub = DataBase.getInstancia().getReferenceClub(idClub);
+        referenceClub = DataBase.getInstancia().getReferenceClub(idClub);
         if(DataBase.getInstancia().isOnline(context)) {
             DataBase.getInstancia().setTimeoutFirebase(referenceClub, valueEventListener, getActivity(), new Runnable() {
                 @Override
@@ -93,11 +99,9 @@ public class DatosClubFragment extends Fragment {
                     if(!gotResult[0]) {
                         //TODO sacarSpinner
                         showToast(R.string.txtMalaConexion);
-
                     }
                 }
             });
-            referenceClub.addListenerForSingleValueEvent(valueEventListener);
         }
         else{
             //TODO sacarSpinner
@@ -109,7 +113,7 @@ public class DatosClubFragment extends Fragment {
         Toast.makeText(context, idTxt, Toast.LENGTH_SHORT).show();
     }
 
-    private void cargarVista(final Club club) {
+    private void cargarVista(Club club) {
         textoNombre.setText(club.getNombre());
         textoDireccion.setText(club.getDireccion());
         textoTelefono.setText("Teléfono: " + club.getTelefono());
@@ -121,6 +125,9 @@ public class DatosClubFragment extends Fragment {
     }
 
     private void setUbication(final Club club) {
+        if(streetView.getView() != null) {
+            streetView.getView().setVisibility(View.VISIBLE);
+        }
         streetView.getStreetViewPanoramaAsync(
                 new OnStreetViewPanoramaReadyCallback() {
                     @Override

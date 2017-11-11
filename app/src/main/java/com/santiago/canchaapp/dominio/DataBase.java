@@ -138,7 +138,7 @@ public class DataBase {
                 activity.runOnUiThread(task);
             }
         };
-        timer.schedule(timerTask, 60000L);
+        timer.schedule(timerTask, 30000L);
     }
 
     public void setTimeoutFirebase(final DatabaseReference reference, final ValueEventListener valueEventListener, final FragmentActivity activity, final Runnable task) {
@@ -152,7 +152,7 @@ public class DataBase {
                 activity.runOnUiThread(task);
             }
         };
-        timer.schedule(timerTask, 60000L);
+        timer.schedule(timerTask, 30000L);
     }
 
 }
