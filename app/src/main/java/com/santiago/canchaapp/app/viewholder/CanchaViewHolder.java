@@ -27,6 +27,8 @@ public class CanchaViewHolder extends RecyclerView.ViewHolder implements View.On
     public TextView textoNombre;
     @BindView(R.id.cancha_superficie)
     public TextView textoSuperficie;
+    @BindView(R.id.cancha_precio)
+    public TextView textoPrecio;
     @BindView(R.id.cancha_extra)
     public TextView textoExtra;
     @BindView(R.id.item_contenido_cancha)
@@ -41,8 +43,10 @@ public class CanchaViewHolder extends RecyclerView.ViewHolder implements View.On
 
     public void cargarDatosEnVista(Cancha cancha) {
         // Setea textos
-        textoNombre.setText(cancha.getNombre() + " - " + cancha.getTipoCancha().nombre);
+        textoNombre.setText(cancha.getNombre() + " (" + cancha.getTipoCancha().nombre + ")");
         textoSuperficie.setText(view.getResources().getString(R.string.txtCanchaSuperficie, cancha.getSuperficie().nombre));
+        textoPrecio.setText("Precio: $" + cancha.getPrecioString());
+
         if (cancha.esTechada()) {
             textoExtra.setText(view.getResources().getString(R.string.txtCanchaTechada));
         } else {

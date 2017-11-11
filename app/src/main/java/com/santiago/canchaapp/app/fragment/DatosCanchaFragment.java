@@ -28,6 +28,8 @@ public class DatosCanchaFragment extends Fragment {
     public TextView textoNombre;
     @BindView(R.id.tipo)
     public TextView textoTipo;
+    @BindView(R.id.precio)
+    public TextView textoPrecio;
     @BindView(R.id.superficie)
     public TextView textoSuperficie;
     @BindView(R.id.extra)
@@ -56,6 +58,8 @@ public class DatosCanchaFragment extends Fragment {
         textoNombre.setText(cancha.getNombre());
         textoTipo.setText(cancha.getTipoCancha().nombre);
         textoSuperficie.setText(view.getResources().getString(R.string.txtCanchaSuperficie, cancha.getSuperficie().nombre));
+        textoPrecio.setText("Precio: $" + cancha.getPrecioString());
+
         if (cancha.esTechada()) {
             textoExtra.setText(view.getResources().getString(R.string.txtCanchaTechada));
         } else {
@@ -67,18 +71,20 @@ public class DatosCanchaFragment extends Fragment {
                     .load(cancha.getFotoPrincipalUrl())
                     .placeholder(R.drawable.cancha_sin_foto)
                     .fit().centerCrop().into(fotoPrincipal);
+            for (String foto : cancha.getFotosUrls().subList(1, cancha.getFotosUrls().size())) {
+                View fotosView = inflater.inflate(R.layout.item_foto_cancha, fotos, false);
+                ImageView fotoView = fotosView.findViewById(R.id.foto_cancha_item);
+                Picasso.with(view.getContext()).load(foto).fit().centerCrop().into(fotoView);
+                fotos.addView(fotosView);
+            }
         } else {
             Picasso.with(view.getContext())
                     .load(R.drawable.cancha_sin_foto)
                     .fit().centerCrop().into(fotoPrincipal);
         }
 
-        for (String foto : cancha.getFotosUrls()) {
-            View fotosView = inflater.inflate(R.layout.item_foto_cancha, fotos, false);
-            ImageView fotoView = fotosView.findViewById(R.id.foto_cancha_item);
-            Picasso.with(view.getContext()).load(foto).fit().centerCrop().into(fotoView);
-            fotos.addView(fotosView);
-        }
+
+
     }
 
     private Cancha cancha() {

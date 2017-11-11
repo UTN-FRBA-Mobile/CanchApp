@@ -39,6 +39,13 @@
                 />
 
             <TextView
+                android:id="@+id/cancha_precio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                />
+
+            <TextView
                 android:id="@+id/cancha_superficie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

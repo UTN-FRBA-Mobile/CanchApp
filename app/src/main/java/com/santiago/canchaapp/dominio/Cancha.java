@@ -43,7 +43,7 @@ public class Cancha implements Serializable {
     public String getUuid() {
         return uuid;
     }
-
+    public String getPrecioString() { return Integer.toString(precio); }
     public String getNombre() {
         return nombre;
     }
