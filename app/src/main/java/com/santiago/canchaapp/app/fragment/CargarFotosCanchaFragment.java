@@ -97,8 +97,13 @@ public class CargarFotosCanchaFragment extends Fragment {
         fbuttonGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickSubMenuGuardar();
-                abrirFragmentSiguiente();
+                if(DataBase.getInstancia().isOnline(getActivity().getApplicationContext())) {
+                    abrirFragmentSiguiente();
+                    clickSubMenuGuardar();
+                }
+                else {
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.txtSinConexion, Toast.LENGTH_SHORT);
+                }
             }
         });
 

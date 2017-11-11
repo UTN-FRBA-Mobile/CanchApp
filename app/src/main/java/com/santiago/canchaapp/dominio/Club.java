@@ -38,10 +38,6 @@ public class Club implements Serializable {
         this.canchas = (canchas == null ? new ArrayList<Cancha>() : canchas);
     }
 
-    public Boolean tieneCanchas(){
-        return this.getCanchas() != null && this.getCanchas().size() > 0;
-    }
-
     public String getNombre() {return nombre;}
 
     public String getDireccion() {return direccion;}
