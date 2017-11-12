@@ -76,8 +76,9 @@ public class AlquileresAdapter extends RecyclerView.Adapter<AlquilerViewHolder> 
         if (i == null) {
             // Sólo se debe agregar una reserva nueva si es de este estado
             if (alquilerActualizado.getEstado() == tipoReservas.toEstado()) {
-                alquileres.add(alquilerActualizado);
-                notifyItemInserted(alquileres.size() - 1);
+                int indice = indiceDeInsercion(alquilerActualizado);
+                alquileres.add(indice, alquilerActualizado);
+                notifyItemInserted(indice);
             }
         } else {
             if (alquilerActualizado.getEstado() != tipoReservas.toEstado()) {
@@ -99,6 +100,20 @@ public class AlquileresAdapter extends RecyclerView.Adapter<AlquilerViewHolder> 
             }
         }
         return null;
+    }
+
+    private int indiceDeInsercion(Alquiler alquiler) {
+        Date fechaAlquiler = stringToDate(alquiler.getFecha());
+        int horaAlquiler = alquiler.getHora();
+        int i;
+        for (i = 0; i < alquileres.size(); i++) {
+            Date otraFecha = stringToDate(alquileres.get(i).getFecha());
+            int otraHora = alquileres.get(i).getHora();
+            if (fechaAlquiler.before(otraFecha) || (fechaAlquiler.equals(otraFecha) && horaAlquiler < otraHora)) {
+                return i;
+            }
+        }
+        return i;
     }
 
 }

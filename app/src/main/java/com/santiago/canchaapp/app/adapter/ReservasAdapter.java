@@ -19,6 +19,7 @@ import java.util.Objects;
 import static com.santiago.canchaapp.app.otros.DateUtils.dateToStringtoSave;
 import static com.santiago.canchaapp.app.otros.DateUtils.hora;
 import static com.santiago.canchaapp.app.otros.DateUtils.hoy;
+import static com.santiago.canchaapp.app.otros.DateUtils.stringToDateToSave;
 
 public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
 
@@ -71,8 +72,9 @@ public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
         if (i == null) {
             // Sólo se debe agregar una reserva nueva si es de este estado
             if (reservaActualizada.getEstado() == tipoReservas.toEstado()) {
-                reservas.add(reservaActualizada);
-                notifyItemInserted(reservas.size() - 1);
+                int indice = indiceDeInsercion(reservaActualizada);
+                reservas.add(indice, reservaActualizada);
+                notifyItemInserted(indice);
             }
         } else {
             if (reservaActualizada.getEstado() != tipoReservas.toEstado()) {
@@ -94,6 +96,20 @@ public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
             }
         }
         return null;
+    }
+
+    private int indiceDeInsercion(Reserva reserva) {
+        Date fechaReserva = stringToDateToSave(reserva.getFecha());
+        int horaReserva = reserva.getHora();
+        int i;
+        for (i = 0; i < reservas.size(); i++) {
+            Date otraFecha = stringToDateToSave(reservas.get(i).getFecha());
+            int otraHora = reservas.get(i).getHora();
+            if (fechaReserva.before(otraFecha) || (fechaReserva.equals(otraFecha) && horaReserva < otraHora)) {
+                return i;
+            }
+        }
+        return i;
     }
 
 }
