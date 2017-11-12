@@ -116,4 +116,7 @@ public class AlquileresAdapter extends RecyclerView.Adapter<AlquilerViewHolder> 
         return i;
     }
 
+    public boolean noQuedaronAlquileres() {
+        return alquileres.isEmpty();
+    }
 }

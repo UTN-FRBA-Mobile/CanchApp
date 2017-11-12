@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -19,11 +20,14 @@ import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
 import com.santiago.canchaapp.app.otros.TipoReservas;
 import com.santiago.canchaapp.dominio.Alquiler;
 import com.santiago.canchaapp.dominio.DataBase;
+import com.santiago.canchaapp.dominio.Reserva;
 import com.santiago.canchaapp.servicios.Sesion;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.google.firebase.database.DatabaseError.PERMISSION_DENIED;
 import static com.santiago.canchaapp.app.otros.AccionesSobreReserva.NINGUNA;
 import static com.santiago.canchaapp.app.otros.AccionesSobreReserva.TODAS;
@@ -38,6 +42,8 @@ public class ListaAlquileresFragment extends Fragment {
 
     @BindView(R.id.recycler_view_alquileres)
     public RecyclerView alquileresRecyclerView;
+    @BindView(R.id.sinAlquileres)
+    public TextView sinAlquileres;
 
     private RecyclerView.LayoutManager layoutManager;
 
@@ -62,6 +68,8 @@ public class ListaAlquileresFragment extends Fragment {
 
     private void cargarVista(View rootView) {
         ButterKnife.bind(this, rootView);
+
+        sinAlquileres.setText("No hay alquileres " + TipoReservas.nombreEnMasculino(tipoReservas()).toLowerCase());
 
         // Recycler view
         layoutManager = new LinearLayoutManager(getActivity());
@@ -94,8 +102,15 @@ public class ListaAlquileresFragment extends Fragment {
 
             private void actualizarLista(DataSnapshot snapshotAlquiler) {
                 Alquiler alquiler = snapshotAlquiler.getValue(Alquiler.class);
+
+                if (alquiler.getEstado() == tipoReservas().toEstado())
+                    sinAlquileres.setVisibility(GONE);
+
                 adapter.actualizarLista(alquiler);
-            }
+
+                if (adapter.noQuedaronAlquileres())
+                    sinAlquileres.setVisibility(VISIBLE);
+                }
 
         });
     }

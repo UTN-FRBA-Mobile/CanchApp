@@ -9,4 +9,14 @@
         android:scrollbars="vertical">
     </android.support.v7.widget.RecyclerView>
 
+    <TextView
+        android:id="@+id/sinAlquileres"
+        android:text="No hay alquileres"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/colorGris"
+        android:gravity="center_horizontal|center_vertical"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />
+
 </RelativeLayout>

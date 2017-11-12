@@ -20,6 +20,17 @@ public enum TipoReservas {
         this.tituloReservas = tituloReservas;
     }
 
+    public static String nombreEnMasculino(TipoReservas tipo){
+        if(tipo == PENDIENTES)
+            return "Pendientes";
+        else if(tipo == APROBADAS)
+            return "Aprobados";
+        else
+            return "Cancelados";
+
+        //perdón por esta garcha
+    }
+
     public static TipoReservas enPosicion(int pos) { return TipoReservas.values()[pos]; }
 
     public EstadoReserva toEstado() {
