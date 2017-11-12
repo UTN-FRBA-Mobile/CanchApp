@@ -13,6 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -37,12 +39,16 @@ import butterknife.ButterKnife;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.google.firebase.database.DatabaseError.PERMISSION_DENIED;
 
 public class BuscarCanchasListaFragment extends Fragment {
 
     @BindView(R.id.recycler_view_clubes)
     public RecyclerView clubesRecyclerView;
+    @BindView(R.id.progressBar)
+    public ProgressBar progressBar;
 
     private RecyclerView.LayoutManager layoutManager;
 
@@ -122,6 +128,8 @@ public class BuscarCanchasListaFragment extends Fragment {
         adapter = new ClubesAdapter(getContext(), locacion);
         clubesRecyclerView.setAdapter(adapter);
 
+        progressBar.setVisibility(VISIBLE);
+
         DatabaseReference refDatosClubes = DataBase.getInstancia().getReferenceClubes();
         refDatosClubes.addChildEventListener(new ChildEventListener() {
             @Override
@@ -144,6 +152,7 @@ public class BuscarCanchasListaFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                progressBar.setVisibility(GONE);
                 if (databaseError.getCode() != PERMISSION_DENIED)
                     Toast.makeText(getContext(), R.string.txtErrorDescargandoInfo, Toast.LENGTH_LONG).show();
             }
@@ -159,6 +168,8 @@ public class BuscarCanchasListaFragment extends Fragment {
     }
 
     private void actualizarLista(DataSnapshot snapshotClub) {
+        progressBar.setVisibility(GONE);
+
         final Club club = snapshotClub.getValue(Club.class);
         if (!Sesion.getInstancia().getUsuario().esMiClub(club.getUuid())) {
             ValueEventListener valueEventListener = new ValueEventListener() {
@@ -179,6 +190,18 @@ public class BuscarCanchasListaFragment extends Fragment {
 
             DatabaseReference refCanchas = DataBase.getInstancia().getReferenceCanchasClub(club.getUuid());
             refCanchas.addListenerForSingleValueEvent(valueEventListener);
+
+            refCanchas.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    progressBar.setVisibility(GONE);
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+
+            });
+
         }
     }
 }

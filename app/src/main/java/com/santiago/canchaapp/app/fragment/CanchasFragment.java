@@ -86,13 +86,10 @@ public class CanchasFragment extends Fragment {
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                sinCanchas.setVisibility(GONE);
                 actualizarLista(dataSnapshot);
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                progressBar.setVisibility(GONE);
-                sinCanchas.setVisibility(GONE);
                 actualizarLista(dataSnapshot);
             }
             @Override
