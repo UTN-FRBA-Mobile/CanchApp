@@ -244,7 +244,9 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
             public void onDataChange(DataSnapshot dataSnapshot) {
                 progressBar.setVisibility(GONE);
                 gotResult[0] = true;
-                cargarUbicacionDeClubes((Map<String, Object>) dataSnapshot.getValue());
+                if(dataSnapshot.getValue() != null) {
+                    cargarUbicacionDeClubes((Map<String, Object>) dataSnapshot.getValue());
+                }
             }
 
             @Override
@@ -265,6 +267,7 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
                 }
             });
         } else {
+            progressBar.setVisibility(GONE);g
             showToast(R.string.txtSinConexion);
         }
     }
