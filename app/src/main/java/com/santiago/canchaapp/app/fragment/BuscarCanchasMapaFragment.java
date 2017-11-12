@@ -267,7 +267,7 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
                 }
             });
         } else {
-            progressBar.setVisibility(GONE);g
+            progressBar.setVisibility(GONE);
             showToast(R.string.txtSinConexion);
         }
     }
