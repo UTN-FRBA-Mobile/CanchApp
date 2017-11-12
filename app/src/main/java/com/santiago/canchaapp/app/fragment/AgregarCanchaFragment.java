@@ -63,10 +63,13 @@ public class AgregarCanchaFragment extends Fragment {
         continuar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (camposValidos())
+                if (camposValidos()) {
                     abrirFragmentSiguiente();
-                else
+                }
+                else {
                     Toast.makeText(view.getContext(), R.string.txtCompletarTodosLosCampos, Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
@@ -81,9 +84,9 @@ public class AgregarCanchaFragment extends Fragment {
         Bundle args = getParameters();
         cargarFotosCanchaFragment.setArguments(args);
         cargarFotosCanchaFragment.setEnterTransition(new Slide(Gravity.RIGHT));
-        getFragmentManager()
+        getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.club_layout, cargarFotosCanchaFragment, CARGAR_FOTOS_CANCHA.toString())
+                .replace(R.id.content_frame, cargarFotosCanchaFragment, CARGAR_FOTOS_CANCHA.toString())
                 .addToBackStack(null)
                 .commit();
     }

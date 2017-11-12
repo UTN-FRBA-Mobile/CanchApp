@@ -260,7 +260,6 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
                 .beginTransaction()
                 .replace(R.id.content_frame, miClub, MI_CLUB.toString())
                 .commit();
-
     }
 
     private void insertClub() {
