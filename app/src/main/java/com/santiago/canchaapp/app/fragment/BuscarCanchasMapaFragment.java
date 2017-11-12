@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -44,6 +45,8 @@ import butterknife.ButterKnife;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.santiago.canchaapp.app.otros.FragmentTags.CLUB;
 import static java.lang.Double.*;
 
@@ -62,6 +65,8 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
 
     @BindView(R.id.verDetalle)
     public Button btnVerDetalle;
+    @BindView(R.id.progressBar)
+    public ProgressBar progressBar;
 
     public static BuscarCanchasMapaFragment nuevaInstancia() {
         return new BuscarCanchasMapaFragment();
@@ -121,13 +126,13 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
 
             final Button verDetalle = getActivity().findViewById(R.id.verDetalle);
             verDetalle.setText("   Ver más de " + marker.getTitle() + "   ");
-            verDetalle.setVisibility(View.VISIBLE);
+            verDetalle.setVisibility(VISIBLE);
 
             mMap.setOnInfoWindowCloseListener(
                     new GoogleMap.OnInfoWindowCloseListener() {
                         @Override
                         public void onInfoWindowClose(Marker marker) {
-                            verDetalle.setVisibility(View.GONE);
+                            verDetalle.setVisibility(GONE);
                         }
                     }
             );
@@ -236,23 +241,23 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //TODO ocultarSpinner
+                progressBar.setVisibility(GONE);
                 gotResult[0] = true;
                 cargarUbicacionDeClubes((Map<String, Object>) dataSnapshot.getValue());
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //TODO ocultarSpinner
+                progressBar.setVisibility(GONE);
                 gotResult[0] = true;
             }
         };
         if(DataBase.getInstancia().isOnline(getActivity().getApplicationContext())) {
-            //TODO mostrarSpinner
+            progressBar.setVisibility(VISIBLE);
             DataBase.getInstancia().setTimeoutFirebase(refDatosClubes, valueEventListener, getActivity(), new Runnable() {
                 @Override
                 public void run() {
-                    //TODO ocultarSpinner
+                    progressBar.setVisibility(GONE);
                     showToast(R.string.txtMalaConexion);
                 }
             });
