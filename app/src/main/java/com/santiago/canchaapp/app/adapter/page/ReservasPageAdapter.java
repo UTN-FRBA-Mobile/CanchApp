@@ -18,6 +18,6 @@ public class ReservasPageAdapter extends FragmentPagerAdapter {
     public int getCount() { return TipoReservas.values().length; }
 
     @Override
-    public CharSequence getPageTitle(int position) { return TipoReservas.enPosicion(position).titulo; }
+    public CharSequence getPageTitle(int position) { return TipoReservas.enPosicion(position).tituloReservas; }
 
 }

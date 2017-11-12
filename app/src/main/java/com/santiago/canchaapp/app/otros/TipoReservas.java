@@ -7,11 +7,18 @@ import static com.santiago.canchaapp.dominio.EstadoReserva.CANCELADA;
 import static com.santiago.canchaapp.dominio.EstadoReserva.PENDIENTE;
 
 public enum TipoReservas {
-    PENDIENTES("Pendientes"), APROBADAS("Aprobadas"), CANCELADAS("Canceladas");
+    PENDIENTES("Pendientes", "Pendientes"),
+    APROBADAS("Aprobadas", "Aprobados"),
+    CANCELADAS("Canceladas", "Cancelados");
 
-    public String titulo;
+    public String tituloReservas;
 
-    TipoReservas(String titulo) { this.titulo = titulo; }
+    public String tituloAlquileres;
+
+    TipoReservas(String tituloReservas, String tituloAlquileres) {
+        this.tituloAlquileres = tituloAlquileres;
+        this.tituloReservas = tituloReservas;
+    }
 
     public static TipoReservas enPosicion(int pos) { return TipoReservas.values()[pos]; }
 

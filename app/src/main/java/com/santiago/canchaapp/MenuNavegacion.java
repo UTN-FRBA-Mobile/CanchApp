@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -109,25 +110,27 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
             case R.id.navCerrarSesion:
                 signOut(); break;
             case R.id.navBuscarCanchas:
-                abrirFragment(BuscarCanchasFragment.nuevaInstancia(), BUSCAR_CANCHAS); break;
+                abrirFragment(BuscarCanchasFragment.nuevaInstancia(), BUSCAR_CANCHAS, true); break;
             case R.id.navRegistrarClub:
-                abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB); break;
+                abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB, true); break;
             case R.id.navMisReservas:
-                abrirFragment(ReservasFragment.nuevaInstancia(), MIS_RESERVAS); break;
+                abrirFragment(ReservasFragment.nuevaInstancia(), MIS_RESERVAS, true); break;
             case R.id.navMisAlquileres:
-                abrirFragment(AlquileresFragment.nuevaInstancia(), MIS_ALQUILERES); break;
+                abrirFragment(AlquileresFragment.nuevaInstancia(), MIS_ALQUILERES, true); break;
             case R.id.navMiClub:
-                abrirFragment(ClubFragment.nuevaInstancia(Sesion.getInstancia().getUsuario().getIdClub(), true), MI_CLUB); break;
+                abrirFragment(ClubFragment.nuevaInstancia(Sesion.getInstancia().getUsuario().getIdClub(), true), MI_CLUB, true); break;
         }
         return true;
     }
 
-    private void abrirFragment(Fragment fragment, FragmentTags tag) {
-        getSupportFragmentManager()
+    private void abrirFragment(Fragment fragment, FragmentTags tag, boolean incluirEnBackStack) {
+        FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_frame, fragment, tag.toString())
-                .addToBackStack(tag.toString())
-                .commit();
+                .replace(R.id.content_frame, fragment, tag.toString());
+        if (incluirEnBackStack) {
+            transaction.addToBackStack(tag.toString());
+        }
+        transaction.commit();
         drawer.closeDrawer(GravityCompat.START);
     }
 
@@ -165,7 +168,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
             getInfoClub();
         }
         else {
-            abrirFragment(ReservasFragment.nuevaInstancia(), MIS_RESERVAS);
+            abrirFragment(ReservasFragment.nuevaInstancia(), MIS_RESERVAS, false);
         }
     }
 
@@ -174,10 +177,10 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
         Boolean tieneClub = user.tieneClub();
         changeItemMenuClub(tieneClub);
         if(!tieneClub) {
-            abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB);
+            abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB, false);
         }
         else{
-            abrirFragment(ClubFragment.nuevaInstancia(Sesion.getInstancia().getUsuario().getIdClub(), true), MI_CLUB);
+            abrirFragment(ClubFragment.nuevaInstancia(Sesion.getInstancia().getUsuario().getIdClub(), true), MI_CLUB, false);
         }
 
     }

@@ -21,6 +21,6 @@ public class AlquileresPageAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public CharSequence getPageTitle(int position) { return TipoReservas.enPosicion(position).titulo; }
+    public CharSequence getPageTitle(int position) { return TipoReservas.enPosicion(position).tituloAlquileres; }
 
 }
