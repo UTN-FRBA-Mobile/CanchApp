@@ -41,8 +41,6 @@ import static com.google.firebase.database.DatabaseError.PERMISSION_DENIED;
 
 public class BuscarCanchasListaFragment extends Fragment {
 
-    private static String ARG_CANCHAS = "canchas";
-
     @BindView(R.id.recycler_view_clubes)
     public RecyclerView clubesRecyclerView;
 

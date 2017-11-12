@@ -17,22 +17,17 @@ import butterknife.ButterKnife;
 public class HorariosCanchaFragment extends Fragment {
 
     private static String ARG_CANCHA = "cancha";
-
     private static String ARG_MI_CANCHA = "miCancha";
+    private HorariosPageAdapter adapter;
 
     @BindView(R.id.container_horarios)
     public ViewPager viewPager;
-
-    private HorariosPageAdapter adapter;
-
     public static HorariosCanchaFragment nuevaInstancia(Cancha cancha, boolean esMiCancha) {
         HorariosCanchaFragment fragment = new HorariosCanchaFragment();
-
         Bundle args = new Bundle();
         args.putSerializable(ARG_CANCHA, cancha);
         args.putBoolean(ARG_MI_CANCHA, esMiCancha);
         fragment.setArguments(args);
-
         return fragment;
     }
 

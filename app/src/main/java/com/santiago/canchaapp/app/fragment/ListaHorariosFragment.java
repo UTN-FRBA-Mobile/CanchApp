@@ -2,6 +2,7 @@ package com.santiago.canchaapp.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import com.santiago.canchaapp.dominio.Cancha;
 import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.FIND_VIEWS_WITH_CONTENT_DESCRIPTION;
 import static android.view.View.INVISIBLE;
 import static com.google.firebase.database.DatabaseError.PERMISSION_DENIED;
 import static com.santiago.canchaapp.app.otros.DateUtils.hora;
@@ -39,45 +42,32 @@ import static com.santiago.canchaapp.app.otros.DateUtils.textoDia;
 public class ListaHorariosFragment extends Fragment {
 
     private static String ARG_CANCHA = "cancha";
-
     private static String ARG_MI_CANCHA = "mi_cancha";
-
     private static String ARG_DIA = "dia";
-
+    private static String ARG_VIEW_PAGER = "pager";
     private static String ARG_POSICION_DIA = "pos_dia";
+    private RecyclerView.LayoutManager layoutManager;
+    private HorariosAdapter adapter;
+    private Query refDatos;
+    private List<Alquiler> alquileresCargados = new ArrayList<>();
 
     @BindView(R.id.fecha_horarios)
     public TextView fecha;
-
     @BindView(R.id.dia_prev)
     public ImageView flechaDiaAnterior;
-
     @BindView(R.id.dia_next)
     public ImageView flechaDiaSiguiente;
-
     @BindView(R.id.recycler_view_horarios)
     public RecyclerView horariosRecyclerView;
 
-    private RecyclerView.LayoutManager layoutManager;
-
-    private HorariosAdapter adapter;
-
-    private Query refDatos;
-
-    private Club club;
-
-    private List<Alquiler> alquileresCargados = new ArrayList<>();
-
     public static ListaHorariosFragment nuevaInstancia(Cancha cancha, Date dia, int posicionDia, boolean esMiCancha) {
         ListaHorariosFragment fragment = new ListaHorariosFragment();
-
         Bundle args = new Bundle();
         args.putSerializable(ARG_CANCHA, cancha);
         args.putBoolean(ARG_MI_CANCHA, esMiCancha);
         args.putSerializable(ARG_DIA, dia);
         args.putInt(ARG_POSICION_DIA, posicionDia);
         fragment.setArguments(args);
-
         return fragment;
     }
 
@@ -89,8 +79,14 @@ public class ListaHorariosFragment extends Fragment {
         return rootView;
     }
 
+    private void changeVisibility(int posicion) {
+        ViewPager viewPager = getActivity().findViewById(R.id.container_horarios);
+        viewPager.setCurrentItem(posicion);
+    }
+
     private void cargarVista(View rootView) {
         ButterKnife.bind(this, rootView);
+        setOnClickFlechas();
 
         // Appbar
         if (primerDia()) {
@@ -157,6 +153,19 @@ public class ListaHorariosFragment extends Fragment {
 
     }
 
+    private void setOnClickFlechas() {
+        flechaDiaAnterior.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                changeVisibility(getPosicionDia() - 1);
+            }
+        });
+        flechaDiaSiguiente.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                changeVisibility(getPosicionDia() + 1);
+            }
+        });
+    }
+
     private void getClub(String idClub){
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
@@ -191,12 +200,14 @@ public class ListaHorariosFragment extends Fragment {
     }
 
     private boolean primerDia() {
-        return getArguments().getInt(ARG_POSICION_DIA) == 0;
+        return getPosicionDia() == 0;
     }
 
     private boolean ultimoDia() {
-        return getArguments().getInt(ARG_POSICION_DIA) == 7;
+        return getPosicionDia() == 7;
     }
+
+    private int getPosicionDia() { return getArguments().getInt(ARG_POSICION_DIA) ; }
 
     private Cancha getCancha() {
         return (Cancha) getArguments().getSerializable(ARG_CANCHA);
