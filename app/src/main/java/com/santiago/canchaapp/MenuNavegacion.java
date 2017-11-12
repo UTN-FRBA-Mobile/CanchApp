@@ -126,7 +126,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_frame, fragment, tag.toString())
-                .addToBackStack(null)
+                .addToBackStack(tag.toString())
                 .commit();
         drawer.closeDrawer(GravityCompat.START);
     }

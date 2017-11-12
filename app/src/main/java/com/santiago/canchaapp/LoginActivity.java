@@ -204,8 +204,6 @@ public class LoginActivity extends AppCompatActivity
             changeVisibilityLoadToButton();
             showToast(R.string.txtSinConexion);
         }
-
-
     }
 
     @Override

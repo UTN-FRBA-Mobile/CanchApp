@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 
 import static android.widget.Toast.LENGTH_SHORT;
 import static com.santiago.canchaapp.app.otros.FragmentTags.MAP_CLUB;
+import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CLUB;
 import static com.santiago.canchaapp.app.otros.TextUtils.esUnEmail;
 import static com.santiago.canchaapp.app.otros.TextUtils.estaVacio;
 import static java.lang.Integer.parseInt;
@@ -101,7 +102,7 @@ public class RegistrarClubFragment extends Fragment{
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_frame, mapClubFragment, MAP_CLUB.toString())
-                .addToBackStack(null)
+                .addToBackStack(REGISTRAR_CLUB.toString())
                 .commit();
     }
 

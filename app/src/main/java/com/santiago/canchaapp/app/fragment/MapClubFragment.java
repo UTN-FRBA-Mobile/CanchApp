@@ -48,10 +48,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
 import static com.google.android.gms.location.places.AutocompleteFilter.TYPE_FILTER_ADDRESS;
+import static com.santiago.canchaapp.app.otros.FragmentTags.MAP_CLUB;
 import static com.santiago.canchaapp.app.otros.FragmentTags.MI_CLUB;
+import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CLUB;
 import static com.santiago.canchaapp.app.otros.TextUtils.textoOVacio;
 
 public class MapClubFragment extends Fragment implements OnMapReadyCallback {
@@ -252,10 +255,10 @@ public class MapClubFragment extends Fragment implements OnMapReadyCallback {
     private void abrirFragmentSiguiente(String uuid) {
         Fragment miClub = ClubFragment.nuevaInstancia(uuid, true);
         miClub.setEnterTransition(new Slide(Gravity.RIGHT));
+        getFragmentManager().popBackStack(REGISTRAR_CLUB.toString(), POP_BACK_STACK_INCLUSIVE);
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_frame, miClub, MI_CLUB.toString())
-                .addToBackStack(null)
                 .commit();
 
     }
