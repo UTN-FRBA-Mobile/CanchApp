@@ -2,31 +2,30 @@ package com.santiago.canchaapp.app.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ActionProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.SupportStreetViewPanoramaFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.santiago.canchaapp.LoginActivity;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class DatosClubFragment extends Fragment {
 
@@ -47,6 +46,8 @@ public class DatosClubFragment extends Fragment {
     public TextView textoEmail;
     @BindView(R.id.horario)
     public TextView textoHorario;
+    @BindView(R.id.progressBar)
+    public ProgressBar progressBar;
 
     public static DatosClubFragment nuevaInstancia(String idClub) {
         DatosClubFragment fragment = new DatosClubFragment();
@@ -62,7 +63,7 @@ public class DatosClubFragment extends Fragment {
         super.onCreate(savedInstanceState);
         rootView = inflater.inflate(R.layout.fragment_datos_club, container, false);
         streetView = (SupportStreetViewPanoramaFragment) getChildFragmentManager().findFragmentById(R.id.streetviewfragment);
-        streetView.getView().setVisibility(View.GONE);
+        streetView.getView().setVisibility(GONE);
         context = getActivity().getApplicationContext();
         ButterKnife.bind(this, rootView);
         Bundle arguments = getArguments();
@@ -71,12 +72,12 @@ public class DatosClubFragment extends Fragment {
     }
 
     private void getClub(String idClub){
-        //TODO mostrarSpinner
+        progressBar.setVisibility(VISIBLE);
         gotResult[0] = false;
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //TODO sacarSpinner
+                progressBar.setVisibility(GONE);
                 gotResult[0] = true;
                 if(dataSnapshot.getValue() != null){
                     Club club = dataSnapshot.getValue(Club.class);
@@ -87,7 +88,7 @@ public class DatosClubFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 gotResult[0] = true;
-                //TODO sacarSpinner
+                progressBar.setVisibility(GONE);
                 showToast(R.string.txtMalaConexion);
             }
         };
@@ -97,14 +98,14 @@ public class DatosClubFragment extends Fragment {
                 @Override
                 public void run() {
                     if(!gotResult[0]) {
-                        //TODO sacarSpinner
+                        progressBar.setVisibility(GONE);
                         showToast(R.string.txtMalaConexion);
                     }
                 }
             });
         }
         else{
-            //TODO sacarSpinner
+            progressBar.setVisibility(GONE);
             showToast(R.string.txtSinConexion);
         }
     }

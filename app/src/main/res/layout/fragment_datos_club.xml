@@ -43,6 +43,16 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
         </LinearLayout>
 
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colorPrimary"
+        android:visibility="visible" />
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/streetviewfragment"
         android:name="com.google.android.gms.maps.SupportStreetViewPanoramaFragment"
