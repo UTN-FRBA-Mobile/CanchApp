@@ -3,6 +3,7 @@ package com.santiago.canchaapp.app.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,8 +78,8 @@ public class DatosClubFragment extends Fragment {
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                progressBar.setVisibility(GONE);
                 gotResult[0] = true;
+                progressBar.setVisibility(GONE);
                 if(dataSnapshot.getValue() != null){
                     Club club = dataSnapshot.getValue(Club.class);
                     cargarVista(club);
@@ -94,7 +95,7 @@ public class DatosClubFragment extends Fragment {
         };
         referenceClub = DataBase.getInstancia().getReferenceClub(idClub);
         if(DataBase.getInstancia().isOnline(context)) {
-            DataBase.getInstancia().setTimeoutFirebase(referenceClub, valueEventListener, getActivity(), new Runnable() {
+            DataBase.getInstancia().setTimeoutFirebase(referenceClub, valueEventListener, ((AppCompatActivity) getActivity()), new Runnable() {
                 @Override
                 public void run() {
                     if(!gotResult[0]) {

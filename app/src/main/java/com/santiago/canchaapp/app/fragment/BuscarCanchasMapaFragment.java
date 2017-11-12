@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -254,7 +255,7 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
         };
         if(DataBase.getInstancia().isOnline(getActivity().getApplicationContext())) {
             progressBar.setVisibility(VISIBLE);
-            DataBase.getInstancia().setTimeoutFirebase(refDatosClubes, valueEventListener, getActivity(), new Runnable() {
+            DataBase.getInstancia().setTimeoutFirebase(refDatosClubes, valueEventListener, ((AppCompatActivity) getActivity()), new Runnable() {
                 @Override
                 public void run() {
                     progressBar.setVisibility(GONE);

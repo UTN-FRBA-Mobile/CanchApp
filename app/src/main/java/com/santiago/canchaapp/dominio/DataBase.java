@@ -140,19 +140,4 @@ public class DataBase {
         };
         timer.schedule(timerTask, 30000L);
     }
-
-    public void setTimeoutFirebase(final DatabaseReference reference, final ValueEventListener valueEventListener, final FragmentActivity activity, final Runnable task) {
-        reference.addListenerForSingleValueEvent(valueEventListener);
-        final Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                timer.cancel();
-                reference.removeEventListener(valueEventListener);
-                activity.runOnUiThread(task);
-            }
-        };
-        timer.schedule(timerTask, 30000L);
-    }
-
 }
