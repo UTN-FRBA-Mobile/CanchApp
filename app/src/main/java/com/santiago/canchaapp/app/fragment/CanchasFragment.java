@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -45,6 +46,8 @@ public class CanchasFragment extends Fragment {
     public ProgressBar progressBar;
     @BindView(R.id.fab)
     public FloatingActionButton agregarCancha;
+    @BindView(R.id.sinCanchas)
+    public TextView sinCanchas;
 
 
     public static CanchasFragment nuevaInstancia(String idClub, Boolean esMiClub) {
@@ -83,11 +86,13 @@ public class CanchasFragment extends Fragment {
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                sinCanchas.setVisibility(GONE);
                 actualizarLista(dataSnapshot);
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 progressBar.setVisibility(GONE);
+                sinCanchas.setVisibility(GONE);
                 actualizarLista(dataSnapshot);
             }
             @Override
@@ -97,6 +102,7 @@ public class CanchasFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 progressBar.setVisibility(GONE);
+                sinCanchas.setVisibility(GONE);
                 if (databaseError.getCode() != PERMISSION_DENIED) {
                     Toast.makeText(getContext(), R.string.txtErrorDescargandoInfo, Toast.LENGTH_LONG).show();
                 }
@@ -104,6 +110,7 @@ public class CanchasFragment extends Fragment {
 
             private void actualizarLista(DataSnapshot snapshotCancha) {
                 progressBar.setVisibility(GONE);
+                sinCanchas.setVisibility(GONE);
                 if(snapshotCancha != null && snapshotCancha.getValue() != null) {
                     Cancha cancha = snapshotCancha.getValue(Cancha.class);
                     adapter.actualizarLista(cancha);
@@ -117,6 +124,9 @@ public class CanchasFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 progressBar.setVisibility(GONE);
+                if (!dataSnapshot.hasChildren()) {
+                    sinCanchas.setVisibility(VISIBLE);
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
