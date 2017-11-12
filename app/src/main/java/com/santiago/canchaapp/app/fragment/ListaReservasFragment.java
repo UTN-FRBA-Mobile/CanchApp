@@ -7,30 +7,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.ReservasAdapter;
 import com.santiago.canchaapp.app.otros.AccionesSobreReserva;
 import com.santiago.canchaapp.app.otros.DateUtils;
 import com.santiago.canchaapp.app.otros.TipoReservas;
-import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
 import com.santiago.canchaapp.dominio.Reserva;
 import com.santiago.canchaapp.servicios.Sesion;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.google.firebase.database.DatabaseError.PERMISSION_DENIED;
 import static com.santiago.canchaapp.app.otros.AccionesSobreReserva.NINGUNA;
 import static com.santiago.canchaapp.app.otros.AccionesSobreReserva.SOLO_CANCELAR;
@@ -44,6 +41,8 @@ public class ListaReservasFragment extends Fragment {
 
     @BindView(R.id.recycler_view_reservas)
     public RecyclerView reservasRecyclerView;
+    @BindView(R.id.sinReservas)
+    public TextView sinReservas;
 
     private RecyclerView.LayoutManager layoutManager;
 
@@ -63,12 +62,15 @@ public class ListaReservasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_lista_reservas, container, false);
+
         cargarVista(rootView);
         return rootView;
     }
 
     private void cargarVista(View rootView) {
         ButterKnife.bind(this, rootView);
+
+        sinReservas.setText("No hay reservas " + tipoReservas().toString().toLowerCase());
 
         // Recycler view
         layoutManager = new LinearLayoutManager(getActivity());
@@ -102,7 +104,13 @@ public class ListaReservasFragment extends Fragment {
 
             private void actualizarLista(DataSnapshot snapshotReserva) {
                 Reserva reserva = snapshotReserva.getValue(Reserva.class);
+                if (reserva.getEstado() == tipoReservas().toEstado())
+                    sinReservas.setVisibility(GONE);
+
                 adapter.actualizarLista(reserva);
+
+                if (adapter.noQuedaronReservas())
+                    sinReservas.setVisibility(VISIBLE);
             }
 
         });

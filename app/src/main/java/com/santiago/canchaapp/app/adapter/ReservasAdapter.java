@@ -112,4 +112,9 @@ public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
         return i;
     }
 
+    public boolean noQuedaronReservas()
+    {
+        return reservas.isEmpty();
+    }
+
 }
