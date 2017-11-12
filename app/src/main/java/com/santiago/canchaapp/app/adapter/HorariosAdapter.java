@@ -28,7 +28,6 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
 
     private Activity activity;
     private List<SlotHorarioAlquiler> horarios;
-    private List<Alquiler> alquileres;
     private Cancha cancha;
     private Club club;
     private Date fecha;
@@ -44,20 +43,17 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
         this.esMiCancha = esMiCancha;
         this.fecha = fecha;
         this.rangoHorario = rangoHorario;
-        this.alquileres = new ArrayList<>();
         this.horaActual = horaActual;
         this.primerDia = primerDia;
-        this.horarios = generarListaDeHorarios(cancha.getRangoHorario(), new ArrayList<Alquiler>());
+        this.horarios = generarListaDeHorarios(cancha.getRangoHorario());
+        notifyDataSetChanged();
     }
 
     public void actualizarLista(Alquiler alquilerActualizado) {
         if (!rangoHorario.contiene(alquilerActualizado.getHora())) {
              return;
         }
-        actualizarAlquileres(alquilerActualizado);
-        horarios.clear();
-        horarios.addAll(generarListaDeHorarios(rangoHorario, alquileres));
-        this.notifyDataSetChanged();
+        actualizarHorarios(alquilerActualizado);
     }
 
     @Override
@@ -93,10 +89,10 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
     }
 
     // Auxiliar
-    private List<SlotHorarioAlquiler> generarListaDeHorarios(Horario rangoHorario, List<Alquiler> alquileres) {
+    private List<SlotHorarioAlquiler> generarListaDeHorarios(Horario rangoHorario) {
         List<SlotHorarioAlquiler> horarios = new ArrayList<>();
         for (int h = rangoHorario.getDesde(); h < rangoHorario.getHasta(); h++) {
-            horarios.add(new SlotHorarioAlquiler(horaDesde(h), reservaEnHorario(h, alquileres)));
+            horarios.add(new SlotHorarioAlquiler(horaDesde(h), null));
         }
         return horarios;
     }
@@ -110,30 +106,26 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorarioViewHolder> {
         return null;
     }
 
-    private void actualizarAlquileres(Alquiler alquilerActualizado) {
-        Integer i = indiceDeAlquiler(alquilerActualizado);
-        // Se reservó un horario (y no está cancelado) => se agrega alquiler a la lista
-        if (i == null) {
-            if (alquilerActualizado.getEstado() != CANCELADA) {
-                alquileres.add(alquilerActualizado);
-            }
-        } else {
-            // Se canceló el alquiler => se saca de la lista
+    private void actualizarHorarios(Alquiler alquilerActualizado) {
+        Integer i = indiceDeHorario(alquilerActualizado);
+        if (i != null) {
+            // Se canceló el alquiler => se libera el horario
             if (alquilerActualizado.getEstado() == CANCELADA) {
-                alquileres.remove((int) i);
+                horarios.set(i, new SlotHorarioAlquiler(horarios.get(i).getHorario(), null));
             } else { // Se actualizó el alquiler => se reemplaza en la lista
-                alquileres.set(i, alquilerActualizado);
+                horarios.set(i, new SlotHorarioAlquiler(horarios.get(i).getHorario(), alquilerActualizado));
             }
+            notifyItemChanged(i);
         }
     }
 
-    private Integer indiceDeAlquiler(Alquiler alquiler) {
-        for (int i = 0; i < alquileres.size(); i++) {
-            if (Objects.equals(alquileres.get(i).getUuid(), alquiler.getUuid())) {
+    private Integer indiceDeHorario(Alquiler alquiler) {
+        for (int i = 0; i < horarios.size(); i++) {
+            if (horarios.get(i).getHorario().getDesde() == alquiler.getHora()) {
                 return i;
             }
         }
-        return null;
+        return null; // No debería pasar
     }
 
 }

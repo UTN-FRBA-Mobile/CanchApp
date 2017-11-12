@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,6 +106,8 @@ public class ListaHorariosFragment extends Fragment {
         // Recycler view
         layoutManager = new LinearLayoutManager(getActivity());
         horariosRecyclerView.setLayoutManager(layoutManager);
+        ((SimpleItemAnimator) horariosRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+        ((SimpleItemAnimator) horariosRecyclerView.getItemAnimator()).setMoveDuration(0);
 
         // Para setear adapter
         getClub(cancha.getIdClub());
