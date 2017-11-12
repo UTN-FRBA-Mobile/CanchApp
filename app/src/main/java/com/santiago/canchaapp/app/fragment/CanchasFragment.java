@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -25,6 +26,8 @@ import com.santiago.canchaapp.dominio.DataBase;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.google.firebase.database.DatabaseError.PERMISSION_DENIED;
 import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHA;
 
@@ -37,6 +40,8 @@ public class CanchasFragment extends Fragment {
     private Context context;
     @BindView(R.id.recycler_view_canchas)
     public RecyclerView canchasRecyclerView;
+    @BindView(R.id.progressBar)
+    public ProgressBar progressBar;
     @BindView(R.id.fab)
     public FloatingActionButton agregarCancha;
 
@@ -71,7 +76,7 @@ public class CanchasFragment extends Fragment {
     }
 
     private void getCanchasClub() {
-        //TODO agregarSpinner
+        progressBar.setVisibility(VISIBLE);
         DatabaseReference refCanchasClub = DataBase.getInstancia().getReferenceCanchasClub(idClub());
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
@@ -88,14 +93,14 @@ public class CanchasFragment extends Fragment {
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //TODO sacarSpinner
+                progressBar.setVisibility(GONE);
                 if (databaseError.getCode() != PERMISSION_DENIED) {
                     Toast.makeText(getContext(), R.string.txtErrorDescargandoInfo, Toast.LENGTH_LONG).show();
                 }
             }
 
             private void actualizarLista(DataSnapshot snapshotCancha) {
-                //TODO sacarSpinner
+                progressBar.setVisibility(GONE);
                 if(snapshotCancha != null && snapshotCancha.getValue() != null) {
                     Cancha cancha = snapshotCancha.getValue(Cancha.class);
                     adapter.actualizarLista(cancha);
@@ -107,7 +112,7 @@ public class CanchasFragment extends Fragment {
     }
 
     private void setAgregarCancha() {
-        agregarCancha.setVisibility(esMiClub() ? View.VISIBLE : View.GONE);
+        agregarCancha.setVisibility(esMiClub() ? VISIBLE : GONE);
         agregarCancha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
