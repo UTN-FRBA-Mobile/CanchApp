@@ -11,7 +11,7 @@
             android:icon="@drawable/ic_compras"
             android:title="@string/txtMisReservas" />
         <item
-            android:title="Complejo"
+            android:title="Dueño"
             android:id="@+id/menuComplejo">
             <menu>
                 <group android:checkableBehavior="single">
