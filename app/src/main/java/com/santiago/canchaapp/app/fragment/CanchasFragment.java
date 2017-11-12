@@ -18,6 +18,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.CanchasAdapter;
 import com.santiago.canchaapp.dominio.Cancha;
@@ -77,6 +78,7 @@ public class CanchasFragment extends Fragment {
 
     private void getCanchasClub() {
         progressBar.setVisibility(VISIBLE);
+
         DatabaseReference refCanchasClub = DataBase.getInstancia().getReferenceCanchasClub(idClub());
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
@@ -85,6 +87,7 @@ public class CanchasFragment extends Fragment {
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                progressBar.setVisibility(GONE);
                 actualizarLista(dataSnapshot);
             }
             @Override
@@ -109,6 +112,17 @@ public class CanchasFragment extends Fragment {
 
         };
         refCanchasClub.addChildEventListener(childEventListener);
+
+        refCanchasClub.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                progressBar.setVisibility(GONE);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+
+        });
     }
 
     private void setAgregarCancha() {
@@ -133,10 +147,10 @@ public class CanchasFragment extends Fragment {
     private void abrirFragmentSiguiente() {
         Fragment agregarCanchaFragment = AgregarCanchaFragment.nuevaInstancia();
         agregarCanchaFragment.setExitTransition(new Slide(Gravity.LEFT));
-        getFragmentManager()
+        getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.club_layout, agregarCanchaFragment, REGISTRAR_CANCHA.toString())
-                .addToBackStack(null)
+                .replace(R.id.content_frame, agregarCanchaFragment, REGISTRAR_CANCHA.toString())
+                .addToBackStack(REGISTRAR_CANCHA.toString())
                 .commit();
     }
 
