@@ -81,9 +81,9 @@ public class AgregarCanchaFragment extends Fragment {
         Bundle args = getParameters();
         cargarFotosCanchaFragment.setArguments(args);
         cargarFotosCanchaFragment.setEnterTransition(new Slide(Gravity.RIGHT));
-        getFragmentManager()
+        getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.club_layout, cargarFotosCanchaFragment, CARGAR_FOTOS_CANCHA.toString())
+                .replace(R.id.content_frame, cargarFotosCanchaFragment, CARGAR_FOTOS_CANCHA.toString())
                 .addToBackStack(null)
                 .commit();
     }

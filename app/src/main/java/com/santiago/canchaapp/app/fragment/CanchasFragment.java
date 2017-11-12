@@ -147,10 +147,10 @@ public class CanchasFragment extends Fragment {
     private void abrirFragmentSiguiente() {
         Fragment agregarCanchaFragment = AgregarCanchaFragment.nuevaInstancia();
         agregarCanchaFragment.setExitTransition(new Slide(Gravity.LEFT));
-        getFragmentManager()
+        getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.club_layout, agregarCanchaFragment, REGISTRAR_CANCHA.toString())
-                .addToBackStack(null)
+                .replace(R.id.content_frame, agregarCanchaFragment, REGISTRAR_CANCHA.toString())
+                .addToBackStack(REGISTRAR_CANCHA.toString())
                 .commit();
     }
 

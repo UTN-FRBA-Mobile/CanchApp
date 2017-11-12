@@ -23,7 +23,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Slide;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +59,10 @@ import butterknife.ButterKnife;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
+import static com.santiago.canchaapp.app.otros.FragmentTags.MI_CLUB;
+import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CANCHA;
+import static com.santiago.canchaapp.app.otros.FragmentTags.REGISTRAR_CLUB;
 import static java.util.Collections.singletonList;
 
 public class CargarFotosCanchaFragment extends Fragment {
@@ -281,8 +287,9 @@ public class CargarFotosCanchaFragment extends Fragment {
 
     private void abrirFragmentSiguiente() {
         subirDatos();
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Mi Club");
+        Fragment miClub = ClubFragment.nuevaInstancia(Sesion.getInstancia().getUsuario().getIdClub(), true);
+        miClub.setEnterTransition(new Slide(Gravity.RIGHT));
+        getActivity().getSupportFragmentManager().popBackStack(REGISTRAR_CANCHA.toString(), POP_BACK_STACK_INCLUSIVE);
     }
 
     private void subirDatos() {
