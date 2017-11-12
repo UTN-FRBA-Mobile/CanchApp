@@ -10,10 +10,14 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.santiago.canchaapp.R;
+import com.santiago.canchaapp.app.viewholder.FotoCanchaView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class FotosCanchaAdapter extends BaseAdapter {
 
@@ -50,25 +54,17 @@ public class FotosCanchaAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        // 1
+    public View getView(int i, View convertView, ViewGroup viewGroup) {
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = new View(context);
+        view = inflater.inflate(R.layout.item_foto_cancha_grid, null);
+
         final Uri fotoUrl = fotos.get(i);
+        FotoCanchaView imageView = view.findViewById(R.id.item_foto_cancha);
+        Picasso.with(context).load(fotoUrl).fit().centerCrop().into(imageView);
 
-        // 2
-        ImageView imageView;
-        if (view == null) {
-            imageView = new ImageView(context);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
-            imageView.setLayoutParams(new GridView.LayoutParams(params));
-            //imageView.setLayoutParams(new GridView.LayoutParams(300, 300));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        } else {
-            imageView = (ImageView) view;
-        }
-
-        // 3
-        Picasso.with(context).load(fotoUrl).into(imageView);
-        return imageView;
+        return view;
     }
 
 }

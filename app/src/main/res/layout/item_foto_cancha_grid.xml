@@ -1,0 +1,6 @@
+<com.santiago.canchaapp.app.viewholder.FotoCanchaView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_foto_cancha"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scaleType="centerCrop">
+</com.santiago.canchaapp.app.viewholder.FotoCanchaView>

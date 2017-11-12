@@ -107,7 +107,7 @@ public class ListaHorariosFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         horariosRecyclerView.setLayoutManager(layoutManager);
         ((SimpleItemAnimator) horariosRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
-        ((SimpleItemAnimator) horariosRecyclerView.getItemAnimator()).setMoveDuration(0);
+        horariosRecyclerView.getItemAnimator().setMoveDuration(0);
 
         // Para setear adapter
         getClub(cancha.getIdClub());

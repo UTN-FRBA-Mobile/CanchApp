@@ -62,6 +62,7 @@ public class CanchaViewHolder extends RecyclerView.ViewHolder implements View.On
         } else {
             Picasso.with(view.getContext())
                     .load(R.drawable.cancha_sin_foto)
+                    .placeholder(R.drawable.cancha_sin_foto)
                     .fit().centerCrop().into(imagenCancha);
         }
         // Setea boton
