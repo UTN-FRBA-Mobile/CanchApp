@@ -45,9 +45,7 @@ public class AlquileresAdapter extends RecyclerView.Adapter<AlquilerViewHolder> 
     }
 
     public void actualizarLista(Alquiler alquiler) {
-        if (actualizarAlquileres(alquiler)) {
-            this.notifyDataSetChanged();
-        }
+        actualizarAlquileres(alquiler);
     }
 
     @Override
@@ -70,28 +68,28 @@ public class AlquileresAdapter extends RecyclerView.Adapter<AlquilerViewHolder> 
 
     // Auxiliar
 
-    private boolean actualizarAlquileres(Alquiler alquilerActualizado) {
+    private void actualizarAlquileres(Alquiler alquilerActualizado) {
         if (alquilerActualizado.getFecha().equals(hoy) && alquilerActualizado.getHora() <= horaActual) {
-            return false; // Alquiler de hoy, pero en hora pasada
+            return; // Alquiler de hoy, pero en hora pasada
         }
         Integer i = indiceDeAlquiler(alquilerActualizado);
         if (i == null) {
             // Sólo se debe agregar una reserva nueva si es de este estado
             if (alquilerActualizado.getEstado() == tipoReservas.toEstado()) {
                 alquileres.add(alquilerActualizado);
-            } else {
-                return false;
+                notifyItemInserted(alquileres.size() - 1);
             }
         } else {
             if (alquilerActualizado.getEstado() != tipoReservas.toEstado()) {
                 // si cambió el estado se saca de la lista
                 alquileres.remove((int) i);
+                notifyItemRemoved(i);
             } else {
                 // en otro caso se la modifica
                 alquileres.set(i, alquilerActualizado);
+                notifyItemChanged(i);
             }
         }
-        return true;
     }
 
     private Integer indiceDeAlquiler(Alquiler alquiler) {

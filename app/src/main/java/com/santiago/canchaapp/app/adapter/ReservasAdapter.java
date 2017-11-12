@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import static com.santiago.canchaapp.app.otros.DateUtils.dateToString;
 import static com.santiago.canchaapp.app.otros.DateUtils.dateToStringtoSave;
 import static com.santiago.canchaapp.app.otros.DateUtils.hora;
 import static com.santiago.canchaapp.app.otros.DateUtils.hoy;
@@ -41,9 +40,7 @@ public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
     }
 
     public void actualizarLista(Reserva reserva) {
-        if (actualizarReservas(reserva)) {
-            this.notifyDataSetChanged();
-        }
+        actualizarReservas(reserva);
     }
 
     @Override
@@ -66,28 +63,28 @@ public class ReservasAdapter extends RecyclerView.Adapter<ReservaViewHolder> {
 
     // Auxiliar
 
-    private boolean actualizarReservas(Reserva reservaActualizada) {
+    private void actualizarReservas(Reserva reservaActualizada) {
         if (reservaActualizada.getFecha().equals(hoy) && reservaActualizada.getHora() <= horaActual) {
-            return false; // Alquiler de hoy, pero en hora pasada
+            return; // Alquiler de hoy, pero en hora pasada
         }
         Integer i = indiceDeReserva(reservaActualizada);
         if (i == null) {
             // Sólo se debe agregar una reserva nueva si es de este estado
             if (reservaActualizada.getEstado() == tipoReservas.toEstado()) {
                 reservas.add(reservaActualizada);
-            } else {
-                return false;
+                notifyItemInserted(reservas.size() - 1);
             }
         } else {
             if (reservaActualizada.getEstado() != tipoReservas.toEstado()) {
                 // si cambió el estado se saca de la lista
                 reservas.remove((int) i);
+                notifyItemRemoved(i);
             } else {
                 // en otro caso se la modifica
                 reservas.set(i, reservaActualizada);
+                notifyItemChanged(i);
             }
         }
-        return true;
     }
 
     private Integer indiceDeReserva(Reserva reserva) {

@@ -17,7 +17,7 @@
                 <group android:checkableBehavior="single">
                     <item
                         android:id="@+id/navMisAlquileres"
-                        android:icon="@drawable/ic_mis_alquileres"
+                        android:icon="@drawable/ic_reserva"
                         android:title="@string/txtMisAlquileres" />
                     <item
                         android:id="@+id/navMiClub"
