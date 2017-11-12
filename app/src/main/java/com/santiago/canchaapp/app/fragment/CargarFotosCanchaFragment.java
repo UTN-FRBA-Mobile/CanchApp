@@ -14,6 +14,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -27,7 +28,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import android.support.design.widget.FloatingActionButton;
@@ -44,6 +44,7 @@ import com.santiago.canchaapp.dominio.TipoCancha;
 import com.santiago.canchaapp.dominio.TipoSuperficie;
 import com.santiago.canchaapp.servicios.Sesion;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,6 +62,7 @@ import static java.util.Collections.singletonList;
 public class CargarFotosCanchaFragment extends Fragment {
 
     private static String APP_DIRECTORY = "Pictures/";
+    private static String MEDIA_DIRECTORY = APP_DIRECTORY + "CanchApp";
     private final int MY_PERMISSIONS = 100;
     private final int PHOTO_CODE = 200;
     private final int SELECT_PICTURE = 300;
@@ -171,18 +173,33 @@ public class CargarFotosCanchaFragment extends Fragment {
             return;
         }
 
-          SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss", java.util.Locale.getDefault());
-          String date = dateFormat.format(new Date());
-          String imageName = date + ".jpg";
+        File folder = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
+        boolean isDirectoryCreated = folder.exists();
 
-          ContentValues values = new ContentValues(1);
-          values.put(MediaStore.Images.Media.MIME_TYPE, imageName);
-          mCameraTempUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        if(!isDirectoryCreated) {
+            isDirectoryCreated = folder.mkdirs();
+            Toast.makeText(getActivity(), "La carpeta se ha creado correctamente.", Toast.LENGTH_SHORT).show();}
 
-          Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-          intent.putExtra(MediaStore.EXTRA_OUTPUT, mCameraTempUri);
-          intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-          startActivityForResult(intent, opcionCamera);
+        if(isDirectoryCreated) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss", java.util.Locale.getDefault());
+            String date = dateFormat.format(new Date());
+            String imageName = date + ".jpg";
+
+            mPath = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY
+                    + File.separator + imageName;
+
+            ContentValues values = new ContentValues(1);
+            values.put(MediaStore.Images.Media.TITLE, imageName);
+            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+            values.put(MediaStore.MediaColumns.DATA, mPath);
+
+            mCameraTempUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, mCameraTempUri);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            startActivityForResult(intent, opcionCamera);
+        }
     }
 
     @Override
