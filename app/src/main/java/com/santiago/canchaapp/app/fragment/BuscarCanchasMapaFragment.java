@@ -262,23 +262,41 @@ public class BuscarCanchasMapaFragment extends Fragment implements OnMapReadyCal
     }
 
     private void cargarUbicacionDeClubes(Map<String,Object> clubes) {
-        for (Map.Entry<String, Object> entry : clubes.entrySet()){
+        for (final Map.Entry<String, Object> entry : clubes.entrySet()){
             try {
-                Map club = (Map) entry.getValue();
+                final Map club = (Map) entry.getValue();
                 Map coordenadas = (Map) club.get("coordenadas");
-                LatLng punto = new LatLng(parseDouble(coordenadas.get("lat").toString()), parseDouble(coordenadas.get("lon").toString()));
-                String nombre = (String) club.get("nombre");
+                final LatLng punto = new LatLng(parseDouble(coordenadas.get("lat").toString()), parseDouble(coordenadas.get("lon").toString()));
+                final String nombre = (String) club.get("nombre");
 
-                Bitmap ubicacion_club = BitmapFactory.decodeResource(getResources(), R.drawable.ubicacion_club);
+                final Bitmap ubicacion_club = BitmapFactory.decodeResource(getResources(), R.drawable.ubicacion_club);
 
-                if(!Sesion.getInstancia().getUsuario().esMiClub((String) club.get("uuid"))){
-                    mMap.addMarker(
-                            new MarkerOptions()
-                                    .position(punto)
-                                    .title(nombre)
-                                    .icon(BitmapDescriptorFactory.fromBitmap(resizearBitmap(ubicacion_club, 0.053f))));
+                if(!Sesion.getInstancia().getUsuario().esMiClub((String) club.get("uuid")))
+                {
+                    ValueEventListener valueEventListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null) {
+                                Map<String, Object> canchas = (HashMap<String, Object>) dataSnapshot.getValue();
+                                if (canchas.size() > 0) {
+                                    mMap.addMarker(
+                                            new MarkerOptions()
+                                                    .position(punto)
+                                                    .title(nombre)
+                                                    .icon(BitmapDescriptorFactory.fromBitmap(resizearBitmap(ubicacion_club, 0.053f))));
 
-                    ubicaciones.put(punto, entry.getKey());
+                                    ubicaciones.put(punto, entry.getKey());
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    };
+
+                    DatabaseReference refCanchas = DataBase.getInstancia().getReferenceCanchasClub((String) club.get("uuid"));
+                    refCanchas.addListenerForSingleValueEvent(valueEventListener);
                 }
             }
             catch (Exception e) {
