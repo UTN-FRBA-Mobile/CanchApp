@@ -266,6 +266,7 @@ public class LoginActivity extends AppCompatActivity
         final Intent intent = new Intent(this, MenuNavegacion.class);
         intent.putExtra("mostrarSeccionClub", mostrarSeccionClub);
         startActivity(intent);
+        finish();
     }
 
     private void setearUsuarioEnSesion(Usuario usuario) {
