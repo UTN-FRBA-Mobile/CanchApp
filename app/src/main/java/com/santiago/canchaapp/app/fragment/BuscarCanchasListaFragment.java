@@ -20,12 +20,16 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.santiago.canchaapp.R;
 import com.santiago.canchaapp.app.adapter.ClubesAdapter;
 import com.santiago.canchaapp.dominio.Club;
 import com.santiago.canchaapp.dominio.DataBase;
 import com.santiago.canchaapp.servicios.Sesion;
 
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -157,9 +161,26 @@ public class BuscarCanchasListaFragment extends Fragment {
     }
 
     private void actualizarLista(DataSnapshot snapshotClub) {
-        Club club = snapshotClub.getValue(Club.class);
-        //if(club.tieneCanchas())
-        if (!Sesion.getInstancia().getUsuario().esMiClub(club.getUuid()))
-            adapter.actualizarLista(club);
+        final Club club = snapshotClub.getValue(Club.class);
+        if (!Sesion.getInstancia().getUsuario().esMiClub(club.getUuid())) {
+            ValueEventListener valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() != null) {
+                        Map<String, Object> canchas = (HashMap<String, Object>) dataSnapshot.getValue();
+                        if (canchas.size() > 0) {
+                            adapter.actualizarLista(club);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            };
+
+            DatabaseReference refCanchas = DataBase.getInstancia().getReferenceCanchasClub(club.getUuid());
+            refCanchas.addListenerForSingleValueEvent(valueEventListener);
+        }
     }
 }
