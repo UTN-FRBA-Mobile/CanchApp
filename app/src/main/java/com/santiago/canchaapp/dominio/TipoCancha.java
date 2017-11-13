@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public enum TipoCancha {
-    FUTBOL5("Fútbol 5"), FUTBOL7("Fútbol 7"), TENIS("Tenis"), BASQUET("Basquet");
+    FUTBOL5("Fútbol 5"), FUTBOL7("Fútbol 7"), FUTBOL9("Fútbol 9"), FUTBOL11("Fúltbol 11");
 
     public String nombre;
 

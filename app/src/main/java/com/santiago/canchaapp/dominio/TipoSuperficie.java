@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public enum TipoSuperficie {
-    BALDOSA("Baldosa"), ALFOMBRA("Alfombra"), PASTO("Pasto"), POLVO_LADRILLO("Polvo de ladrillo");
+    BALDOSA("Baldosa"), PASTO("Césped"), SINTETICO("Sintético"), CAUCHO("Caucho");
 
     public String nombre;
 
