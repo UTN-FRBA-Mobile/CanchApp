@@ -128,7 +128,7 @@ public class BuscarCanchasListaFragment extends Fragment {
         adapter = new ClubesAdapter(getContext(), locacion);
         clubesRecyclerView.setAdapter(adapter);
 
-        progressBar.setVisibility(VISIBLE);
+        //progressBar.setVisibility(VISIBLE);
 
         DatabaseReference refDatosClubes = DataBase.getInstancia().getReferenceClubes();
         refDatosClubes.addChildEventListener(new ChildEventListener() {
@@ -152,7 +152,7 @@ public class BuscarCanchasListaFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                progressBar.setVisibility(GONE);
+               // progressBar.setVisibility(GONE);
                 if (databaseError.getCode() != PERMISSION_DENIED)
                     Toast.makeText(getContext(), R.string.txtErrorDescargandoInfo, Toast.LENGTH_LONG).show();
             }
@@ -168,7 +168,7 @@ public class BuscarCanchasListaFragment extends Fragment {
     }
 
     private void actualizarLista(DataSnapshot snapshotClub) {
-        progressBar.setVisibility(GONE);
+      //  progressBar.setVisibility(GONE);
 
         final Club club = snapshotClub.getValue(Club.class);
         if (!Sesion.getInstancia().getUsuario().esMiClub(club.getUuid())) {
@@ -194,7 +194,7 @@ public class BuscarCanchasListaFragment extends Fragment {
             refCanchas.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    progressBar.setVisibility(GONE);
+                   // progressBar.setVisibility(GONE);
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
