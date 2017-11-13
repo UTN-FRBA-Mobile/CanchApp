@@ -47,8 +47,6 @@ public class BuscarCanchasListaFragment extends Fragment {
 
     @BindView(R.id.recycler_view_clubes)
     public RecyclerView clubesRecyclerView;
-    @BindView(R.id.progressBar)
-    public ProgressBar progressBar;
 
     private RecyclerView.LayoutManager layoutManager;
 
