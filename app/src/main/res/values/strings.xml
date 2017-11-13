@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">CanchApp</string>
-    <string name="txtNombre">Nombre club</string>
+    <string name="txtNombre">Nombre</string>
     <string name="txtTelefono">Teléfono</string>
-    <string name="txtEmail">Correo electrónico</string>
+    <string name="txtEmail">Email</string>
     <string name="txtHorario">Horario</string>
     <string name="btnContinuar">CONTINUAR</string>
     <string name="btnAtras">ATRAS</string>
