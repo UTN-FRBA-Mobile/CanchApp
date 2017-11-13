@@ -111,7 +111,7 @@ public class ClubViewHolder extends RecyclerView.ViewHolder implements View.OnCl
             df.setRoundingMode(RoundingMode.CEILING);
             df.format(distanceInMeters);
             unidad.setText("m");
-            distancia.setText(Float.toString(distanceInMeters));
+            distancia.setText(df.format(distanceInMeters).toString());
         }
     }
 
