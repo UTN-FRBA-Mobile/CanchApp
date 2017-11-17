@@ -17,4 +17,9 @@
     <color name="colorAclaracion">#949292</color>
     <color name="colorGris">#dfdcdc</color>
     <color name="colorBloqueoTransparente">#60b1b1b1</color>
+
+
+    <color name="color_blue">#4255c1</color>
+    <color name="color_white">#FFFFFF</color>
+
 </resources>

@@ -165,7 +165,7 @@ public class HorarioViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v)
             {
                 EditText textInput = viewDialogo.findViewById(R.id.txtNombre);
-                if (TextUtils.estaVacio(textInput.getText().toString())) {
+                if (TextUtils.isEmpty(textInput.getText().toString())) {
                     Toast.makeText(view.getContext(), R.string.txtCompletarNombre, Toast.LENGTH_LONG).show();
                 }
                 else{

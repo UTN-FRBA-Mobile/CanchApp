@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">CanchApp</string>
-    <string name="txtNombre">Nombre club</string>
-    <string name="txtTelefono">Teléfono</string>
-    <string name="txtEmail">Correo electrónico</string>
+    <string name="txt_name">Nombre</string>
+    <string name="txt_phone">Teléfono</string>
+    <string name="txt_email">E-mail</string>
     <string name="txtHorario">Horario</string>
     <string name="btnContinuar">CONTINUAR</string>
     <string name="btnAtras">ATRAS</string>
@@ -75,4 +75,7 @@
     <string name="txtErrorSubiendoFotos">No se pudieron subir algunas imagenes</string>
 
     <string name="txtDialogoNoMostrar">No volver a mostrar</string>
+
+    <!-- Mensajes sobre errores -->
+    <string name="txt_error_empty">El campo no puede estar vacío</string>
 </resources>

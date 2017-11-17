@@ -38,8 +38,6 @@ import static android.text.Spanned.*;
 import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.santiago.canchaapp.app.otros.DateUtils.*;
-import static com.santiago.canchaapp.app.otros.DateUtils.stringToDateToSave;
-import static com.santiago.canchaapp.app.otros.TextUtils.estaVacio;
 import static com.santiago.canchaapp.dominio.EstadoReserva.APROBADA;
 import static com.santiago.canchaapp.dominio.EstadoReserva.CANCELADA;
 import static com.santiago.canchaapp.dominio.Horario.*;

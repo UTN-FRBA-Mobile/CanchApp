@@ -25,22 +25,15 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.santiago.canchaapp.app.fragment.AlquileresFragment;
 import com.santiago.canchaapp.app.fragment.BuscarCanchasFragment;
 import com.santiago.canchaapp.app.fragment.ClubFragment;
-import com.santiago.canchaapp.app.fragment.RegistrarClubFragment;
+import com.santiago.canchaapp.app.fragment.FragmentRegisterClub;
 import com.santiago.canchaapp.app.fragment.ReservasFragment;
 import com.santiago.canchaapp.app.otros.FragmentTags;
-import com.santiago.canchaapp.dominio.DataBase;
 import com.santiago.canchaapp.dominio.Usuario;
 import com.santiago.canchaapp.servicios.Sesion;
 import com.squareup.picasso.Picasso;
-
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -112,7 +105,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
             case R.id.navBuscarCanchas:
                 abrirFragment(BuscarCanchasFragment.nuevaInstancia(), BUSCAR_CANCHAS, true); break;
             case R.id.navRegistrarClub:
-                abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB, true); break;
+                abrirFragment(FragmentRegisterClub.nuevaInstancia(), REGISTRAR_CLUB, true); break;
             case R.id.navMisReservas:
                 abrirFragment(ReservasFragment.nuevaInstancia(), MIS_RESERVAS, true); break;
             case R.id.navMisAlquileres:
@@ -177,7 +170,7 @@ public class MenuNavegacion extends AppCompatActivity implements NavigationView.
         Boolean tieneClub = user.tieneClub();
         changeItemMenuClub(tieneClub);
         if(!tieneClub) {
-            abrirFragment(RegistrarClubFragment.nuevaInstancia(), REGISTRAR_CLUB, false);
+            abrirFragment(FragmentRegisterClub.nuevaInstancia(), REGISTRAR_CLUB, false);
         }
         else{
             abrirFragment(ClubFragment.nuevaInstancia(Sesion.getInstancia().getUsuario().getIdClub(), true), MI_CLUB, false);

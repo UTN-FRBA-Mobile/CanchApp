@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_continue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_next"
+        app:backgroundTint="@color/color_blue"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_white"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/padding_sides"
+        android:paddingEnd="@dimen/padding_sides"
+        android:paddingTop="25dp"
+        tools:context="com.santiago.canchaapp.app.fragment.FragmentRegisterClub">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterMaxLength="50"
+            app:counterEnabled="true">
+            <EditText
+                android:id="@+id/txt_name"
+                style="@style/editText"
+                android:hint="@string/txt_name"
+                android:maxLength="30"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterMaxLength="12"
+            app:counterEnabled="true">
+            <EditText
+                android:id="@+id/txt_phone"
+                style="@style/editText"
+                android:hint="@string/txt_phone"
+                android:inputType="phone"
+                android:maxLength="15"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_horario_desde"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterMaxLength="30"
+            app:counterEnabled="true">
+            <EditText
+                android:id="@+id/txt_horario_desde"
+                style="@style/editText"
+                android:hint="@string/txt_phone"
+                android:inputType="phone"
+                android:maxLength="15"/>
+        </android.support.design.widget.TextInputLayout>ç
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_horario_hasta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/txt_horario_hasta"
+                style="@style/editText"
+                android:hint="@string/txt_phone"
+                android:inputType="phone"
+                android:maxLength="15"/>
+        </android.support.design.widget.TextInputLayout>
+
+
+        <!--
+            <TextView
+                android:id="@+id/txtHorario"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="20dp"
+                android:textSize="18sp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/colorText"
+                android:text="@string/txtHorario"/>
+
+       <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="false">
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                    android:id="@+id/rangoHorario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:corner_radius="100"
+                    app:gap="1"
+                    app:min_value="9"
+                    app:max_value="24"
+                    app:bar_color="@color/colorBar"
+                    app:bar_highlight_color="@color/colorPrimary"
+                    app:left_thumb_color="@color/colorPrimary"
+                    app:right_thumb_color="@color/colorPrimary"
+                    app:left_thumb_color_pressed="@color/colorThumbPressed"
+                    app:right_thumb_color_pressed="@color/colorThumbPressed"
+                    app:data_type="_integer"/>
+                <TextView
+                    android:id="@+id/txtValorMinimo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rangoHorario"
+                    android:layout_marginTop="5dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorText"/>
+                <TextView
+                    android:id="@+id/txtValorMaximo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rangoHorario"
+                    android:layout_marginTop="5dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorText"
+                    android:textAlignment="textStart"
+                    android:layout_gravity="start"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>!-->
+
+    </LinearLayout>
+
+</FrameLayout>
